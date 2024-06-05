@@ -1,26 +1,49 @@
 import type { Config } from "tailwindcss"
-import {fontFamily} from "tailwindcss/defaultTheme"
 
 const config = {
-  darkMode: ["class"],
+  darkMode: "selector",
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+      screens: {
+        'sideBarScreen': '350px',
+      },
+      boxShadow: {
+        'input_shadown': '0 0 10px 0 ',
+      },
+      colors: {
+        blue:{
+         1: '#11cdef'
+        },
+        dark: {
+          bg: "#051139",
+          bg_2: "#111c44",
+          text: "#fff",
+          textSoft: "#b7bac1",
+          error: "#CF6679",
+          primaryColor: "#BB86FC",
+          secondaryColor: "#03DAC6",
+          primaryColorVariant: "#3700B3",
+        },
+        light: {
+          bg: "#f8f9fa",
+          bg_2: "#fff",
+          text: "#000000",
+          textSoft: "#b7bac1",
+          error: "#B00020",
+          primaryColor: "#6200EE",
+          secondaryColor: "#03DAC6",
+          primaryColorVariant: "#3700B3",
+        },
+      },
+      spacing: {
+        headerHeight: '80px', // Thay đổi giá trị này để điều chỉnh độ dài header
       },
       keyframes: {
         "accordion-down": {

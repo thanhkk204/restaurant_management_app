@@ -3,12 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "next dev --port 5555",
+    "start": "next dev --port 5556",
     "build": "next build",
     "test": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.0.5",
+    "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
