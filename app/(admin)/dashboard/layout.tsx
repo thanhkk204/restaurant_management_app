@@ -37,7 +37,7 @@ export default function RootLayout({
         )}
       >
         <DashboardContextProvider>
-        <main className=" relative bg-light-bg text-light-text  dark:bg-dark-bg dark:text-dark-text h-screen transition ease-in-out duration-500">
+        <main className=" relative bg-light-bg text-light-text  dark:bg-dark-bg dark:text-dark-text h-screen transition ease-in-out duration-300">
           <div className="fixed w-full min-h-[250px] bg-[#11cdef] dark:bg-dark-bg "></div>
           <div className="flex">
             
@@ -45,7 +45,7 @@ export default function RootLayout({
             
             <div className="w-full relative">
               <Navbar />
-              <div className="p-10 min-h-[300vh] mt-[80px] rounded-tl-3xl ">
+              <div className="px-10 my-5  ">
                {children}
               </div>
             </div>

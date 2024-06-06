@@ -13,9 +13,10 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null)
   const [lastScrollTop, setLastScrollTop] = useState<number>(0)
   const path = usePathname()
-  const pathName =
-    path.split("/")[1].charAt(0).toLocaleUpperCase() + path.slice(2)
 
+  // Get URL path name currently
+  let pathName =  `${path.split("/").pop()?.charAt(0).toLocaleUpperCase()}${path.split("/").pop()?.slice(1)}`
+  
   const value = useDashBoardContext()
   if (!value) return
   const { isSideBarColose, setIsSideBarClose } = value

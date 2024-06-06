@@ -8,9 +8,12 @@ import { usePathname } from "next/navigation"
 
 export default function Sidebar() {
   const path = usePathname()
+  // Get values were passed in context
   const value = useDashBoardContext()
   if (!value) return
-  const { isSideBarColose, sideBarColor} = value
+  const { isSideBarColose, sideBarColor, sideBarType} = value
+  console.log(sideBarColor);
+      
 
   return (
     <div
@@ -19,12 +22,13 @@ export default function Sidebar() {
         isSideBarColose ? "w-[120px]" : "w-[350px]"
       )}
     >
-      <div className={"relative h-[calc(100vh-40px)] w-full overflow-y-hidden bg-light-bg_2 dark:bg-dark-bg_2 right-0 rounded-2xl px-4 py-3 overflow-x-hidden"}>
+      <div className={cn(
+        "relative h-[calc(100vh-40px)] w-full overflow-y-hidden bg-light-bg_2 dark:bg-dark-bg_2' transition-colors duration-300 ease-out right-0 rounded-2xl px-4 py-3 overflow-x-hidden",
+        sideBarType === 'light' ? 'bg-light-bg_2' : sideBarType === 'dark' ? 'bg-dark-bg_2' : ''
+      )}>
         <div className="flex flex-col">
           <div
-            className={cn(
-              "flex items-center gap-2 overflow-hidden border-b border-dark-secondaryColor py-2"
-            )}
+            className={"flex items-center gap-2 overflow-hidden py-2"}
           >
             <img
               src="/images/adminLogo.png"
@@ -33,6 +37,7 @@ export default function Sidebar() {
               height={60}
               className="bg-transparent"
             />
+            
             <h2
               className={cn(
                 "text-[18px] font-medium transition-opacity duration-500 whitespace-nowrap",
@@ -44,6 +49,7 @@ export default function Sidebar() {
               Boot Dashboard
             </h2>
           </div>
+          <div className="bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none"></div>
 
           <ul className="py-5">
             {sideBarVariables.map((item, index) => (
@@ -53,11 +59,8 @@ export default function Sidebar() {
                 style={path === item.link && !sideBarColor ?
                 {background: '#051139'} :
                 path === item.link && sideBarColor ?
-                 {background: sideBarColor} : {background: ''}}
-                className={cn(
-                  "group flex items-center py-4 gap-3 w-full px-3 rounded-lg cursor-pointer overflow-hidden max-h-fit group",
-                  // path === item.link ? 'bg-dark-bg': ''
-                )}
+                {background: sideBarColor} : {background: ''}}
+                className={"group flex items-center py-4 gap-3 w-full px-3 rounded-lg cursor-pointer overflow-hidden max-h-fit group"}
                 >
                 <div 
                 style={path === item.link ? {color: 'white'} : {color: item.color}}
@@ -97,10 +100,10 @@ export default function Sidebar() {
              </div>
           </div>
           
-          <div className="absolute bottom-3 left-0 w-full px-3">
+          <div className=" w-full px-3">
            <Button 
            className={cn(
-            "w-full my-2 transition-all duration-500",
+            "w-full my-2 transition-all duration-500 hover:translate-y-[-2%] hover:opacity-75 bg-gradient-to-r from-[#11c4ef] to-[#1187ef] text-white dark:text-white overflow-hidden",
             isSideBarColose ? "opacity-0 w-[50px] pointer-events-none select-none" : "opacity-100 w-full"
            )}
            >
@@ -108,7 +111,7 @@ export default function Sidebar() {
            </Button>
            <Button 
            className={cn(
-            "w-full my-2 transition-all duration-500",
+            "w-full my-2 transition-all duration-500 hover:translate-y-[-2%] hover:opacity-75",
             isSideBarColose ? "opacity-0 w-[50px] pointer-events-none select-none" : "opacity-100 w-full"
            )}
            >
