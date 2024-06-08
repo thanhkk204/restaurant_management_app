@@ -11,9 +11,7 @@ export default function Sidebar() {
   // Get values were passed in context
   const value = useDashBoardContext()
   if (!value) return
-  const { isSideBarColose, sideBarColor, sideBarType} = value
-  console.log(sideBarColor);
-      
+  const { isSideBarColose, sideBarColor, sideBarType } = value
 
   return (
     <div
@@ -22,14 +20,18 @@ export default function Sidebar() {
         isSideBarColose ? "w-[120px]" : "w-[350px]"
       )}
     >
-      <div className={cn(
-        "relative h-[calc(100vh-40px)] w-full overflow-y-hidden bg-light-bg_2 dark:bg-dark-bg_2' transition-colors duration-300 ease-out right-0 rounded-2xl px-4 py-3 overflow-x-hidden",
-        sideBarType === 'light' ? 'bg-light-bg_2' : sideBarType === 'dark' ? 'bg-dark-bg_2' : ''
-      )}>
+      <div
+        className={cn(
+          "relative h-[calc(100vh-40px)] w-full overflow-y-hidden bg-light-bg_2 dark:bg-dark-bg_2' transition-colors duration-300 ease-out right-0 rounded-2xl px-4 py-3 overflow-x-hidden",
+          sideBarType === "light"
+            ? "bg-light-bg_2"
+            : sideBarType === "dark"
+            ? "bg-dark-bg_2"
+            : ""
+        )}
+      >
         <div className="flex flex-col">
-          <div
-            className={"flex items-center gap-2 overflow-hidden py-2"}
-          >
+          <div className={"flex items-center gap-2 overflow-hidden py-2"}>
             <img
               src="/images/adminLogo.png"
               alt="adminLogo"
@@ -37,7 +39,7 @@ export default function Sidebar() {
               height={60}
               className="bg-transparent"
             />
-            
+
             <h2
               className={cn(
                 "text-[18px] font-medium transition-opacity duration-500 whitespace-nowrap",
@@ -81,42 +83,49 @@ export default function Sidebar() {
                   {item.title}
                 </h4>
                 </Link>
+                
               </li>
             ))}
           </ul>
 
           <div className="flex items-center justify-center">
-             <div className="min-w-[100%]">
-             <img
-             className={cn(
-              "transition-all duration-700 origin-bottom-left ease-in-out min-w-[200px] mx-auto",
-              isSideBarColose ? "opacity-0 scale-0" : "opacity-100 scale-100"
-             )}
-             src="/images/logo2.png" 
-             width={200} 
-             height={100}
-             alt="logo"
-             />
-             </div>
+            <div className="min-w-[100%]">
+              <img
+                className={cn(
+                  "transition-all duration-700 origin-bottom-left ease-in-out min-w-[200px] mx-auto",
+                  isSideBarColose
+                    ? "opacity-0 scale-0"
+                    : "opacity-100 scale-100"
+                )}
+                src="/images/logo2.png"
+                width={200}
+                height={100}
+                alt="logo"
+              />
+            </div>
           </div>
-          
+
           <div className=" w-full px-3">
-           <Button 
-           className={cn(
-            "w-full my-2 transition-all duration-500 hover:translate-y-[-2%] hover:opacity-75 bg-gradient-to-r from-[#11c4ef] to-[#1187ef] text-white dark:text-white overflow-hidden",
-            isSideBarColose ? "opacity-0 w-[50px] pointer-events-none select-none" : "opacity-100 w-full"
-           )}
-           >
-            Documentation
-           </Button>
-           <Button 
-           className={cn(
-            "w-full my-2 transition-all duration-500 hover:translate-y-[-2%] hover:opacity-75",
-            isSideBarColose ? "opacity-0 w-[50px] pointer-events-none select-none" : "opacity-100 w-full"
-           )}
-           >
-            Contact Us
-           </Button>
+            <Button
+              className={cn(
+                "w-full my-2 transition-all duration-500 hover:translate-y-[-2%] hover:opacity-75 bg-gradient-to-r from-[#11c4ef] to-[#1187ef] text-white dark:text-white overflow-hidden",
+                isSideBarColose
+                  ? "opacity-0 w-[50px] pointer-events-none select-none"
+                  : "opacity-100 w-full"
+              )}
+            >
+              Documentation
+            </Button>
+            <Button
+              className={cn(
+                "w-full my-2 transition-all duration-500 hover:translate-y-[-2%] hover:opacity-75",
+                isSideBarColose
+                  ? "opacity-0 w-[50px] pointer-events-none select-none"
+                  : "opacity-100 w-full"
+              )}
+            >
+              Contact Us
+            </Button>
           </div>
         </div>
       </div>

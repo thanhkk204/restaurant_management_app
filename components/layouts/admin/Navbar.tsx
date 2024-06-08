@@ -41,15 +41,17 @@ export default function Navbar() {
       className="w-full sticky top-5 min-h-headerHeight bg-transparent text-white flex flex-col md:flex-row items-center justify-between px-10 gap-3 md:gap-0 transition-all  duration-400 delay-200"
     >
       <div className="nav_left flex gap-7 items-center">
+        <div className="hidden lg:block">
         <div className="flex flex-col">
           <div className="flex gap-2 items-center text-[15px] text-white">
             <Home width={15} height={15} /> /
             <h4 className="font-thin  dark:text-dark-textSoft">{pathName}</h4>
           </div>
-          <h2 className="font-bold text-white">{pathName}</h2>
+          <h2 className="font-bold text-white py-1">{pathName}</h2>
+        </div>
         </div>
 
-        <div className="hidden md:block cursor-pointer">
+        <div className="hidden lg:block cursor-pointer">
           {isSideBarColose ? (
             <Text onClick={() => setIsSideBarClose(!isSideBarColose)} />
           ) : (
@@ -77,7 +79,7 @@ export default function Navbar() {
         </div>
         <ThemeToggle />
         <div className="flex items-center justify-center rounded-full overflow-hidden">
-          <img src="/icons/logo.png" alt="avatar" width={50} height={50} />
+          <img src="/images/logo2.png" alt="avatar" width={50} height={50} />
         </div>
       </div>
     </nav>

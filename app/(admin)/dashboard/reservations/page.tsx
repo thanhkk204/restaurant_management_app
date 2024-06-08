@@ -1,7 +1,10 @@
+import { AccordionDemo } from '@/components/Codanary'
 import React from 'react'
 
 export default function ReservationsPage() {
   return (
-    <div>ReservationsPage</div>
+    <div>
+      <AccordionDemo/>
+    </div>
   )
 }
