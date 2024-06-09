@@ -13,6 +13,9 @@ export default function Sidebar() {
   if (!value) return
   const { isSideBarColose, sideBarColor, sideBarType } = value
 
+  // Get second segment after /dashboard to get exactly route must be compared
+  const secondSegment = path.split('/')[2] 
+ 
   return (
     <div
       className={cn(
@@ -51,33 +54,33 @@ export default function Sidebar() {
               Boot Dashboard
             </h2>
           </div>
-          <div className="bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none"></div>
+          <div className="separate_line"></div>
 
-          <ul className="py-5">
+          <ul className="py-5 max-h-[400px] overflow-y-scroll no-scrollbar">
             {sideBarVariables.map((item, index) => (
               <li key={index}>
                 <Link 
-                href={item.link}
-                style={path === item.link && !sideBarColor ?
+                href={typeof( item.title) == 'string' ? item.link : "#"}
+                style={path === item.link && !sideBarColor || (item.link.includes(secondSegment) && !sideBarColor)?
                 {background: '#051139'} :
-                path === item.link && sideBarColor ?
+                path === item.link && sideBarColor || (item.link.includes(secondSegment) && sideBarColor)?
                 {background: sideBarColor} : {background: ''}}
-                className={"group flex items-center py-4 gap-3 w-full px-3 rounded-lg cursor-pointer overflow-hidden max-h-fit group"}
+                className={"group flex items-start py-4 gap-5 w-full px-3 rounded-lg cursor-pointer overflow-hidden max-h-fit group"}
                 >
                 <div 
-                style={path === item.link ? {color: 'white'} : {color: item.color}}
-                className={`min-w-[20px] group-hover:text-red-500 `} 
+                style={path === item.link || item.link.includes(secondSegment) ? {color: 'white'} : {color: item.color}}
+                className={`min-w-[20px]`} 
                 >
                   {item.icon}
                 </div>
                   
                 <h4
                   className={cn(
-                    "text-light-textSoft transition-transform duration-300 ease-out whitespace-nowrap",
+                    "text-light-textSoft w-full transition-transform duration-300 ease-out whitespace-nowrap",
                     isSideBarColose
                       ? "translate-x-[100px] opacity-25 pointer-events-none select-none"
                       : "translate-x-0 opacity-100",
-                      path === item.link ? "text-white" : "dark:text-dark-textSoft"
+                      path === item.link || item.link.includes(secondSegment) ? "text-white" : "dark:text-dark-textSoft"
                   )}
                 >
                   {item.title}

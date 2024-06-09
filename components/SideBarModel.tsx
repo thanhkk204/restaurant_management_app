@@ -36,7 +36,7 @@ export default function SideBarModel() {
             <h2 className="text-[20px] text-light-bg_2 dark:text-dark-text font-medium font-sans">Argon Configurator</h2>
             <p className="text-[15px] text-light-textSoft dark:text-dark-textSoft">See our dashboard options.</p>
           </div>
-          <div className="bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none"></div>
+          <div className="separate_line"></div>
 
           <div className="py-5">
             <h4 className="text-light-text dark:text-dark-text py-2 font-sans text-[18px] font-semibold">
@@ -88,13 +88,13 @@ export default function SideBarModel() {
                <h4 className="text-light-text dark:text-dark-text text-[18px] font-medium">Light/Dark</h4>
                <Switch />
             </div>
-            <div className="bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none"></div>
+            <div className="separate_line"></div>
 
             <div className="py-4 flex items-center justify-between">
                <h4 className="text-light-text dark:text-dark-text text-[18px] font-medium">Sidenav Mini</h4>
                <Switch />
             </div>
-            <div className="bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none"></div>
+            <div className="separate_line"></div>
 
             <div className="py-4 flex items-center justify-between">
                <h4 className="text-light-text dark:text-dark-text text-[18px] font-medium">Navbar Fixed</h4>

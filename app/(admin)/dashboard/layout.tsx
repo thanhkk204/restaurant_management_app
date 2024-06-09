@@ -45,7 +45,7 @@ export default function RootLayout({
             
             <div className="w-full relative">
               <Navbar />
-              <div className="px-10 my-5  ">
+              <div className="lg:px-10 my-5">
                {children}
               </div>
             </div>

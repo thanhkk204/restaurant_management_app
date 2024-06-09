@@ -1,5 +1,5 @@
-import { AccordionDemo } from "@/components/Codanary";
-import { CalendarDays, ContactRound, LaptopMinimal, PackageOpen, ReceiptText, Settings, Soup, UserRound } from "lucide-react";
+
+import { AppWindow, CalendarDays, ContactRound, LaptopMinimal, PackageOpen, ReceiptText, Salad, Settings, Soup, UserRound } from "lucide-react";
 export const colorsVariables = {
     purple: '#5e72e4',
     orange: '#fb6340',
@@ -23,13 +23,14 @@ export const sideBarVariables = [
     },
     {
         icon: <CalendarDays className="min-w-5"/>,
-        title: <AccordionDemo />,
+        title: "Đặt bàn",
+        accordino: true,
         color: colorsVariables.blue,
         link:'/dashboard/reservations'
     },
     {
         icon: <PackageOpen className="min-w-5"/>,
-        title: 'Mặt hàng',
+        title: "Mặt hàng",
         color: colorsVariables.purple,
         link:'/dashboard/inventories'
     },
