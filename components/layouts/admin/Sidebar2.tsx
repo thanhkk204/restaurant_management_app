@@ -33,7 +33,6 @@ export default function Sidebar2() {
     e.preventDefault()
     e.stopPropagation()
   }
-  console.log(sideBarColor);
   
   return (
     <div>

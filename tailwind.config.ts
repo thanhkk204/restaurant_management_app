@@ -22,7 +22,8 @@ const config = {
         blue:{
          1: '#11cdef'
         },
-        blur_bg: 'rgba(255, 255, 255, 8%)',
+        blur_bg: 'rgba(0, 0, 0, 0.6)',
+        blur_bg_white: 'rgba(255, 255, 255, 19%)',
         dark: {
           bg: "#051139",
           bg_2: "#111c44",

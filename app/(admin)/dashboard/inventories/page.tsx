@@ -31,7 +31,7 @@ export default function InventoriesPage() {
     //   <ArrowBigRightDash className='text-yellow-500'/>
     //   </div>
     // </div> */}
-    <div className='w-full min-h-[750px] px-3 md:px-10 py-2 md:py-4 bg-light-bg_2 dark:bg-dark-bg_2 rounded-md'>
+    <div className='w-full h-[calc(100vh-120px)] px-3 md:px-10 py-2 md:py-4 bg-light-bg_2 dark:bg-dark-bg_2 rounded-md'>
       <div className='flex flex-col md:flex-row gap-5 md:gap-10'>
          <div className='flex-none w-[300px] max-h-[325px] overflow-y-auto no-scrollbar px-3 py-2 bg-light-bg dark:bg-dark-bg rounded-md flex flex-col'>
            <div className='flex items-center justify-between'>

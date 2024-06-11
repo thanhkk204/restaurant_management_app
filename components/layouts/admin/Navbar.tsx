@@ -13,10 +13,11 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null)
   const [lastScrollTop, setLastScrollTop] = useState<number>(0)
   const path = usePathname()
+  const routeSegments = path.split('/')
 
   // Get URL path name currently
   let pathName =  `${path.split("/").pop()?.charAt(0).toLocaleUpperCase()}${path.split("/").pop()?.slice(1)}`
-  
+ 
   const value = useDashBoardContext()
   if (!value) return
   const { isSideBarColose, setIsSideBarClose } = value
@@ -38,14 +39,21 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="w-full sticky top-5 min-h-headerHeight bg-transparent text-white flex flex-col md:flex-row items-center justify-between px-10 gap-3 md:gap-0 transition-all  duration-400 delay-200"
+      className="w-full sticky  max-h-headerHeight bg-transparent text-white flex flex-col md:flex-row items-center justify-between px-10 py-3  gap-3 md:gap-0 transition-all  duration-400 delay-200"
     >
       <div className="nav_left flex gap-7 items-center">
         <div className="hidden lg:block">
         <div className="flex flex-col">
           <div className="flex gap-2 items-center text-[15px] text-white">
-            <Home width={15} height={15} /> /
-            <h4 className="font-thin  dark:text-dark-textSoft">{pathName}</h4>
+            <Home width={15} height={15} />
+            <h4 className="font-thin text-light-textSoft dark:text-dark-textSoft">{
+              routeSegments.map((item, index)=>{
+                if (index === routeSegments.length -1) {
+                 return <span key={index}>{item}</span> 
+                } 
+                 return <span key={index}>{item} / </span>
+               })
+            }</h4>
           </div>
           <h2 className="font-bold text-white py-1">{pathName}</h2>
         </div>
