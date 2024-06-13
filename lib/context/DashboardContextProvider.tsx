@@ -4,8 +4,6 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 type ContextInstance = {
     isSideBarColose: boolean,
     setIsSideBarClose: (value: boolean) => void,
-    toggleSideBar2: boolean,
-    setToggleSideBar2: (value: boolean) => void,
     sideBarColor: string,
     setSideBarColor: (value: string) => void,
     sideBarType: string,
@@ -16,7 +14,6 @@ const DashboardContext = createContext<ContextInstance | null>(null)
 export default function DashboardContextProvider({children} : {children: React.ReactNode}) {
   // All state to pass throughout all dashboard client components 
     const [isSideBarColose, setIsSideBarClose] = useState<boolean>(false)
-    const [toggleSideBar2, setToggleSideBar2] = useState<boolean>(false)
     const [sideBarColor, setSideBarColor] = useState<string>('')
     const [sideBarType, setSideBarType] = useState<string>('')
   //  Check used user color was stored in local storge and then set up sideBar type to set default value
@@ -29,8 +26,6 @@ export default function DashboardContextProvider({children} : {children: React.R
     <DashboardContext.Provider value={{
         isSideBarColose,
         setIsSideBarClose,
-        toggleSideBar2,
-        setToggleSideBar2,
         sideBarColor,
         setSideBarColor,
         sideBarType,

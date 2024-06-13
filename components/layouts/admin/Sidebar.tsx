@@ -19,7 +19,7 @@ export default function Sidebar() {
   return (
     <div
       className={cn(
-        "h-screen sticky top-0 p-5 hidden lg:block transition-[width] duration-500",
+        "h-screen sticky z-50 top-0 left-0 p-5 hidden lg:block transition-[width] duration-500",
         isSideBarColose ? "w-[120px]" : "w-[350px]"
       )}
     >

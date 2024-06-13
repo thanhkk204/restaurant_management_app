@@ -32,12 +32,12 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen bg-background antialiased",
+          "min-h-fit w-full lg:w-[102%] overflow-y-scroll bg-background antialiased",
           popins.className
         )}
       >
         <DashboardContextProvider>
-        <main className=" relative bg-light-bg text-light-text  dark:bg-dark-bg dark:text-dark-text h-screen transition ease-in-out duration-300">
+        <main className="min-h-fit relative bg-light-bg text-light-text  dark:bg-dark-bg dark:text-dark-text transition ease-in-out duration-300">
           <div className="fixed w-full min-h-[250px] bg-[#11cdef] dark:bg-dark-bg "></div>
           <div className="flex">
             

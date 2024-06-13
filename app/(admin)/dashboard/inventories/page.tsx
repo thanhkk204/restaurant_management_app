@@ -17,21 +17,10 @@ const categories = [
 export default function InventoriesPage() {
   const [isModelOpen, setIsModelOpen] = useState<boolean>(false)
   const [category, setcategory] = useState<string>('')
-    // Get values were passed in context
-    const value = useDashBoardContext()
-    if (!value) return
-    const { toggleSideBar2, setToggleSideBar2 } = value
+    
   return (
     <main className='w-full'>
-    {/* // <div className='relative w-full'>
-    //   <div 
-    //   onClick={()=>setToggleSideBar2(true)}
-    //   className='lg:hidden absolute top-0 left-0 cursor-pointer w-[50px] h-[50px] rounded-full flex items-center justify-center border border-blue-1'
-    //   >
-    //   <ArrowBigRightDash className='text-yellow-500'/>
-    //   </div>
-    // </div> */}
-    <div className='w-full h-[calc(100vh-120px)] px-3 md:px-10 py-2 md:py-4 bg-light-bg_2 dark:bg-dark-bg_2 rounded-md'>
+    <div className='w-full min-h-fit px-3 md:px-5 py-4 md:py-6 bg-light-bg_2 dark:bg-dark-bg_2 rounded-md'>
       <div className='flex flex-col md:flex-row gap-5 md:gap-10'>
          <div className='flex-none w-[300px] max-h-[325px] overflow-y-auto no-scrollbar px-3 py-2 bg-light-bg dark:bg-dark-bg rounded-md flex flex-col'>
            <div className='flex items-center justify-between'>
@@ -88,7 +77,7 @@ export default function InventoriesPage() {
                   <div className='flex items-center justify-center overflow-hidden w-[50px] h-[50px] border border-green-400 rounded-full'>
                   <img src="/images/logo2.png" width={50} height={50} alt="" className='object-contain' />
                   </div>
-                 <h4 className='max-w-[450px] overflow-hidden whitespace-nowrap text-ellipsis'>{item}</h4>
+                 <h4 className='max-w-[250px] lg:max-w-[450px] overflow-hidden whitespace-nowrap text-ellipsis'>{item}</h4>
                  </div>
                   <div className='py-1 px-1 cursor-pointer hover:text-dark-error'>
                   <X />

@@ -35,7 +35,7 @@ const config = {
           primaryColorVariant: "#3700B3",
         },
         light: {
-          bg: "#dfe2e4",
+          bg: "#eff4f7",
           bg_2: "#fff",
           text: "#000000",
           textSoft: "#b7bac1",
