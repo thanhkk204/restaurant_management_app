@@ -21,6 +21,17 @@ const dishSchame = new mongoose.Schema({
         type: Boolean,
         required: true
     },
+    category_id: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'category',
+    },
+    collection_id: [
+        {
+            type: mongoose.SchemaTypes.ObjectId,
+            ref: 'collection',
+        },
+    ]
+
 }, 
 {
     timestamps: true

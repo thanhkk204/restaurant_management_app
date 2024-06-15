@@ -6,12 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
    await connectToDB()
    try {
-    const {name, isShow} = await req.json()
+    const {title} = await req.json()
     
-    if(!name || !isShow) return new NextResponse("All data are required", {status: 401})
-    const existedData = await category.findOne({name})
+    if(!title) return new NextResponse("All data are required", {status: 401})
+    const existedData = await category.findOne({title})
     if(existedData) return new NextResponse("Category is available", {status: 401})
-   const newCategory = await category.create({name: name, isShow: isShow})
+   const newCategory = await category.create({title: title})
    return new NextResponse(newCategory, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)

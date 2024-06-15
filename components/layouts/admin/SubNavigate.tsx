@@ -16,6 +16,21 @@ const NavigateLink = [
     icons: <Salad width={20} />,
     title: "Dishes"
   },
+  {
+    link: '/dashboard/inventories/collections',
+    icons: <Salad width={20} />,
+    title: "Collections"
+  },
+  {
+    link: '/dashboard/inventories/add_new_category',
+    icons: <Salad width={20} />,
+    title: "New Category"
+  },
+  {
+    link: '/dashboard/inventories/add_new_collection',
+    icons: <Salad width={20} />,
+    title: "New Collection"
+  },
 ]
 
 export default function SubNavigate() {
@@ -25,8 +40,8 @@ export default function SubNavigate() {
   if (!value) return
   const {sideBarColor } = value
   return (
-    <div>
-        <div className="bg-light-bg_2 dark:bg-dark-bg_2 flex items-center gap-3 rounded-lg min-w-[250px] px-8 py-2 ">
+    <div >
+        <div className="bg-light-bg_2 dark:bg-dark-bg_2 flex items-center gap-3 rounded-lg min-w-[250px] px-8 py-2 overflow-x-auto no-scrollbar">
         {NavigateLink.map((item, index) => (
           <Link
             key={index}

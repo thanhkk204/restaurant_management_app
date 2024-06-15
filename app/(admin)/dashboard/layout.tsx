@@ -7,6 +7,7 @@ import "../../globals.css"
 import Navbar from "@/components/layouts/admin/Navbar"
 import Sidebar from "@/components/layouts/admin/Sidebar"
 import DashboardContextProvider from "@/lib/context/DashboardContextProvider"
+import { Toaster } from "@/components/ui/toaster"
 
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
@@ -52,6 +53,7 @@ export default function RootLayout({
           </div>
         </main>
         </DashboardContextProvider>
+        <Toaster />
       </body>
     </html>
   )

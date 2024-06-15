@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const categorySchame = new mongoose.Schema({
+const collectionSchame = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -8,6 +8,10 @@ const categorySchame = new mongoose.Schema({
     },
     desc: {
         type: String,
+    },
+    image: {
+        type: String,
+        required: true
     },
     isShow: {
         type: Boolean,
@@ -26,4 +30,4 @@ const categorySchame = new mongoose.Schema({
 }
 )
 
-export default mongoose.models.category || mongoose.model("category", categorySchame)
+export default mongoose.models.collection || mongoose.model("collection", collectionSchame)

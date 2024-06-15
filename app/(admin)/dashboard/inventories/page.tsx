@@ -36,6 +36,7 @@ export default function InventoriesPage() {
            {
             categories.map((item,index)=>(
               <div 
+              key={index}
               onClick={()=>setcategory(item)}
               className={cn(
                'py-2 px-2 rounded-md cursor-pointer flex items-center justify-between text-light-text dark:text-dark-textSoft transition-transform duration-300 ease-in-out',
