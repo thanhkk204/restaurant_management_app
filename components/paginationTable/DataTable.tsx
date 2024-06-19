@@ -1,5 +1,4 @@
 "use client"
-
 import {
   ColumnDef,
   flexRender,
@@ -21,6 +20,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { ChangeEvent, useState } from "react"
 import { DataTablePagination } from "./DataTablePagination"
@@ -31,31 +38,36 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Trash } from "lucide-react"
 
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  onDelete: (IdsArray: string[])=> void
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onDelete
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
+
+ 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    // pagination
+    // // pagination
     getPaginationRowModel: getPaginationRowModel(),
     initialState: { 
       pagination: {
           pageSize: 5,
-          pageIndex:2
+          // pageIndex:0
       },
     },
     // Sorting 
@@ -76,15 +88,24 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
   
   })
+  const hadleDeleteSelectedRows = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>): Promise<void>=>{
+    e.preventDefault()
+    const rows: any = table.getFilteredSelectedRowModel().rows
+    const IdsArray = rows.map((item: any)=> item.original._id)
+    console.log(IdsArray)
+    onDelete(IdsArray)
+    
+  
+  }
   return (
     <div>
      <div className="w-full flex items-center gap-5">
      <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+          placeholder="Filter title..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event: ChangeEvent<HTMLInputElement>) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm bg-light-bg dark:bg-dark-bg dark:focus:ring-offset-0 dark:focus-visible:ring-0 focus-visible:ring-0"
         />
@@ -117,15 +138,22 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+
+       <div 
+       onClick={hadleDeleteSelectedRows}
+       className="px-3 py-3 rounded-full cursor-pointer text-white bg-red-500 hover:scale-90 transition-all ease-in"
+       >
+       <Trash />
+       </div>
      </div>
     <div className="rounded-md border">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} >
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} style={{ width: `${header.getSize()}px` }}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(

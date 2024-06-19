@@ -22,15 +22,16 @@ const NavigateLink = [
     title: "Collections"
   },
   {
-    link: '/dashboard/inventories/add_new_category',
-    icons: <Salad width={20} />,
-    title: "New Category"
-  },
-  {
     link: '/dashboard/inventories/add_new_collection',
     icons: <Salad width={20} />,
     title: "New Collection"
   },
+  {
+    link: '/dashboard/inventories/add_new_category',
+    icons: <Salad width={20} />,
+    title: "New Category"
+  },
+ 
 ]
 
 export default function SubNavigate() {

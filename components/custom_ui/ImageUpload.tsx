@@ -34,7 +34,7 @@ export default function ImageUpload(props: Props) {
             </div>
             <Button
               onClick={(e) => {
-                e.preventDefault(),
+                e.preventDefault()
                 open()
               }}
               className="flex items-center gap-1 font-medium text-[16px]"

@@ -16,7 +16,7 @@ export default async function DishesPage() {
   const data = await getData()
   return (
     <div className="w-full h-[calc(100vh-120px)] px-10 py-4 bg-light-bg_2 dark:bg-dark-bg_2 rounded-md overflow-auto">
-      <DataTable columns={columns} data={data} />
+      {/* <DataTable columns={columns} data={data} /> */}
     </div>
   )
 }

@@ -15,13 +15,13 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
-import ImageUpload from "@/components/Inventories/ImageUpload"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
+import ImageUpload from "@/components/custom_ui/ImageUpload"
 
 const formSchema = z.object({
-  name: z.string().min(2).max(50),
+  title: z.string().min(2).max(50),
   desc: z.string().min(2).max(50),
   image: z.string().url({ message: "Invalid url" })
 })
@@ -37,13 +37,14 @@ export default function Add_new_collection() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
+      title: "",
       desc: "",
       image: "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+   
     setLoading(true)
     try {
       const res = await fetch('/api/inventories/collections',{
@@ -51,16 +52,17 @@ export default function Add_new_collection() {
         body: JSON.stringify(values)
       })
       const data = await res.json()
-      console.log(data)
       toast({
         title: "You added new collection succesfully",
       })
+      form.reset()
       setLoading(false)
     } catch (error) {
       console.log(error);
       
       setLoading(false)
       toast({
+         variant: "destructive",
         title: "Something wrong with add new collection!",
       })
     }
@@ -76,7 +78,7 @@ export default function Add_new_collection() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => {
                 return (
                   <FormItem>

@@ -1,5 +1,5 @@
 "use client"
-import { z } from "zod"
+import { boolean, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
@@ -16,13 +16,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
 import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react"
+import { toast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
-  name: z.string().min(2).max(50),
+  title: z.string().min(2).max(50),
   desc: z.string().min(2).max(50),
 })
 
 export default function Add_new_category() {
+  const [loading, setLoading] = useState<boolean>(false)
    // Get values were passed in context
    const value = useDashBoardContext()
    if (!value) return
@@ -31,15 +34,39 @@ export default function Add_new_category() {
    const form = useForm<z.infer<typeof formSchema>>({
      resolver: zodResolver(formSchema),
      defaultValues: {
-       name: "",
+      title: "",
        desc: "",
      },
    })
  
-   function onSubmit(values: z.infer<typeof formSchema>) {
-     // Do something with the form values.
-     // ✅ This will be type-safe and validated.
-     console.log(values)
+   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/inventories/categories',{
+        method: 'POST',
+        body: JSON.stringify(values)
+      })
+      const data = await res.json()
+      console.log(data)
+      if (!res.ok) {
+        toast({
+          variant: "destructive",
+          title: "Can't post new category",
+        })
+      }
+      
+      toast({
+        title: "You added new collection succesfully",
+      })
+      setLoading(false)
+    } catch (error) {
+      console.log(error);
+      setLoading(false)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with add new Category!",
+      })
+    }
    }
    function handleResetForm(e: any){
     e.preventDefault()
@@ -52,7 +79,7 @@ export default function Add_new_category() {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="name"
+            name="title"
             render={({ field }) => {
               return (
                 <FormItem>
