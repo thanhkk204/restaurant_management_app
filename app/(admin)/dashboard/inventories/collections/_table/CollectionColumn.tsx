@@ -4,13 +4,14 @@ import { ArrowUpDown, MoreHorizontal, Trash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CollectionType } from "../page"
 import Image from "next/image"
@@ -19,9 +20,13 @@ import Image from "next/image"
 // You can use a Zod schema here if you want.
 type columProp = {
   handleDeleteCollection: (idsArray: string[]) => void
+  handleUpdateCollection: (id: string) => void
 }
 
-export const CollectionColumn = ({ handleDeleteCollection }: columProp) => {
+export const CollectionColumn = ({ 
+  handleDeleteCollection,
+  handleUpdateCollection
+ }: columProp) => {
   const handleDelete = (id: string) => {
     // Convert specific id to array id to reusable handleDeleteCollection at parent component
     const IdsArray = [id]
@@ -50,12 +55,16 @@ export const CollectionColumn = ({ handleDeleteCollection }: columProp) => {
       ),
       enableSorting: false,
       enableHiding: false,
-      size: 100, //starting column size
+      size: 50, //starting column size
+      minSize: 50,
     },
     {
       accessorKey: "title",
       header: "Title",
-      size: 200, //starting column size
+      size: 300, //starting column size
+      minSize: 200,
+      maxSize:400,
+      enableResizing: true
     },
     {
       accessorKey: "image",
@@ -71,26 +80,71 @@ export const CollectionColumn = ({ handleDeleteCollection }: columProp) => {
       accessorKey: "desc",
       header: "Desc",
       size: 400, //starting column size
+      minSize: 300,
+      maxSize:600
     },
     {
       accessorKey: "isShow",
       header: "IsShow",
       size: 200, //starting column size
+      minSize: 50,
     },
     {
       id: "features",
       header: ({ table }) => <div></div>,
       cell: ({ row }) => (
-        <div
-          onClick={() => handleDelete(row.original._id)}
-          className="w-[35px] h-[35px] flex items-center justify-center rounded-full cursor-pointer text-white bg-red-500 hover:scale-90 transition-all ease-in"
+        // <div
+        //   onClick={() => handleDelete(row.original._id)}
+        //   className="w-[35px] h-[35px] flex items-center justify-center rounded-full cursor-pointer text-white bg-red-500 hover:scale-90 transition-all ease-in"
+        // >
+        //   <Trash width={20} />
+        // </div>
+        <div className="flex items-center justify-between gap-5">
+        <Dialog>
+          <DialogTrigger>
+            <div
+              className="px-3 py-3 rounded-full cursor-pointer text-white bg-light-error dark:bg-dark-error hover:scale-90 transition-all ease-in"
+            >
+              <Trash />
+            </div>
+          </DialogTrigger>
+          <DialogContent className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text">
+            <DialogHeader>
+              <DialogTitle>Bạnc có chắc muốn xóa không?</DialogTitle>
+            </DialogHeader>
+            <div className="flex items-center justify-end py-2 gap-5">
+              <DialogClose asChild>
+                <Button
+                  className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
+                text-white dark:text-white hover:scale-90 transition-all ease-in"
+                >
+                  Đóng
+                </Button>
+              </DialogClose>
+              <DialogClose>
+              <Button
+                onClick={() => handleDelete(row.original._id)}
+                className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
+              text-white dark:text-white hover:scale-90 transition-all ease-in"
+              >
+                Xóa
+              </Button>
+              </DialogClose>
+            </div>
+          </DialogContent>
+        </Dialog>
+        <Button
+        onClick={()=> handleUpdateCollection(row.original._id)}
         >
-          <Trash width={20} />
+        Sửa
+        </Button>
         </div>
       ),
       enableSorting: false,
       enableHiding: false,
-      size: 400, //starting column size  size: 200, //starting column size
+      size: 100, //starting column size  size: 200, //starting column size
+      minSize: 50,
+      maxSize: 200
     },
   ]
   return columns

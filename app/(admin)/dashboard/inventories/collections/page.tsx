@@ -4,6 +4,7 @@ import { useGetData } from '@/hooks/useGetdata'
 import React, { useEffect, useState } from 'react'
 import { CollectionColumn} from './_table/CollectionColumn'
 import { toast } from '@/components/ui/use-toast'
+import { useRouter } from 'next/navigation'
 
 
 export type CollectionType = {
@@ -16,6 +17,7 @@ export type CollectionType = {
 export default function CollectionsPage() {
   const [collections, setCollections] = useState<CollectionType[] | undefined>(undefined)
   const [loading, setLoading] = useState<boolean>(false)
+  const router = useRouter()
 
   // const {data, loading, error} = useGetData<CollectionType[]>('/api/inventories/collections')
   useEffect(()=>{
@@ -45,10 +47,24 @@ export default function CollectionsPage() {
     }
     fetData()
   },[])
-
+  // Add 
+  const handleAddCollection = ()=>{
+    router.push('/dashboard/inventories/collections/add')
+  }
+  const handleUpdateCollection = (id: string)=>{
+    router.push('/dashboard/inventories/collections/'+id)
+  }
+  // Delete
   const handleDeleteCollection = async (IdsArray: string[])=>{
     //  There are two way to delete rows, 1: at DataTable component will task delete selected rows, 2: at Column component will task delete specific row
     // All will be converted to string ids array
+    if (IdsArray.length <= 0) {
+      toast({
+        variant: "destructive",
+        title: "There is no selected item",
+      })
+      return
+    }
      try {
      const res = await fetch('/api/inventories/collections', {
         method: "DELETE",
@@ -64,6 +80,7 @@ export default function CollectionsPage() {
         })
       }
       toast({
+        variant: 'sucess',
         title: "Successfully!",
       })
       const newCollections: (CollectionType[] | undefined) = collections?.filter(item=> !IdsArray.includes(item._id))
@@ -81,7 +98,12 @@ export default function CollectionsPage() {
     loading && <div>Loading</div>
     }
     {
-     collections && <DataTable columns={CollectionColumn({handleDeleteCollection})} data={collections} onDelete={handleDeleteCollection}/>
+     collections && <DataTable 
+     columns={CollectionColumn({handleDeleteCollection, handleUpdateCollection})} 
+     data={collections} 
+     onDelete={handleDeleteCollection}
+     onAdd={handleAddCollection}
+     />
     }
   </section>
   )

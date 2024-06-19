@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,16 +18,22 @@ import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import ImageUpload from "@/components/custom_ui/ImageUpload"
+import { CollectionType } from "@/app/(admin)/dashboard/inventories/collections/page"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
   desc: z.string().min(2).max(50),
   image: z.string().url({ message: "Invalid url" })
 })
-
-export default function Add_new_collection() {
+type Props = {
+    collection?: CollectionType
+}
+// Form reusable for update and add collection
+export default function CollectionForm({collection}: Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const { toast } = useToast()
+  const router = useRouter()
   // Get values were passed in context
   const value = useDashBoardContext()
   if (!value) return
@@ -37,25 +42,32 @@ export default function Add_new_collection() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      desc: "",
-      image: "",
+      title: collection ? collection.title : "",
+      desc: collection ? collection.desc : "",
+      image: collection ? collection.image : "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-   
+    const url = collection ? '/api/inventories/collections/'+ collection._id : '/api/inventories/collections'
     setLoading(true)
     try {
-      const res = await fetch('/api/inventories/collections',{
-        method: 'POST',
+      const res = await fetch(url,{
+        method: collection ? 'PATCH' : 'POST',
         body: JSON.stringify(values)
       })
+      if(!res.ok) {
+        toast({
+            variant: 'destructive',
+            title: collection ? "Can't update collection": "Can't add new collection",
+          })
+      }
       const data = await res.json()
       toast({
-        title: "You added new collection succesfully",
+        variant: 'sucess',
+        title: collection ? data.message: "You added new collection succesfully",
       })
-      form.reset()
+       collection? router.push("/dashboard/inventories/collections") : form.reset()
       setLoading(false)
     } catch (error) {
       console.log(error);
@@ -72,8 +84,6 @@ export default function Add_new_collection() {
     form.reset()
   }
   return (
-    <section className="min-h-screen md:min-h-fit px-3 md:px-5 py-4 md:py-6">
-      <div className="w-full lg:max-w-[50%]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -130,7 +140,7 @@ export default function Add_new_collection() {
               }
               className="mr-4 font-medium text-[16px]"
             >
-              Thêm mới
+              {collection ? "Cập Nhật" : "Thêm mới"}
             </Button>
             <Button
               onClick={handleResetForm}
@@ -146,7 +156,5 @@ export default function Add_new_collection() {
             </Button>
           </form>
         </Form>
-      </div>
-    </section>
   )
 }
