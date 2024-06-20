@@ -1,5 +1,5 @@
-"use client"
-import CategoryForm from "@/components/custom_ui/categories/CategoryForm"
+
+import CategoryForm from "@/components/custom_ui/CategoryForm"
 
 export default function AddNewCollection() {
   

@@ -1,14 +1,18 @@
 "use client"
-import { useEffect, useState } from "react"
 import { toast } from "@/components/ui/use-toast"
+import { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
 
-import { CategoryType } from "../page"
-import CategoryForm from "@/components/custom_ui/CategoryForm"
-export default function UpdateCategory({ params }: { params: { id: string } }) {
+import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import CollectionForm from "@/components/custom_ui/CollectionForm"
+import { DishType } from "../page"
+export default function UpdateDish({
+  params,
+}: {
+  params: { id: string }
+}) {
   const [loading, setLoading] = useState<boolean>(false)
-  const [category, setCategory] = useState<CategoryType | null>(null)
+  const [collection, setCollection] = useState<DishType | null>(null)
   const { id } = params
 
   // Get values were passed in context
@@ -21,7 +25,7 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/inventories/categories/" + id, {
+        const res = await fetch("/api/inventories/dishes/" + id, {
           method: "GET",
         })
 
@@ -31,14 +35,14 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
             title: "Can't get any data!",
           })
         }
-        const data = (await res.json()) as CategoryType
-        setCategory(data)
+        const data = (await res.json()) as DishType
+        setCollection(data)
         setLoading(false)
       } catch (error) {
         setLoading(false)
         toast({
           variant: "destructive",
-          title: "Something wrong with add new category!",
+          title: "Something wrong with add new collection!",
         })
       }
     }
@@ -49,13 +53,13 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
       <div className="w-full lg:max-w-[50%]">
         {loading && (
           <div className="w-full h-full flex items-center justify-center">
-            <FadeLoader 
-            color={sideBarColor ? sideBarColor : "#11cdef"}
-            loading={loading}
+            <FadeLoader
+              color={sideBarColor ? sideBarColor : "#11cdef"}
+              loading={loading}
             />
           </div>
         )}
-        {category && <CategoryForm category={category} />}
+        {/* {collection && <CollectionForm collection={collection} />} */}
       </div>
     </section>
   )

@@ -1,11 +1,11 @@
 "use client"
 import { toast } from "@/components/ui/use-toast"
 import { useEffect, useState } from "react"
-import CollectionForm from "@/components/custom_ui/collections/CollectionForm"
 import { FadeLoader } from "react-spinners"
 
 import { CollectionType } from "../page"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import CollectionForm from "@/components/custom_ui/CollectionForm"
 export default function UpdateCollection({
   params,
 }: {

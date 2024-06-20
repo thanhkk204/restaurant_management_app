@@ -26,11 +26,6 @@ const NavigateLink = [
     icons: <Salad width={20} />,
     title: "Categories"
   },
-  {
-    link: '/dashboard/inventories/add_new_category',
-    icons: <Salad width={20} />,
-    title: "New Category"
-  },
  
 ]
 

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const dishSchame = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true,
         unique: true
@@ -10,10 +10,12 @@ const dishSchame = new mongoose.Schema({
         type: Number,
         required: true
     },
-    image: {
+    image: [
+       {
         type: String,
         required: true
-    },
+       }
+    ],
     desc: {
         type: String,
     },
@@ -25,7 +27,7 @@ const dishSchame = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'category',
     },
-    collection_id: [
+    collection_ids: [
         {
             type: mongoose.SchemaTypes.ObjectId,
             ref: 'collection',
