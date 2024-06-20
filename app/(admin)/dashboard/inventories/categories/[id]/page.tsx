@@ -1,18 +1,14 @@
 "use client"
-import { toast } from "@/components/ui/use-toast"
 import { useEffect, useState } from "react"
-import CollectionForm from "@/components/custom_ui/collections/CollectionForm"
+import { toast } from "@/components/ui/use-toast"
+import CategoryForm from "@/components/custom_ui/categories/CategoryForm"
 import { FadeLoader } from "react-spinners"
-
-import { CollectionType } from "../page"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
-export default function UpdateCollection({
-  params,
-}: {
-  params: { id: string }
-}) {
+
+import { CategoryType } from "../page"
+export default function UpdateCategory({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState<boolean>(false)
-  const [collection, setCollection] = useState<CollectionType | null>(null)
+  const [category, setCategory] = useState<CategoryType | null>(null)
   const { id } = params
 
   // Get values were passed in context
@@ -25,7 +21,7 @@ export default function UpdateCollection({
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/inventories/collections/" + id, {
+        const res = await fetch("/api/inventories/categories/" + id, {
           method: "GET",
         })
 
@@ -35,14 +31,14 @@ export default function UpdateCollection({
             title: "Can't get any data!",
           })
         }
-        const data = (await res.json()) as CollectionType
-        setCollection(data)
+        const data = (await res.json()) as CategoryType
+        setCategory(data)
         setLoading(false)
       } catch (error) {
         setLoading(false)
         toast({
           variant: "destructive",
-          title: "Something wrong with add new collection!",
+          title: "Something wrong with add new category!",
         })
       }
     }
@@ -53,13 +49,13 @@ export default function UpdateCollection({
       <div className="w-full lg:max-w-[50%]">
         {loading && (
           <div className="w-full h-full flex items-center justify-center">
-            <FadeLoader
-              color={sideBarColor ? sideBarColor : "#11cdef"}
-              loading={loading}
+            <FadeLoader 
+            color={sideBarColor ? sideBarColor : "#11cdef"}
+            loading={loading}
             />
           </div>
         )}
-        {collection && <CollectionForm collection={collection} />}
+        {category && <CategoryForm category={category} />}
       </div>
     </section>
   )

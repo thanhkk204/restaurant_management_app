@@ -13,27 +13,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CollectionType } from "../page"
 import Image from "next/image"
+import { CategoryType } from "../page"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 type columProp = {
-  handleDeleteCollection: (idsArray: string[]) => void
-  handleUpdateCollection: (id: string) => void
+  handleDeleteCategory: (idsArray: string[]) => void
+  handleUpdateCategory: (id: string) => void
 }
 
-export const CollectionColumn = ({ 
-  handleDeleteCollection,
-  handleUpdateCollection
+export const CategoryColumn = ({ 
+  handleDeleteCategory,
+  handleUpdateCategory
  }: columProp) => {
   const handleDelete = (id: string) => {
-    // Convert specific id to array id to reusable handleDeleteCollection at parent component
+    // Convert specific id to array id to reusable handleDeleteCategory at parent component
     const IdsArray = [id]
-    handleDeleteCollection(IdsArray)
+    handleDeleteCategory(IdsArray)
   }
   // Columns to be returned
-  const columns: ColumnDef<CollectionType>[] = [
+  const columns: ColumnDef<CategoryType>[] = [
     {
       id: "select",
       header: ({ table }) => (
@@ -65,16 +65,6 @@ export const CollectionColumn = ({
       minSize: 200,
       maxSize:400,
       enableResizing: true
-    },
-    {
-      accessorKey: "image",
-      header: "Image",
-      cell: ({ row }) => {
-        return (
-          <Image src={row.original.image} width={50} height={50} alt="image" />
-        )
-      },
-      size: 200, //starting column size
     },
     {
       accessorKey: "desc",
@@ -128,7 +118,7 @@ export const CollectionColumn = ({
           </DialogContent>
         </Dialog>
         <Button
-        onClick={()=> handleUpdateCollection(row.original._id)}
+        onClick={()=> handleUpdateCategory(row.original._id)}
         >
         Sửa
         </Button>

@@ -1,38 +1,35 @@
 "use client"
-import React, { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { DataTable } from "@/components/paginationTable/DataTable"
+import React, { useEffect, useState } from "react"
 import { toast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
+import { CategoryColumn } from "./_table/CategoryColumn"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
-
-import { CollectionColumn } from "./_table/CollectionColumn"
 import { FadeLoader } from "react-spinners"
 
-export type CollectionType = {
+export type CategoryType = {
   _id: string
   title: string
-  image: string
   desc: string
   isShow: boolean
 }
-export default function CollectionsPage() {
-  const [collections, setCollections] = useState<CollectionType[] | undefined>(
+export default function CategoryPage() {
+  const [categories, setCategories] = useState<CategoryType[] | undefined>(
     undefined
   )
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
-  // Get values were passed in context
-  const value = useDashBoardContext()
-  if (!value) return
-  const { sideBarColor } = value
+    // Get values were passed in context
+    const value = useDashBoardContext()
+    if (!value) return
+    const { sideBarColor } = value
 
-  // const {data, loading, error} = useGetData<CollectionType[]>('/api/inventories/collections')
   useEffect(() => {
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/inventories/collections", {
+        const res = await fetch("/api/inventories/categories", {
           method: "GET",
         })
 
@@ -42,28 +39,30 @@ export default function CollectionsPage() {
             title: "Can't get any data!",
           })
         }
-        const data: CollectionType[] = await res.json()
-        setCollections(data)
+        const data: CategoryType[] = await res.json()
+        setCategories(data)
         setLoading(false)
       } catch (error) {
+        console.log(error)
+
         setLoading(false)
         toast({
           variant: "destructive",
-          title: "Something wrong with get all collection!",
+          title: "Something wrong with get all category!",
         })
       }
     }
     fetData()
   }, [])
   // Add
-  const handleAddCollection = () => {
-    router.push("/dashboard/inventories/collections/add")
+  const handleAddCategory = () => {
+    router.push("/dashboard/inventories/categories/add")
   }
-  const handleUpdateCollection = (id: string) => {
-    router.push("/dashboard/inventories/collections/" + id)
+  const handleUpdateCategory = (id: string) => {
+    router.push("/dashboard/inventories/categories/" + id)
   }
   // Delete
-  const handleDeleteCollection = async (IdsArray: string[]) => {
+  const handleDeleteCategory = async (IdsArray: string[]) => {
     //  There are two way to delete rows, 1: at DataTable component will task delete selected rows, 2: at Column component will task delete specific row
     // All will be converted to string ids array
     if (IdsArray.length <= 0) {
@@ -74,7 +73,7 @@ export default function CollectionsPage() {
       return
     }
     try {
-      const res = await fetch("/api/inventories/collections", {
+      const res = await fetch("/api/inventories/categories", {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -84,21 +83,21 @@ export default function CollectionsPage() {
       if (!res.ok) {
         toast({
           variant: "destructive",
-          title: "Can't delete Collection",
+          title: "Can't delete Category",
         })
       }
       toast({
         variant: "sucess",
         title: "Successfully!",
       })
-      const newCollections: CollectionType[] | undefined = collections?.filter(
+      const newCategories: CategoryType[] | undefined = categories?.filter(
         (item) => !IdsArray.includes(item._id)
       )
-      setCollections(newCollections)
+      setCategories(newCategories)
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Something wrong with delete Collections",
+        title: "Something wrong with delete categories",
       })
     }
   }
@@ -112,15 +111,15 @@ export default function CollectionsPage() {
           />
         </div>
       )}
-      {collections && (
+      {categories && (
         <DataTable
-          columns={CollectionColumn({
-            handleDeleteCollection,
-            handleUpdateCollection,
+          columns={CategoryColumn({
+            handleDeleteCategory,
+            handleUpdateCategory,
           })}
-          data={collections}
-          onDelete={handleDeleteCollection}
-          onAdd={handleAddCollection}
+          data={categories}
+          onDelete={handleDeleteCategory}
+          onAdd={handleAddCategory}
         />
       )}
     </section>

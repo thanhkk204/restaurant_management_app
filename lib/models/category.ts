@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const categorySchame = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true,
-        unique: true
-    },
+   title: {
+    type: String,
+    required: true,
+    unique: true
+   },
     desc: {
         type: String,
     },

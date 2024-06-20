@@ -6,8 +6,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     const {id} = params
     const body = await req.json()
     console.log(body);
-    if(!id) return NextResponse.json("There is no Id to update collection", {status: 500})
-    if(!body) return NextResponse.json("There is no body to update collection", {status: 500})
+    if(!id) return NextResponse.json({message: "There is no Id to update collection"}, {status: 500})
+    if(!body) return NextResponse.json({message: "There is no body to update collection"}, {status: 500})
 
     await connectToDB()
    try {
@@ -15,12 +15,12 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
    return NextResponse.json({message: 'Update Successfully!', newCollection}, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)
-    return new NextResponse("Internal Server Error", {status: 500})
+    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
    }
 }
 export async function GET(req: NextRequest, { params }: { params: { id: string } }){
     const {id} = params
-    if(!id) return NextResponse.json("There is no Id to get detail collection", {status: 500})
+    if(!id) return NextResponse.json({message: "There is no Id to get detail collection"}, {status: 500})
 
     await connectToDB()
    try {
@@ -28,6 +28,6 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
    return NextResponse.json(newCollection, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)
-    return new NextResponse("Internal Server Error", {status: 500})
+    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
    }
 }

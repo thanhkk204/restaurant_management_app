@@ -89,22 +89,14 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
   })
   const hadleDeleteSelectedRows = async (e: any): Promise<void> => {
-    e.preventDefault()
     const rows: any = table.getFilteredSelectedRowModel().rows
     const IdsArray = rows.map((item: any) => item.original._id)
     console.log(IdsArray)
-
     onDelete(IdsArray)
+    table.resetRowSelection();
   }
 
-  const handleAddRows = async (e: any): Promise<void> => {
-    e.preventDefault()
-    const rows: any = table.getFilteredSelectedRowModel().rows
-    const IdsArray = rows.map((item: any) => item.original._id)
-    console.log(IdsArray)
-
-    onAdd()
-  }
+  
 
   return (
     <div>
@@ -168,11 +160,11 @@ export function DataTable<TData, TValue>({
                     Đóng
                   </Button>
                 </DialogClose>
-                <DialogClose>
+                <DialogClose asChild>
                   <Button
                     onClick={(e) => hadleDeleteSelectedRows(e)}
                     className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
-              text-white dark:text-white hover:scale-90 transition-all ease-in"
+                 text-white dark:text-white hover:scale-90 transition-all ease-in"
                   >
                     Xóa
                   </Button>

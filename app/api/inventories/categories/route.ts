@@ -8,14 +8,14 @@ export const POST = async (req: NextRequest) => {
    try {
     const {title, desc} = await req.json()
     
-    if(!title) return new NextResponse("All data are required", {status: 401})
+    if(!title) return NextResponse.json({message: "All data are required"}, {status: 401})
     const existedData = await category.findOne({title})
-    if(existedData) return new NextResponse("Category is available", {status: 401})
-   const newCategory = await category.create({title: title, desc: desc})
-   return NextResponse.json(JSON.stringify(newCategory), {status: 201})
+    if(existedData) return NextResponse.json({message: "Category is available"}, {status: 401})
+   const Category = await category.create({title: title, desc: desc})
+   return NextResponse.json(Category, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)
-    return NextResponse.json("Internal Server Error", {status: 500})
+    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
    }
 }
 
@@ -23,9 +23,21 @@ export const GET = async (req: NextRequest) => {
    await connectToDB()
    try {
    const categories: any= await category.find({})
-   return new NextResponse(categories, {status: 201})
+   return NextResponse.json(categories, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)
-    return NextResponse.json("Internal Server Error", {status: 500})
+    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
+   }
+}
+
+export const DELETE = async (req: NextRequest) => {
+   await connectToDB()
+   try {
+      const IdsArray = await req.json()
+   const categories: any = await category.deleteMany({ _id: {$in: IdsArray}})
+   return NextResponse.json(categories, {status: 201})
+   } catch (error) {
+    console.log("Inventories_Error", error)
+    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
    }
 }
