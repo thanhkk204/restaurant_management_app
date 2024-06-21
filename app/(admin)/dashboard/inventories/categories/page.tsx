@@ -104,7 +104,7 @@ export default function CategoryPage() {
   return (
     <section>
       {loading && (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <FadeLoader
             color={sideBarColor ? sideBarColor : "#11cdef"}
             loading={loading}

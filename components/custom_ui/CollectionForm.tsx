@@ -148,8 +148,9 @@ export default function CollectionForm({ collection }: Props) {
             <FormItem>
               <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
                 <ImageUpload
-                  value={field.value ? [field.value] : []}
-                  onChange={(value) => field.onChange(value)}
+                  values={field.value ? [field.value] : []}
+                  onChange={(url) => field.onChange(url)}
+                  onRemove={(url)=>field.onChange('')}
                 />
               </FormControl>
               <FormMessage />

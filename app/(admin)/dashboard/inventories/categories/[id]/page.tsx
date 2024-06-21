@@ -48,7 +48,7 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
     <section className="min-h-screen md:min-h-fit px-3 md:px-5 py-4 md:py-6">
       <div className="w-full lg:max-w-[50%]">
         {loading && (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
             <FadeLoader 
             color={sideBarColor ? sideBarColor : "#11cdef"}
             loading={loading}

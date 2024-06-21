@@ -29,9 +29,15 @@ export default function MultiSelect({
 }: Props) {
   const [open, setOpen] = useState<boolean>(false)
   const [inputValue, setInputValue] = useState('')
-  console.log(inputValue);
+  
+  // Filter selected item which is in collections
   let selectedCollection: CollectionType[] = []
   selectedCollection = collections?.filter(collection => values.includes(collection._id)) as CollectionType[]
+  // Sort by index of where item is in values array
+  if (selectedCollection) {
+    selectedCollection.sort((a,b)=> values.indexOf(a._id) - values.indexOf(b._id))
+  }
+  
   const unSelectedCollection = collections?.filter(collection => !values.includes(collection._id))
   
   return (

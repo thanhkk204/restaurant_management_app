@@ -24,6 +24,9 @@ import { DishType } from "@/app/(admin)/dashboard/inventories/page"
 import MultiSelect from "./MultiSelect"
 import collection from "@/lib/models/collection"
 import { CollectionType } from "@/app/(admin)/dashboard/inventories/collections/page"
+import OneSelect from "./OneSelect"
+import { CategoryType } from "@/app/(admin)/dashboard/inventories/categories/page"
+import { FadeLoader } from "react-spinners"
 
 const formSchema = z.object({
   title: z.string().min(2).max(50),
@@ -40,6 +43,7 @@ type Props = {
 export default function DishForm({ dish }: Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const [collections, setCollections] = useState<CollectionType[] | null>(null)
+  const [categories, setCategories] = useState<CategoryType[] | null>(null)
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
@@ -58,8 +62,9 @@ export default function DishForm({ dish }: Props) {
       collection_ids: dish ? dish.collection_ids : [],
     },
   })
+  // Fetch categories and collections for disd form
   useEffect(() => {
-    const fetData = async () => {
+    const fetCollecttions = async () => {
       setLoading(true)
       try {
         const res = await fetch("/api/inventories/collections", {
@@ -83,200 +88,248 @@ export default function DishForm({ dish }: Props) {
         })
       }
     }
-    fetData()
+    fetCollecttions()
+    const fetCategories = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch("/api/inventories/categories", {
+          method: "GET",
+        })
+
+        if (!res.ok) {
+          toast({
+            variant: "destructive",
+            title: "Can't get any data!",
+          })
+        }
+        const data: CategoryType[] = await res.json()
+        setCategories(data)
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+
+        setLoading(false)
+        toast({
+          variant: "destructive",
+          title: "Something wrong with get all category!",
+        })
+      }
+    }
+    fetCategories()
   }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const url = dish
-      ? "/api/inventories/dishs/" + dish._id
-      : "/api/inventories/dishs"
-    setLoading(true)
-    try {
-      const res = await fetch(url, {
-        method: dish ? "PATCH" : "POST",
-        body: JSON.stringify(values),
-      })
-      if (!res.ok) {
-        toast({
-          variant: "destructive",
-          title: dish ? "Can't update dish" : "Can't add new dish",
-        })
-      }
-      const data = await res.json()
-      if (res.status === 500) {
-        toast({
-          variant: "destructive",
-          title: data.message,
-        })
-        setLoading(false)
-        return
-      }
+    // const url = dish
+    //   ? "/api/inventories/dishs/" + dish._id
+    //   : "/api/inventories/dishs"
+    // setLoading(true)
+    // try {
+    //   const res = await fetch(url, {
+    //     method: dish ? "PATCH" : "POST",
+    //     body: JSON.stringify(values),
+    //   })
+    //   if (!res.ok) {
+    //     toast({
+    //       variant: "destructive",
+    //       title: dish ? "Can't update dish" : "Can't add new dish",
+    //     })
+    //   }
+    //   const data = await res.json()
+    //   if (res.status === 500) {
+    //     toast({
+    //       variant: "destructive",
+    //       title: data.message,
+    //     })
+    //     setLoading(false)
+    //     return
+    //   }
 
-      if (res.status === 401) {
-        toast({
-          variant: "destructive",
-          title: data.message,
-        })
-        setLoading(false)
-        return
-      }
-      toast({
-        variant: "sucess",
-        title: dish ? data.message : "You added new dish succesfully",
-      })
-      dish ? router.push("/dashboard/inventories/dishs") : form.reset()
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
+    //   if (res.status === 401) {
+    //     toast({
+    //       variant: "destructive",
+    //       title: data.message,
+    //     })
+    //     setLoading(false)
+    //     return
+    //   }
+    //   toast({
+    //     variant: "sucess",
+    //     title: dish ? data.message : "You added new dish succesfully",
+    //   })
+    //   dish ? router.push("/dashboard/inventories/dishs") : form.reset()
+    //   setLoading(false)
+    // } catch (error) {
+    //   console.log(error)
 
-      setLoading(false)
-      toast({
-        variant: "destructive",
-        title: "Something wrong with add new dish!",
-      })
-    }
+    //   setLoading(false)
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Something wrong with add new dish!",
+    //   })
+    // }
+    console.log(values)
   }
   function handleResetForm(e: any) {
     e.preventDefault()
     form.reset()
   }
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                  <Input placeholder="Dish's name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )
-          }}
-        />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                  <Input type="number" placeholder="Dish's name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )
-          }}
-        />
-        <div className="w-full flex flex-col md:flex-row justify-between gap-5">
-          <FormField
-            control={form.control}
-            name="category_id"
-            render={({ field }) => {
-              return (
-                <FormItem className="flex-1">
-                  <FormLabel>Category</FormLabel>
+    <div>
+      {
+        loading ? 
+        <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
+          <FadeLoader
+              color={sideBarColor ? sideBarColor : "#11cdef"}
+              loading={loading}
+            />
+        </div>
+         :
+         (<Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="title"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Title</FormLabel>
+                    <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
+                      <Input placeholder="Dish's name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel>Price</FormLabel>
+                    <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
+                      <Input type="number" placeholder="Dish's name" {...field} onChange={e=> field.onChange(parseFloat(e.target.value))} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
+            />
+            <div className="w-full flex flex-col md:flex-row justify-between gap-5">
+              <FormField
+                control={form.control}
+                name="category_id"
+                render={({ field }) => {
+                  return (
+                    <FormItem className="flex-1">
+                      <FormLabel>Category</FormLabel>
+                      <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
+                      <OneSelect 
+                       onChange={(selectedItem) =>
+                        field.onChange(selectedItem)
+                      }
+                      placehoder="Select category"
+                      values={field.value}
+                      categories={categories}
+                      />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+              <FormField
+                control={form.control}
+                name="collection_ids"
+                render={({ field }) => {
+                  return (
+                    <FormItem className="flex-1">
+                      <FormLabel>Collections</FormLabel>
+                      <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
+                        <MultiSelect
+                          onChange={(selectedItem) =>
+                            field.onChange([...field.value, selectedItem])
+                          }
+                          onRemove={(removedItem) =>
+                            field.onChange(
+                              field.value.filter((item) => item !== removedItem)
+                            )
+                          }
+                          placehoder="Select collection"
+                          values={field.value}
+                          collections={collections}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )
+                }}
+              />
+            </div>
+            <FormField
+              control={form.control}
+              name="desc"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
                   <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                    <Input type="text" placeholder="Dish's name" {...field} />
+                    <Textarea {...field} placeholder="Description" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="collection_ids"
-            render={({ field }) => {
-              return (
-                <FormItem className="flex-1">
-                  <FormLabel>Collections</FormLabel>
+              )}
+            />
+    
+            <FormField
+              control={form.control}
+              name="image"
+              render={({ field }) => (
+                <FormItem>
                   <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                    <MultiSelect
-                      onChange={(selectedItem) =>
-                        field.onChange([...field.value, selectedItem])
-                      }
-                      onRemove={(removedItem) =>
-                        field.onChange(
-                          field.value.filter((item) => item !== removedItem)
-                        )
-                      }
-                      placehoder="Select collection"
+                    <ImageUpload
                       values={field.value}
-                      collections={collections}
+                      onChange={(url) => field.onChange([...field.value, url])}
+                      onRemove={(url)=>field.onChange([...field.value.filter(item=> item !== url)])}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )
-            }}
-          />
-        </div>
-        <FormField
-          control={form.control}
-          name="desc"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Description</FormLabel>
-              <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                <Textarea {...field} placeholder="Description" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                <ImageUpload
-                  value={field.value ? field.value : []}
-                  onChange={(value) => field.onChange(value)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="flex items-center">
-          <Button
-            type="submit"
-            className="mr-4 font-medium text-[16px]"
-            disabled={loading}
-          >
-            {loading ? (
-              <ClipLoader
-                color={sideBarColor ? sideBarColor : "#11cdef"}
-                loading={loading}
-                size={35}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-              />
-            ) : dish ? (
-              "Cập Nhật"
-            ) : (
-              "Thêm mới"
-            )}
-          </Button>
-
-          <Button
-            onClick={handleResetForm}
-            type="button"
-            className="font-medium text-[16px]"
-          >
-            Làm mới
-          </Button>
-        </div>
-      </form>
-    </Form>
+              )}
+            />
+    
+            <div className="flex items-center">
+              <Button
+                type="submit"
+                className="mr-4 font-medium text-[16px]"
+                disabled={loading}
+              >
+                {loading ? (
+                  <ClipLoader
+                    color={sideBarColor ? sideBarColor : "#11cdef"}
+                    loading={loading}
+                    size={35}
+                    aria-label="Loading Spinner"
+                    data-testid="loader"
+                  />
+                ) : dish ? (
+                  "Cập Nhật"
+                ) : (
+                  "Thêm mới"
+                )}
+              </Button>
+    
+              <Button
+                onClick={handleResetForm}
+                type="button"
+                className="font-medium text-[16px]"
+              >
+                Làm mới
+              </Button>
+            </div>
+          </form>
+        </Form>)
+      }
+    </div>
   )
 }
