@@ -108,15 +108,8 @@ export default function DnDPage() {
     }
     fetData()
   }, [tableTrigger])
-  console.log('tables', tables)
-  console.log('numberOfTable', numberOfTable)
-  // Get id array for sortableContext items
-  const locationsIds = useMemo(
-    () => locations?.map((location) => location._id),
-    [locations]
-  )
 // Update for location orders
-  const updateForLocationOrder = async (newArray: LocationType[])=>{
+  const updateForLocationOrder = (newArray: LocationType[])=>{
     const fetData = async () => {
       setLoading(true)
       try {
@@ -131,10 +124,7 @@ export default function DnDPage() {
             title: "Can't update location orders",
           })
         }
-        const data = await res.json()
-        // setLocations(data.locations)
-        // setNumberOfLocation(data.numberOfLocation)
-        // setLoading(false)
+        // After updating location order trigger useState for fetching newest data
         setLocationsTrigger(!locationsTrigger)
       } catch (error) {
         setLoading(false)
@@ -146,17 +136,110 @@ export default function DnDPage() {
     }
     fetData()
   }
+// Update for table orders
+  const updateForTableOrder = (newArray: TableType[])=>{
+    const fetData = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch("/api/reservations/tables", {
+          method: "PUT",
+          body: JSON.stringify({newArray: newArray})
+        })
 
+        if (!res.ok) {
+          toast({
+            variant: "destructive",
+            title: "Can't update location orders",
+          })
+        }
+        // After updating table order trigger useState for fetching newest data
+        // setTableTrigger(!tableTrigger)
+      } catch (error) {
+        setLoading(false)
+        toast({
+          variant: "destructive",
+          title: "Something wrong with update Location!",
+        })
+      }
+    }
+    fetData()
+  }
+// Delete location
+const deleteLocation = (_id: string)=>{
+  const fetData = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch("/api/reservations/locations/"+_id, {
+        method: "DELETE",
+      })
+
+      if (!res.ok) {
+        toast({
+          variant: "destructive",
+          title: "Can't delete this location location orders",
+        })
+      }
+      const data = await res.json()
+      toast({
+        variant: "sucess",
+        title: data.message,
+      })
+// After updating table order trigger useState for fetching newest data
+      setLocationsTrigger(!locationsTrigger)
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with delete Location!",
+      })
+    }
+  }
+  fetData()
+}
+// Delete table
+const deleteTable = (_id: string)=>{
+  const fetData = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch("/api/reservations/tables/"+_id, {
+        method: "DELETE",
+      })
+
+      if (!res.ok) {
+        toast({
+          variant: "destructive",
+          title: "Can't delete this location location orders",
+        })
+      }
+// After updating table order trigger useState for fetching newest data
+      setTableTrigger(!tableTrigger)
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with delete Location!",
+      })
+    }
+  }
+  fetData()
+}
+  
+// Get id array for sortableContext items
+   const locationsIds = useMemo(
+    () => locations?.map((location) => location._id),
+    [locations]
+  )
   const sensors = useSensors(
     useSensor(MouseSensor, {
-      // Require the mouse to move by 10 pixels before activating
+// Require the mouse to move by 10 pixels before activating
       activationConstraint: {
         distance: 10,
       },
     })
   )
 
-  // const updateIndexOfLocation = (newIndex, )
 
   return (
     <section className="bg-light-bg_2 dark:bg-dark-bg_2 px-3 lg:px-5 py-4 lg:py-6 rounded-md min-h-fit w-full">
@@ -168,7 +251,7 @@ export default function DnDPage() {
         onDragStart={handleDragStart}
       >
         {locations && locationsIds && tables && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-11 lg:gap-14 ">
             <SortableContext items={locationsIds} strategy={rectSortingStrategy}>
               {locations.map((location) => {
                 return (
@@ -179,6 +262,8 @@ export default function DnDPage() {
                       (item) => item.location_id === location._id
                     )}
                     addNewTable={addNewTable}
+                    deleteLocation={deleteLocation}
+                    deleteTable={deleteTable}
                   />
                 )
               })}
@@ -203,9 +288,17 @@ export default function DnDPage() {
                     (item) => item.location_id === activedLocation._id
                   )}
                   addNewTable={addNewTable}
+                  deleteLocation={deleteLocation}
+                  deleteTable={deleteTable}
                 ></Location>
               )}
-              {activeTable && <Item table={activeTable}></Item>}
+              {
+              activeTable && 
+              <Item 
+              table={activeTable} 
+              deleteTable={deleteTable}
+              />
+              }
             </DragOverlay>,
             document.body
           )}
@@ -242,7 +335,10 @@ export default function DnDPage() {
         if (tables[oldIndex].location_id !== tables[newIndex].location_id) {
           tables[oldIndex].location_id = tables[newIndex].location_id
         }
-        return arrayMove(tables, oldIndex, newIndex)
+        const newTableArray = arrayMove(tables, oldIndex, newIndex)
+        // After get new table array by arrayMove method, updata database based on newArray
+        updateForTableOrder(newTableArray)
+        return newTableArray
       })
     }
     // Sisuation 2 table over column
@@ -255,6 +351,8 @@ export default function DnDPage() {
         const oldIndex = tables.findIndex((table) => table._id === active.id)
         const idLocation = over.data.current?.location._id
         tables[oldIndex].location_id = idLocation
+        // After get new table array, updata database based on newArray
+        updateForTableOrder(tables)
         return [...tables]
       })
     }
@@ -275,11 +373,12 @@ export default function DnDPage() {
           (location) => location._id === over.id
         )
         const newArray = arrayMove(locations, oldIndex, newIndex)
-        console.log("newArray", newArray)
+        // After get new location array by arrayMove method, updata database based on newArray
         updateForLocationOrder(newArray)
         return newArray
       })
   }
+  // Add new Location
   function addNewLocation() {
     const addLocation = async () => {
       try {
@@ -289,7 +388,7 @@ export default function DnDPage() {
         })
 
         if (!res.ok) {
-          toast({
+         return toast({
             variant: "destructive",
             title: "Can't get any data!",
           })
@@ -301,7 +400,6 @@ export default function DnDPage() {
           title: data.message,
         })
       } catch (error) {
-        console.log(error)
         toast({
           variant: "destructive",
           title: "Something wrong with get all dishes!",
@@ -310,6 +408,7 @@ export default function DnDPage() {
     }
     addLocation()
   }
+  // Add new Table
   function addNewTable(location_id: string) {
     const addTable = async () => {
       try {
@@ -319,12 +418,18 @@ export default function DnDPage() {
         })
 
         if (!res.ok) {
-          toast({
+          return toast({
             variant: "destructive",
             title: "Can't add table",
           })
         }
         const data = await res.json()
+        if(res.status === 500){
+         return toast({
+            variant: "destructive",
+            title: data.message,
+          })
+        }
         setTableTrigger(!tableTrigger)
         toast({
           variant: "sucess",

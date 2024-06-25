@@ -8,6 +8,8 @@ export const POST = async (req: NextRequest) => {
    await connectToDB()
    try {
     const {location_id, order} = await req.json()
+    console.log(location_id, order);
+    
     if(!location_id || !order) return NextResponse.json({message: "All data are required"}, {status: 401})
     const newTable = await table.create({order: order, location_id: location_id})
    return NextResponse.json({newTable, message: 'Succussfully!'}, {status: 201})
@@ -21,7 +23,11 @@ export const GET = async (req: NextRequest) => {
    await connectToDB()
    try {
    const tables = await table.find({}).sort({ order: 1 }) as TableType[]
-   const numberOfTable: number = await table.find().countDocuments() + 1
+   const orderNumberTableMax = await table.findOne().sort({ order: -1 }) as TableType ;
+   let numberOfTable: number
+   // get currently largest order field to create new table
+   orderNumberTableMax ? numberOfTable = orderNumberTableMax.order + 1 : numberOfTable = 1
+
    return NextResponse.json({tables, numberOfTable }, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)
@@ -29,17 +35,19 @@ export const GET = async (req: NextRequest) => {
    }
 }
 
-export const DELETE = async (req: NextRequest) => {
-   await connectToDB()
-   try {
-      const IdsArray = await req.json()
-   const tables: any = await table.deleteMany({ _id: {$in: IdsArray}})
-   return NextResponse.json({tables, message: "Successfully!"}, {status: 201})
-   } catch (error) {
-    console.log("Inventories_Error", error)
-    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
-   }
-}
+// export const DELETE = async (req: NextRequest) => {
+//    await connectToDB()
+//    try {
+//       const IdsArray = await req.json()
+//    const tables: any = await table.deleteMany({ _id: {$in: IdsArray}})
+//    return NextResponse.json({tables, message: "Successfully!"}, {status: 201})
+//    } catch (error) {
+//     console.log("Inventories_Error", error)
+//     return NextResponse.json({message: "Internal Server Error"}, {status: 500})
+//    }
+// }
+
+// For update table order
 export const PUT = async (req: NextRequest)=>{
    const {newArray} = await req.json()
    await connectToDB()
@@ -56,5 +64,5 @@ export const PUT = async (req: NextRequest)=>{
 }
 
 const updateFornewTable = async (item: TableType, index: number) =>{
-   await table.findByIdAndUpdate({_id: item._id}, {order: index})
+   await table.findByIdAndUpdate({_id: item._id}, {order: index, location_id: item.location_id})
 }

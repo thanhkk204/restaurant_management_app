@@ -21,7 +21,9 @@ export const GET = async (req: NextRequest) => {
    await connectToDB()
    try {
    const locations = await location.find({}).sort({ order: 1 }) as LocationType[]
-   const numberOfLocation: number = await location.find().countDocuments() + 1
+   const orderNumberLocationMax = await location.findOne().sort({ order: -1 }) as LocationType
+   let numberOfLocation: number;
+   orderNumberLocationMax ? numberOfLocation = orderNumberLocationMax.order + 1 : numberOfLocation = 1
    return NextResponse.json({locations, numberOfLocation }, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)
@@ -29,17 +31,19 @@ export const GET = async (req: NextRequest) => {
    }
 }
 
-export const DELETE = async (req: NextRequest) => {
-   await connectToDB()
-   try {
-      const IdsArray = await req.json()
-   const locations: any = await location.deleteMany({ _id: {$in: IdsArray}})
-   return NextResponse.json({locations, message: "Successfully!"}, {status: 201})
-   } catch (error) {
-    console.log("Inventories_Error", error)
-    return NextResponse.json({message: "Internal Server Error"}, {status: 500})
-   }
-}
+// export const DELETE = async (req: NextRequest) => {
+//    await connectToDB()
+//    try {
+//       const IdsArray = await req.json()
+//    const locations: any = await location.deleteMany({ _id: {$in: IdsArray}})
+//    return NextResponse.json({locations, message: "Successfully!"}, {status: 201})
+//    } catch (error) {
+//     console.log("Inventories_Error", error)
+//     return NextResponse.json({message: "Internal Server Error"}, {status: 500})
+//    }
+// }
+
+// For update location order
 export const PUT = async (req: NextRequest)=>{
    const {newArray} = await req.json()
    await connectToDB()
