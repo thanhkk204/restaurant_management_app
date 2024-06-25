@@ -17,10 +17,9 @@ const {
    attributes,
    isDragging
   } = useSortable({
-    id: table.id,
+    id: table._id,
     data: {
       type: "table",
-      location_id: table.location_id,
       table
     },
   })
@@ -36,7 +35,7 @@ const {
     {...listeners}
     >
     <div className='min-w-[80px] min-h-[80px] rounded-md bg-light-bg_2 dark:bg-dark-bg_2 flex items-center justify-center truncate px-4 py-3 opacity-45 text-light-text dark:text-dark-text'>
-      <button onClick={()=> alert('thanh')}>{table.name}</button>
+      <button onClick={()=> alert('thanh')}>{table.order}</button>
     </div>
     </div>
   )
@@ -48,7 +47,7 @@ const {
     {...listeners}
     >
     <div className='min-w-[80px] min-h-[80px] rounded-md bg-light-bg_2 dark:bg-dark-bg_2 flex items-center justify-center truncate px-4 py-3 text-light-text dark:text-dark-text'>
-      <button onClick={()=> alert('thanh')}>{table.name}</button>
+      <button onClick={()=> alert('thanh')}>{table.order}</button>
     </div>
     </div>
   )
