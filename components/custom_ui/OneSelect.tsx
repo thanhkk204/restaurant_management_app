@@ -13,20 +13,21 @@ type Props = {
     onChange: (value: string) => void
     categories: CategoryType[] | null
     placehoder: string
-    values: string
+    value: string
 }
 
 export default function OneSelect({
     onChange,
     categories,
     placehoder,
-    values
+    value
 }:Props) {
   return (
     <Select
      onValueChange={(value) => {
        onChange(value)
       }}
+      defaultValue={value}
     >
     <SelectTrigger className="w-full bg-light-bg_2 dark:bg-dark-bg_2 focus:ring-1">
       <SelectValue placeholder={placehoder} />

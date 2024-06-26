@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -15,22 +14,28 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import { DishType } from "../page"
+import { CategoryType } from "../categories/page"
+import { CollectionType } from "../collections/page"
+import { Badge } from "@/components/ui/badge"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 type columProp = {
-  handleDeleteCollection: (idsArray: string[]) => void
-  handleUpdateCollection: (id: string) => void
+  handleDeleteDishes: (idsArray: string[]) => void
+  handleUpdateDish: (id: string) => void
+  categories: CategoryType[] | null
+  collections: CollectionType[] | null
 }
-
 export const DishColumn = ({ 
-  handleDeleteCollection,
-  handleUpdateCollection
+  handleDeleteDishes,
+  handleUpdateDish,
+  categories,
+  collections
  }: columProp) => {
   const handleDelete = (id: string) => {
-    // Convert specific id to array id to reusable handleDeleteCollection at parent component
+    // Convert specific id to array id to reusable handleDeleteDishes at parent component
     const IdsArray = [id]
-    handleDeleteCollection(IdsArray)
+    handleDeleteDishes(IdsArray)
   }
   // Columns to be returned
   const columns: ColumnDef<DishType>[] = [
@@ -61,7 +66,7 @@ export const DishColumn = ({
     {
       accessorKey: "title",
       header: "Title",
-      size: 300, //starting column size
+      size: 200, //starting column size
       minSize: 200,
       maxSize:400,
       enableResizing: true
@@ -86,9 +91,41 @@ export const DishColumn = ({
     {
       accessorKey: "desc",
       header: "Desc",
-      size: 400, //starting column size
-      minSize: 300,
+      size: 200, //starting column size
+      minSize: 200,
       maxSize:600
+    },
+    {
+      accessorKey: "category_id",
+      header: "Category",
+      cell: ({ row }) => {
+        const category = categories?.find(item => item._id === row.original.category_id) as CategoryType
+        return (
+         <div>
+           {category && <Badge variant="outline">{category.title}</Badge>}
+         </div>
+        )
+      },
+      size: 150, //starting column size
+    },
+    {
+      accessorKey: "collection_ids",
+      header: "Collections",
+      cell: ({ row }) => {
+        const collectionList = collections?.filter(item => row.original.collection_ids.includes(item._id)) as CollectionType[]
+        console.log(collectionList);
+        
+        return (
+          <div className="flex flex-wrap gap-1">
+            {
+             collectionList && collectionList.map(item=>(
+                <Badge variant="outline">{item.title}</Badge>
+              ))
+            }
+          </div>
+        )
+      },
+      size: 200, //starting column size
     },
     {
       accessorKey: "isShow",
@@ -98,7 +135,7 @@ export const DishColumn = ({
     },
     {
       id: "features",
-      header: ({ table }) => <div></div>,
+      header: "Features",
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-5">
         <Dialog>
@@ -135,7 +172,7 @@ export const DishColumn = ({
           </DialogContent>
         </Dialog>
         <Button
-        onClick={()=> handleUpdateCollection(row.original._id)}
+        onClick={()=> handleUpdateDish(row.original._id)}
         >
         Sửa
         </Button>

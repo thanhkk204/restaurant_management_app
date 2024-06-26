@@ -1,4 +1,6 @@
+import { DishType } from "@/app/(admin)/dashboard/inventories/page";
 import category from "@/lib/models/category";
+import dish from "@/lib/models/dish";
 import { connectToDB } from "@/lib/mongoDB";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -33,7 +35,13 @@ export const GET = async (req: NextRequest) => {
 export const DELETE = async (req: NextRequest) => {
    await connectToDB()
    try {
-      const IdsArray = await req.json()
+   const IdsArray = await req.json()
+   // Find all dishes related to category must be deleted
+   // const dishesForUpdate = dish.find({category_id: {$in: IdsArray}});
+   // (await dishesForUpdate).map(item=>{
+   //    item.category_id = ""
+   //    return item.save()
+   // })
    const categories: any = await category.deleteMany({ _id: {$in: IdsArray}})
    return NextResponse.json(categories, {status: 201})
    } catch (error) {

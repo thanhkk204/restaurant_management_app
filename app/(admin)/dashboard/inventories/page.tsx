@@ -7,6 +7,8 @@ import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
 
 import { FadeLoader } from "react-spinners"
 import { DishColumn } from "./_table/DishColumn"
+import { CategoryType } from "./categories/page"
+import { CollectionType } from "./collections/page"
 
 export type DishType = {
   _id: string,
@@ -19,9 +21,9 @@ export type DishType = {
   collection_ids: string[]
 }
 export default function DishPage() {
-  const [dishes, setDishes] = useState<DishType[] | undefined>(
-    undefined
-  )
+  const [dishes, setDishes] = useState<DishType[] | undefined>(undefined)
+  const [collections, setCollections] = useState<CollectionType[] | null>(null)
+  const [categories, setCategories] = useState<CategoryType[] | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
@@ -29,8 +31,8 @@ export default function DishPage() {
   const value = useDashBoardContext()
   if (!value) return
   const { sideBarColor } = value
+   console.log(dishes);
 
-  // const {data, loading, error} = useGetData<DishType[]>('/api/inventories/dishes')
   useEffect(() => {
     const fetData = async () => {
       setLoading(true)
@@ -58,15 +60,70 @@ export default function DishPage() {
     }
     fetData()
   }, [])
+  // Fetch categories and collections for dish form and table
+  useEffect(() => {
+    const fetCollecttions = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch("/api/inventories/collections", {
+          method: "GET",
+        })
+
+        if (!res.ok) {
+          toast({
+            variant: "destructive",
+            title: "Can't get any data!",
+          })
+        }
+        const data: CollectionType[] = await res.json()
+        setCollections(data)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        toast({
+          variant: "destructive",
+          title: "Something wrong with get all collection!",
+        })
+      }
+    }
+    fetCollecttions()
+    const fetCategories = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch("/api/inventories/categories", {
+          method: "GET",
+        })
+
+        if (!res.ok) {
+          toast({
+            variant: "destructive",
+            title: "Can't get any data!",
+          })
+        }
+        const data: CategoryType[] = await res.json()
+        setCategories(data)
+        setLoading(false)
+      } catch (error) {
+        console.log(error)
+
+        setLoading(false)
+        toast({
+          variant: "destructive",
+          title: "Something wrong with get all category!",
+        })
+      }
+    }
+    fetCategories()
+  }, [])
   // Add
-  const handleAddCollection = () => {
+  const handleAddDish = () => {
     router.push("/dashboard/inventories/add")
   }
-  const handleUpdateCollection = (id: string) => {
+  const handleUpdateDish = (id: string) => {
     router.push("/dashboard/inventories/" + id)
   }
   // Delete
-  const handleDeleteCollection = async (IdsArray: string[]) => {
+  const handleDeleteDishes = async (IdsArray: string[]) => {
     //  There are two way to delete rows, 1: at DataTable component will task delete selected rows, 2: at Column component will task delete specific row
     // All will be converted to string ids array
     if (IdsArray.length <= 0) {
@@ -108,22 +165,24 @@ export default function DishPage() {
   return (
     <section>
       {loading && (
-        <div className="w-full h-full flex items-center justify-center">
+        <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
           <FadeLoader
             color={sideBarColor ? sideBarColor : "#11cdef"}
             loading={loading}
           />
         </div>
       )}
-      {dishes && (
+      {dishes && categories && collections && (
         <DataTable
           columns={DishColumn({
-            handleDeleteCollection,
-            handleUpdateCollection,
+            handleDeleteDishes,
+            handleUpdateDish,
+            categories,
+            collections
           })}
           data={dishes}
-          onDelete={handleDeleteCollection}
-          onAdd={handleAddCollection}
+          onDelete={handleDeleteDishes}
+          onAdd={handleAddDish}
         />
       )}
     </section>

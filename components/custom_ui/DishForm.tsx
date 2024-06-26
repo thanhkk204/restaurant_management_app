@@ -62,7 +62,7 @@ export default function DishForm({ dish }: Props) {
       collection_ids: dish ? dish.collection_ids : [],
     },
   })
-  // Fetch categories and collections for disd form
+  // Fetch categories and collections for dish form and table
   useEffect(() => {
     const fetCollecttions = async () => {
       setLoading(true)
@@ -119,55 +119,37 @@ export default function DishForm({ dish }: Props) {
   }, [])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // const url = dish
-    //   ? "/api/inventories/dishs/" + dish._id
-    //   : "/api/inventories/dishs"
-    // setLoading(true)
-    // try {
-    //   const res = await fetch(url, {
-    //     method: dish ? "PATCH" : "POST",
-    //     body: JSON.stringify(values),
-    //   })
-    //   if (!res.ok) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: dish ? "Can't update dish" : "Can't add new dish",
-    //     })
-    //   }
-    //   const data = await res.json()
-    //   if (res.status === 500) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: data.message,
-    //     })
-    //     setLoading(false)
-    //     return
-    //   }
+    const url = dish
+      ? "/api/inventories/dishes/" + dish._id
+      : "/api/inventories/dishes"
+    setLoading(true)
+    try {
+      const res = await fetch(url, {
+        method: dish ? "PATCH" : "POST",
+        body: JSON.stringify(values),
+      })
+      if (!res.ok) {
+       return toast({
+          variant: "destructive",
+          title: dish ? "Can't update dish" : "Can't add new dish",
+        })
+      }
+      const data = await res.json()
 
-    //   if (res.status === 401) {
-    //     toast({
-    //       variant: "destructive",
-    //       title: data.message,
-    //     })
-    //     setLoading(false)
-    //     return
-    //   }
-    //   toast({
-    //     variant: "sucess",
-    //     title: dish ? data.message : "You added new dish succesfully",
-    //   })
-    //   dish ? router.push("/dashboard/inventories/dishs") : form.reset()
-    //   setLoading(false)
-    // } catch (error) {
-    //   console.log(error)
+      toast({
+        variant: "sucess",
+        title: dish ? data.message : "You added new dish succesfully",
+      })
+      dish ? router.push("/dashboard/inventories") : form.reset()
+      setLoading(false)
+    } catch (error) {
 
-    //   setLoading(false)
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Something wrong with add new dish!",
-    //   })
-    // }
-    console.log(values)
+      setLoading(false)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with add new dish!",
+      })
+    }
   }
   function handleResetForm(e: any) {
     e.preventDefault()
@@ -230,7 +212,7 @@ export default function DishForm({ dish }: Props) {
                         field.onChange(selectedItem)
                       }
                       placehoder="Select category"
-                      values={field.value}
+                      value={field.value}
                       categories={categories}
                       />
                       </FormControl>

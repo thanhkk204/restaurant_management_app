@@ -32,7 +32,7 @@ export default function UpdateCollection({
         if (!res.ok) {
           toast({
             variant: "destructive",
-            title: "Can't get any data!",
+            title: "Can't get any data for collection detail!",
           })
         }
         const data = (await res.json()) as CollectionType
@@ -42,7 +42,7 @@ export default function UpdateCollection({
         setLoading(false)
         toast({
           variant: "destructive",
-          title: "Something wrong with add new collection!",
+          title: "Something wrong with get collection detail!",
         })
       }
     }

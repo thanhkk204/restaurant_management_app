@@ -21,7 +21,7 @@ const dishSchame = new mongoose.Schema({
     },
     isShow: {
         type: Boolean,
-        required: true
+        default: true
     },
     category_id: {
         type: mongoose.SchemaTypes.ObjectId,

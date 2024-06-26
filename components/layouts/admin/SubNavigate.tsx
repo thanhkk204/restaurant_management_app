@@ -9,11 +9,6 @@ const NavigateLink = [
   {
     link: '/dashboard/inventories',
     icons: <AppWindow width={20} />,
-    title: "Category"
-  },
-  {
-    link: '/dashboard/inventories/dishes',
-    icons: <Salad width={20} />,
     title: "Dishes"
   },
   {

@@ -6,14 +6,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(req: NextRequest, { params }: { params: { id: string }}){
     const {id} = params
-    const body = await req.json()
-    console.log(body);
+    const {locationInRestaurant} = await req.json()
     if(!id) return NextResponse.json({message: "There is no Id to update location"}, {status: 401})
-    if(!body) return NextResponse.json({message: "There is no body to update location"}, {status: 401})
+    if(!locationInRestaurant) return NextResponse.json({message: "There is no body to update location"}, {status: 401})
 
     await connectToDB()
    try {
-   const newLocation = await location.findByIdAndUpdate({_id: id}, body) as LocationType
+   const newLocation = await location.findByIdAndUpdate({_id: id}, {locationInRestaurant: locationInRestaurant}) as LocationType
    return NextResponse.json({message: 'Update Successfully!', newLocation}, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)

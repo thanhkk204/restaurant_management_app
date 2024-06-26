@@ -28,7 +28,7 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
         if (!res.ok) {
           toast({
             variant: "destructive",
-            title: "Can't get any data!",
+            title: "Can't get any data for category detail!",
           })
         }
         const data = (await res.json()) as CategoryType
@@ -38,7 +38,7 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
         setLoading(false)
         toast({
           variant: "destructive",
-          title: "Something wrong with add new category!",
+          title: "Something wrong with get category detail!",
         })
       }
     }
