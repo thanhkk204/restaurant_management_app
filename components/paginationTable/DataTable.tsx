@@ -143,7 +143,8 @@ export function DataTable<TData, TValue>({
 
           <Dialog>
             <DialogTrigger>
-              <div className="px-3 py-3 rounded-full cursor-pointer text-white bg-light-error dark:bg-dark-error hover:scale-90 transition-all ease-in">
+              <div className="px-3 py-3 rounded-full cursor-pointer text-white bg-light-error dark:bg-dark-error hover:scale-90 transition-all ease-in 
+              will-change-transform">
                 <Trash />
               </div>
             </DialogTrigger>

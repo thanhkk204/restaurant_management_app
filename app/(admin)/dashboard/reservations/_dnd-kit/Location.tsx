@@ -24,9 +24,14 @@ type Props = {
   deleteLocation: (location_id: string) => void
   addNewTable: (table_id: string) => void
   deleteTable: (table_id: string) => void
+  updateTable: ({ number_of_seats, name,table_id}:{
+    number_of_seats: number,
+    name: string,
+    table_id: string
+  }) => void
 }
 export default function Location(Props: Props) {
-  const { location, tables, addNewTable, deleteLocation, deleteTable } = Props
+  const { location, tables, addNewTable, deleteLocation, deleteTable, updateTable} = Props
   const tablesId = useMemo(() => tables.map((table) => table._id), [tables])
   const {
     setNodeRef,
@@ -58,7 +63,7 @@ export default function Location(Props: Props) {
         style={style}
         {...attributes}
         {...listeners}
-        className="grid grid-cols-3 gap-5 bg-light-bg dark:bg-dark-bg px-3 py-4 h-[350px] overflow-y-auto opacity-45"
+        className="grid grid-cols-3 gap-5 bg-light-bg dark:bg-dark-bg px-3 py-4 h-[550px] overflow-y-auto opacity-45"
       ></div>
     )
   }
@@ -102,13 +107,15 @@ export default function Location(Props: Props) {
           </div>
         </DialogContent>
       </Dialog>
-      <div className="grid grid-cols-3 auto-rows-max gap-6 md:gap-10 rounded-md bg-light-bg dark:bg-dark-bg overflow-auto px-8 py-6 h-[350px] text-light-text dark:text-dark-text">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 auto-rows-max gap-6 md:gap-10 rounded-md bg-light-bg dark:bg-dark-bg overflow-auto px-8 py-6 h-[550px] text-light-text dark:text-dark-text">
         <SortableContext items={tablesId} strategy={rectSortingStrategy}>
           {tables.map((table) => (
             <Item 
             key={table._id} 
             table={table} 
-            deleteTable={deleteTable}/>
+            deleteTable={deleteTable}
+            updateTable={updateTable}
+            />
           ))}
 
           <div

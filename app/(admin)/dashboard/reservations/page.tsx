@@ -225,6 +225,40 @@ const deleteTable = (_id: string)=>{
   }
   fetData()
 }
+// Update information for table
+const updateTable = (
+  {number_of_seats, name, table_id}:{
+   number_of_seats: number,
+   name: string,
+   table_id: string}
+  )=>{
+  const fetData = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch("/api/reservations/tables/"+table_id, {
+        method: "PATCH",
+        body: JSON.stringify({number_of_seats, name})
+      })
+
+      if (!res.ok) {
+        return toast({
+          variant: "destructive",
+          title: "Can't update this table",
+        })
+      }
+// After updating table order trigger useState for fetching newest data
+      setTableTrigger(!tableTrigger)
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with delete Location!",
+      })
+    }
+  }
+  fetData()
+}
   
 // Get id array for sortableContext items
    const locationsIds = useMemo(
@@ -264,6 +298,7 @@ const deleteTable = (_id: string)=>{
                     addNewTable={addNewTable}
                     deleteLocation={deleteLocation}
                     deleteTable={deleteTable}
+                    updateTable={updateTable}
                   />
                 )
               })}
@@ -290,6 +325,7 @@ const deleteTable = (_id: string)=>{
                   addNewTable={addNewTable}
                   deleteLocation={deleteLocation}
                   deleteTable={deleteTable}
+                  updateTable={updateTable}
                 ></Location>
               )}
               {
@@ -297,6 +333,7 @@ const deleteTable = (_id: string)=>{
               <Item 
               table={activeTable} 
               deleteTable={deleteTable}
+              updateTable={updateTable}
               />
               }
             </DragOverlay>,
