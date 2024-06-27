@@ -9,6 +9,7 @@ import { FadeLoader } from "react-spinners"
 import { DishColumn } from "./_table/DishColumn"
 import { CategoryType } from "./categories/page"
 import { CollectionType } from "./collections/page"
+import { useGetData } from "@/hooks/useGetdata"
 
 export type DishType = {
   _id: string,
@@ -31,7 +32,6 @@ export default function DishPage() {
   const value = useDashBoardContext()
   if (!value) return
   const { sideBarColor } = value
-   console.log(dishes);
 
   useEffect(() => {
     const fetData = async () => {
@@ -172,7 +172,7 @@ export default function DishPage() {
           />
         </div>
       )}
-      {dishes && categories && collections && (
+      {!loading && dishes && categories && collections && (
         <DataTable
           columns={DishColumn({
             handleDeleteDishes,
