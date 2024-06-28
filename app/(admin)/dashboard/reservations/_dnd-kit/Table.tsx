@@ -6,6 +6,7 @@ import { UsersRound } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 type InputValue = {
   number_of_seats: number,
@@ -33,7 +34,7 @@ export default function Item({
   })
   const [editModelForTextInput, setEditModelForTextInput] = useState<boolean>(false)
   const [editModleForNumberInput, setEditModleForNumberInput] = useState<boolean>(false)
-
+  const router = useRouter()
 const {
   setNodeRef,
    transform,
@@ -80,6 +81,9 @@ const {
     ...pre,
     [e.target.name]: e.target.value
    }))
+  }
+  const createReservation = (table_id: string)=>{
+    router.push('/dashboard/reservations/createReservation/'+table_id)
   }
   // Overlayout
   if(isDragging) return (
@@ -224,7 +228,12 @@ const {
         </div>
       </div>
       <div className='mt-2 w-full flex items-center justify-end'>
-        <Button className='font-medium hover:scale-90 transition-all duration-300 ease-in-out backface-visibility-hidden'>Tạo đơn</Button>
+        <Button 
+        onClick={()=>createReservation(table._id)}
+        className='font-medium hover:scale-90 transition-all duration-300 ease-in-out backface-visibility-hidden'
+        >
+        Tạo đơn
+        </Button>
       </div>
     </div>
 

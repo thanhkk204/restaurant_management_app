@@ -91,7 +91,6 @@ export function DataTable<TData, TValue>({
   const hadleDeleteSelectedRows = async (e: any): Promise<void> => {
     const rows: any = table.getFilteredSelectedRowModel().rows
     const IdsArray = rows.map((item: any) => item.original._id)
-    console.log(IdsArray)
     onDelete(IdsArray)
     table.resetRowSelection();
   }

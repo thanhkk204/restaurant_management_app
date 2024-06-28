@@ -19,7 +19,7 @@ export function useGetData<T = unknown>(url: string): FetchState<T> {
           method: "GET",
         })
         if(!res.ok) {
-          toast({
+         return toast({
             variant: "destructive",
             title: "Can't get any data!",
           })

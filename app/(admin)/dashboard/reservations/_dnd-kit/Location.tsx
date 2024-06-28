@@ -164,7 +164,7 @@ export default function Location(Props: Props) {
      
       
       {
-        editModelForTextInput ? (<div className="w-full col-span-1 lg:col-span-2 2xl:col-span-3 flex items-center justify-center">
+        editModelForTextInput ? (<div className="w-full col-span-1 lg:col-span-2 2xl:col-span-3 flex flex-col items-center justify-center">
           <input 
           autoFocus
           type="text"  
@@ -175,6 +175,7 @@ export default function Location(Props: Props) {
           onKeyDown={(e)=>handleOnKeyDown(e)}
           className='max-w-[200px] bg-transparent dark:bg-transparent w-full px-2 focus:outline-none'
           />
+          <p className='separate_line mt-2'></p>
         </div>) : <div 
                  onClick={()=>setEditModelForTextInput(true)}
                  className="col-span-1 lg:col-span-2 2xl:col-span-3 flex flex-col items-center justify-center"

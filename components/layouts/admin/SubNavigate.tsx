@@ -1,38 +1,26 @@
 "use client"
 import { useDashBoardContext } from '@/lib/context/DashboardContextProvider'
-import { AppWindow, Salad } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 
-const NavigateLink = [
-  {
-    link: '/dashboard/inventories',
-    icons: <AppWindow width={20} />,
-    title: "Dishes"
-  },
-  {
-    link: '/dashboard/inventories/collections',
-    icons: <Salad width={20} />,
-    title: "Collections"
-  },
-  {
-    link: '/dashboard/inventories/categories',
-    icons: <Salad width={20} />,
-    title: "Categories"
-  },
- 
-]
-
-export default function SubNavigate() {
+type LinkProp = {
+  link: string;
+  icons: JSX.Element;
+  title: string;
+}
+type Props = {
+  NavigateLink: LinkProp[]
+}
+export default function SubNavigate({ NavigateLink } : Props) {
   const path = usePathname()
     // Get values were passed in context
   const value = useDashBoardContext()
   if (!value) return
   const {sideBarColor } = value
   return (
-    <div >
-        <div className="bg-light-bg_2 dark:bg-dark-bg_2 flex items-center gap-3 rounded-lg min-w-[250px] px-8 py-2 overflow-x-auto no-scrollbar">
+    <div className='fixed z-50 bottom-0 left-0 md:relative w-full '>
+        <div className="bg-light-bg dark:bg-dark-bg md:bg-light-bg_2 md:dark:bg-dark-bg_2 flex items-center md:rounded-md gap-3 min-w-[250px] px-4 py-2 overflow-x-auto no-scrollbar">
         {NavigateLink.map((item, index) => (
           <Link
             key={index}

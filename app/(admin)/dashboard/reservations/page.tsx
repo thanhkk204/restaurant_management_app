@@ -51,10 +51,8 @@ export default function DnDPage() {
   const [loadingFirstOne, setLoadingFirstOne] = useState<boolean>(false)
   const [locations, setLocations] = useState<LocationType[] | null>(null)
   const [numberOfLocation, setNumberOfLocation] = useState<number>()
-  const [locationsTrigger, setLocationsTrigger] = useState<boolean>(false)
   const [tables, setTables] = useState<TableType[] | null>(null)
   const [numberOfTable, setNumberOfTable] = useState<number>()
-  const [tableTrigger, setTableTrigger] = useState<boolean>(false)
 
   // Get values were passed in context
   const value = useDashBoardContext()
@@ -88,7 +86,7 @@ export default function DnDPage() {
       }
     }
     fetData()
-  }, [locationsTrigger])
+  }, [])
   // Fetch all tables
   useEffect(() => {
     const fetData = async () => {
@@ -117,7 +115,7 @@ export default function DnDPage() {
       }
     }
     fetData()
-  }, [tableTrigger])
+  }, [])
   // Update for location orders
   const updateForLocationOrder = (newArray: LocationType[]) => {
     const fetData = async () => {
@@ -522,7 +520,7 @@ export default function DnDPage() {
         setNumberOfLocation(freshLocations.numberOfLocation)
         toast({
           variant: "sucess",
-          title: data.message,
+          title: "Add location successfully!",
         })
       } catch (error) {
         toast({
@@ -558,7 +556,7 @@ export default function DnDPage() {
         setNumberOfTable(freshTables.numberOfTable)
         toast({
           variant: "sucess",
-          title: data.message,
+          title: "Add table successfully",
         })
       } catch (error) {
         toast({

@@ -113,8 +113,6 @@ export const DishColumn = ({
       header: "Collections",
       cell: ({ row }) => {
         const collectionList = collections?.filter(item => row.original.collection_ids.includes(item._id)) as CollectionType[]
-        console.log(collectionList);
-        
         return (
           <div className="flex flex-wrap gap-1">
             {
