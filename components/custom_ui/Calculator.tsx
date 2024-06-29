@@ -44,11 +44,10 @@ const Calculator: React.FC<Props> = ({selectedDishes, setSelectedDishes})=> {
                         dish: {...dish},
                         quantity: 1
                     }}) as selectedDishesType[]
-                const preDishes = pre.filter(item => !selectedDishes.includes(item.dish))
-                console.log('selectedDishes', selectedDishes)
-                console.log('pre', pre)
-                console.log('mutatedSelectedDishes', mutatedSelectedDishes)
-            return mutatedSelectedDishes ? [...preDishes, ...mutatedSelectedDishes] : [...preDishes]
+              // const preDishes = pre.filter(item => selectedDishes.find(selectedDish => selectedDish._id !== item.dish._id ))
+              //   console.log('preDishes', preDishes)
+              //   console.log('mutatedSelectedDishes',mutatedSelectedDishes)
+             return mutatedSelectedDishes ? [...pre, ...mutatedSelectedDishes] : [...pre]
             })
         }
     },[selectedDishes])
