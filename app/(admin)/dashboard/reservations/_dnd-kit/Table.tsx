@@ -57,6 +57,7 @@ const {
     e.preventDefault()
     deleteTable(table._id)
   }
+  // update information
   const handleUpdateTable = (e: any)=>{
     e.preventDefault()
     setEditModelForTextInput(false)
@@ -83,8 +84,11 @@ const {
    }))
   }
   const createReservation = (table_id: string)=>{
-    router.push('/dashboard/reservations/createReservation/'+table_id)
+    router.push('/dashboard/reservations/createReservation/'+ table_id)
   }
+  const editReservation = (table_id: string)=>{
+   router.push('/dashboard/reservations/updateReservation/'+ table_id)
+ }
   // Overlayout
   if(isDragging) return (
     <div
@@ -239,7 +243,9 @@ const {
 
     {
       !(table.status === "AVAILABLE") && (
-        <div className='absolute z-30 inset-0 top-0 left-0 w-full h-full bg-blur_bg dark:bg-blur_bg flex items-center justify-center rounded-md'>
+        <div 
+        onClick={()=>editReservation(table._id)}
+        className='absolute z-30 inset-0 top-0 left-0 w-full h-full bg-blur_bg dark:bg-blur_bg flex items-center justify-center rounded-md'>
         {
           table.status === "ISSERVING" ? 
           <h1 className='font-semibold text-[19px] text-light-warning dark:text-dark-warning'>Đang phục vụ</h1>:

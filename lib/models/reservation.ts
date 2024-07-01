@@ -13,8 +13,9 @@ const reservationSchame = new mongoose.Schema(
     userName: {
         type: String
     },
-    address: {
-        type: String
+    addres_id: {
+      type: mongoose.Schema.ObjectId,
+      ref: "address"
     },
     party_size: {
         type: Number,
@@ -23,17 +24,16 @@ const reservationSchame = new mongoose.Schema(
     dish_id: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "dish",
+        ref: "orderedDish",
       },
     ],
     payment_method: {
-        required: true,
+        type: String,
         enum: ["CASHPAYMENT", "BANKPAYMENT"],
         default: "CASHPAYMENT",
     },
     status: {
       type: String,
-      required: true,
       enum: ["RESERVED", "DELIVERY", "SEATED", "COMPLETED", "CANCELED"],
       default: "RESERVED",
     },
@@ -41,10 +41,11 @@ const reservationSchame = new mongoose.Schema(
         type: Number
     },
     startTime: {
-        type: String,
+        type: Date,
+        default: Date.now()
     },
     endTime: {
-        type: String,
+        type: Date,
     }
   },
   {

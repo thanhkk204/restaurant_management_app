@@ -53,3 +53,4 @@ export const sideBarVariables = [
         link:'/dashboard/customers'
     },
 ]
+
