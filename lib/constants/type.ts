@@ -1,3 +1,5 @@
+import { DishType } from "@/app/(admin)/dashboard/inventories/page"
+
 enum PaymentMethod {
     CASHPAYMENT = "CASHPAYMENT",
     BANKPAYMENT = "BANKPAYMENT",
@@ -30,7 +32,13 @@ export type AddressType = {
     ward: string,
     detailAddress: string,
 }
-
+export type OrderedFoodType = {
+    _id: string,
+    dish_id: DishType,
+    reservation_id: string,
+    quantity: number,
+    isOrderedOnline: boolean
+}
 export type ProvinceType = {
     province_id: string,
     province_name: string,
@@ -48,3 +56,4 @@ export type WardType = {
     ward_name: string,
     ward_type: string
 }
+

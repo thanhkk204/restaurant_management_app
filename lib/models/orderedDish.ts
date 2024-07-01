@@ -16,7 +16,6 @@ const orderedDishSchame = new mongoose.Schema({
     },
     isOrderedOnline: {
         type: Boolean,
-        required: true,
         default: false
     }
 }, 

@@ -6,33 +6,44 @@ import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import OneSelect from './OneSelect'
 import { cn } from '@/lib/utils'
+import { OrderedFoodType } from '@/lib/constants/type'
 
 type Props = {
     dishes: DishType[] | null
     categories: CategoryType[] | null
-    selectedDishes: DishType[] 
-    setSelectedDishes?: Dispatch<SetStateAction<DishType[]>>
+    reservation_id: string
+    orderedFoods: OrderedFoodType[] 
+    setOrderedFoods?: Dispatch<SetStateAction<OrderedFoodType[]>>
+    deleteOrderedFood: (orderedFood_id: string) => any
 }
- const Menu: React.FC<Props>=({dishes, categories, selectedDishes, setSelectedDishes})=>{
+ const Menu: React.FC<Props>=({dishes, categories, reservation_id, orderedFoods, setOrderedFoods, deleteOrderedFood})=>{
     const [activedLink, setActiveLink] = useState<string>('all')
-    const [menu, setMenu] = useState<DishType[]>([])
-    useEffect(()=>{
-      if (activedLink === 'all') {
-        setMenu(()=>{
-            return dishes ? [...dishes] : []
-        })  
+    const [trigger, setTrigger] = useState<boolean>(false)
+    console.log('orderedFoods in children', orderedFoods)
+  
+    const addOrderedFood = async (reservation_id: string ,dish_id: string): Promise<OrderedFoodType | null>=>{
+      const res = await fetch('/api/reservations/orderedFood',{
+        method: "POST",
+        body: JSON.stringify({dish_id, reservation_id})
+      })
+      const data = await res.json()
+      if(!res.ok) return null
+      return data.orderedFood as OrderedFoodType
+    }
+    const hanleChooseDish = async (dish_id: string)=>{
+      try {
+      const existedOrderedFood = orderedFoods.find(item => item.dish_id._id === dish_id) as OrderedFoodType
+      if(existedOrderedFood){
+        const {res, data} = await deleteOrderedFood(existedOrderedFood._id)
+        if(res.status === 201 && data.message === "Successfully" && setOrderedFoods)
+        setOrderedFoods(pre=> [...pre.filter(item=> item._id !== existedOrderedFood?._id)]) 
       }else{
-        setMenu(()=>{
-            return dishes ? [...dishes.filter(dish => dish.category_id === activedLink)] : []
-        })
+       const addedFood = await addOrderedFood(reservation_id, dish_id) as OrderedFoodType
+       if( addedFood && setOrderedFoods) setOrderedFoods(pre => [...pre, addedFood])
       }
-    }, [activedLink])
-    const hanleChooseDish = (dish: DishType)=>{
-        if (setSelectedDishes) {
-            setSelectedDishes((prevDishes) =>{
-              return prevDishes.includes(dish) ? [...prevDishes.filter(item=> item._id !== dish._id)] : [...prevDishes, dish]
-            });
-        }
+      } catch (error) {
+        console.log(error)
+      }
     }
   return (
     <div className='px-3 py-4 grid grid-cols-2  [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3'>
@@ -63,10 +74,10 @@ type Props = {
         </div>
        </div>
        {
-        menu?.map(dish=>
+        dishes?.map(dish=>
           <div 
-          key={dish._id}
-           onClick={()=>hanleChooseDish(dish)}
+           key={dish._id}
+           onClick={()=>hanleChooseDish(dish._id)}
            className='relative rounded-md overflow-hidden cursor-pointer hover:scale-95 transition-transform duration-200 ease-in'
           >
             <Image 
@@ -79,7 +90,7 @@ type Props = {
             <h2 className='absolute z-20 left-0 bottom-0 w-full h-[50px] flex items-center justify-center bg-blur_bg text-white'>{dish.title}</h2>
             <div className={cn(
                 'absolute top-0 left-0 z-30 bg-blur_bg dark:bg-blur_bg rounded-md',
-                selectedDishes.includes(dish) ? 'block' : 'hidden'
+                orderedFoods.find(orderedFood => orderedFood.dish_id._id === dish._id )? 'block' : 'hidden'
             )}>
             <Check width={35} height={35} className='font-extrabold text-light-success dark:text-dark-success' />
             </div>
