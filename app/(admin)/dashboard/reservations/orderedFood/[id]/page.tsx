@@ -2,7 +2,7 @@
 import Calculator from "@/components/custom_ui/Calculator";
 import Menu from "@/components/custom_ui/Menu";
 import { useGetData } from "@/hooks/useGetdata";
-import { DishType } from "../../../inventories/page";
+import { DishType } from "../../../../inventories/page";
 import { useState } from "react";
 
 export default function OrderedFood() {

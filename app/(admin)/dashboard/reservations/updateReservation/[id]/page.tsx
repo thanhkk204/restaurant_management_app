@@ -42,9 +42,8 @@ export default function CreateReservation({params}: {params: {id:string}}) {
     fetData()
   },[table_id])
   return (
-    <section className="relative flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
+    <section className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
         <div className="w-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md flex justify-start">
-          <div className='w-full lg:w-1/2 px-3 py-4 md:px-6 md:py-6'>
           {loading && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <FadeLoader
@@ -53,6 +52,7 @@ export default function CreateReservation({params}: {params: {id:string}}) {
           />
         </div>
       )}
+       <div className='w-full lg:w-1/2 px-3 py-4 md:px-6 md:py-6'>
            {
             reservation && !loading && <ReservationForm reservation={reservation} table_id={table_id}/> 
            }

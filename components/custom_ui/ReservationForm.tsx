@@ -38,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { cn } from "@/lib/utils"
 
 const formSchema = z.object({
   userName: z.string().min(2).max(50),
@@ -57,6 +58,10 @@ type Props = {
 // Form reusable for update and add reservation
 export default function ReservationForm({ reservation, table_id }: Props) {
   const [loading, setLoading] = useState<boolean>(false)
+  const [provinces, setProvinces] = useState<ProvinceType[]>([])
+  const [districts, setDistricts] = useState<DistricType[]>([])
+  const [wards, setWards] = useState<WardType[]>([])
+  const [createdReservation, setCreatedReservation] = useState<ReservationType | null>(null)
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
@@ -76,11 +81,10 @@ export default function ReservationForm({ reservation, table_id }: Props) {
       payment_method: reservation ? reservation.payment_method : "CASHPAYMENT",
     },
   })
-  const [provinces, setProvinces] = useState<ProvinceType[]>([])
-  const [districts, setDistricts] = useState<DistricType[]>([])
-  const [wards, setWards] = useState<WardType[]>([])
+  // re-render when form property change
   const selectedProvince = form.watch("province")
   const selectedDistrict = form.watch("district")
+  
   // fetch provinces
   useEffect(() => {
     const fetData = async () => {
@@ -146,29 +150,32 @@ export default function ReservationForm({ reservation, table_id }: Props) {
         })
       }
       const data = await res.json()
+      const reser = data.reservation as ReservationType
+      setCreatedReservation(reser)
       toast({
         variant: "sucess",
         title: reservation
           ? data.message
           : "You added new reservation succesfully",
       })
-      reservation
-        ? router.push("/dashboard/inventories/reservations")
-        : form.reset()
+      reservation && router.push("/dashboard/reservations")
       setLoading(false)
     } catch (error) {
       console.log(error)
-
       setLoading(false)
       toast({
         variant: "destructive",
-        title: "Something wrong with add new reservation!",
+        title: "Something wrong with reservation form!",
       })
     }
   }
   function handleResetForm(e: any) {
     e.preventDefault()
     form.reset()
+  }
+  function handleOrderedMenu() {
+    const reservation_id = createdReservation ? createdReservation._id : reservation?._id
+   router.push("/dashboard/reservations/orderedFood/" + reservation_id)
   }
   return (
     <Form {...form}>
@@ -364,9 +371,22 @@ export default function ReservationForm({ reservation, table_id }: Props) {
           <Button
             onClick={handleResetForm}
             type="button"
-            className="font-medium text-[16px]"
+            className="mr-4 font-medium text-[16px]"
           >
             Làm mới
+          </Button>
+
+          <Button
+            onClick={()=>handleOrderedMenu()}
+            type="button"
+            className={cn(
+              "font-medium text-[16px]",
+              (reservation && reservation?.status === "SEATED") || (createdReservation && createdReservation.status === "SEATED")
+              ? "opacity-100" 
+              : "opacity-55 pointer-events-none"
+            )}
+          >
+            Chọn món
           </Button>
         </div>
       </form>
