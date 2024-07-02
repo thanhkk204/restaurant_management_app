@@ -38,7 +38,8 @@ const reservationSchame = new mongoose.Schema(
       default: "RESERVED",
     },
     prepay: {
-        type: Number
+        type: Number,
+        default: 0
     },
     startTime: {
         type: Date,

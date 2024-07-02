@@ -17,7 +17,6 @@ const addressSchame = new mongoose.Schema(
     detailAddress: {
         type: String
     },
-    
   },
   {
     timestamps: true,

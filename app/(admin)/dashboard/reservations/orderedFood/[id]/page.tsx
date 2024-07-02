@@ -50,6 +50,8 @@ export default function OrderedFood({params}: {params: {id: string}}) {
     return data.orderedFood
   }
 
+ 
+
     return (
       <section className="px-3 md:px-5 py-2 md:py-4 flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
         <div className="flex-[2] bg-light-bg_2 dark:bg-dark-bg_2 rounded-md">
@@ -72,6 +74,7 @@ export default function OrderedFood({params}: {params: {id: string}}) {
             <Calculator 
             dishes={dishes}
             categories={categories}
+            reservation_id={reservation_id}
             orderedFoods={orderedFoods}
             setOrderedFoods={setOrderedFoods}
             deleteOrderedFood={deleteOrderedFood}

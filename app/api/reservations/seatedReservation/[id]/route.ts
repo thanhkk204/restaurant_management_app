@@ -1,5 +1,6 @@
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
 import { ReservationType } from "@/lib/constants/type"
+import address from "@/lib/models/address"
 import reservation from "@/lib/models/reservation"
 import table from "@/lib/models/table"
 import { NextRequest, NextResponse } from "next/server"
@@ -13,6 +14,7 @@ export const GET = async (req: NextRequest, {params}: {params: {id:string}}) => 
      let reservationDetail: ReservationType
 
      if(tableDetail.status === "ISBOOKED"){
+          await address.find({})
           reservationDetail = await reservation.findOne({table_id: table_id, status: "RESERVED"}).populate('addres_id')
           return NextResponse.json({reservationDetail}, {status: 201})
      }else if(tableDetail.status === "ISSERVING"){

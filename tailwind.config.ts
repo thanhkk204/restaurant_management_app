@@ -23,6 +23,12 @@ const config = {
         blue:{
          1: '#11cdef'
         },
+        green:{
+         1: '#2dce89'
+        },
+        red:{
+         1: '#f5365c'
+        },
         blur_bg: 'rgba(0, 0, 0, 0.6)',
         blur_bg_white: 'rgba(255, 255, 255, 19%)',
         dark: {
@@ -41,7 +47,7 @@ const config = {
           bg: "#eff4f7",
           bg_2: "#fff",
           text: "#000000",
-          textSoft: "#b7bac1",
+          textSoft: "#4B2E2E",
           error: "#B00020",
           success: "#28a745",
           warning: "#FFC107",

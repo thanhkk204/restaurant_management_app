@@ -146,7 +146,7 @@ export const DishColumn = ({
           </DialogTrigger>
           <DialogContent className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text">
             <DialogHeader>
-              <DialogTitle>Bạnc có chắc muốn xóa không?</DialogTitle>
+              <DialogTitle>Bạn có chắc muốn xóa không?</DialogTitle>
             </DialogHeader>
             <div className="flex items-center justify-end py-2 gap-5">
               <DialogClose asChild>

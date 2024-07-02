@@ -13,10 +13,10 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null)
   const [lastScrollTop, setLastScrollTop] = useState<number>(0)
   const path = usePathname()
-  const routeSegments = path.split('/')
-
+  const routeSegments = path.split('/').filter(segment => segment && !/^[0-9a-fA-F]{24}$/.test(segment))
+ 
   // Get URL path name currently
-  let pathName =  `${path.split("/").pop()?.charAt(0).toLocaleUpperCase()}${path.split("/").pop()?.slice(1)}`
+  const pathName = routeSegments[routeSegments.length - 1]
  
   const value = useDashBoardContext()
   if (!value) return
@@ -46,7 +46,7 @@ export default function Navbar() {
         <div className="flex flex-col">
           <div className="flex gap-2 items-center text-[15px] text-white">
             <Home width={15} height={15} />
-            <h4 className="font-thin text-light-textSoft dark:text-dark-textSoft">{
+            <h4 className="font-thin text-light-bg dark:text-dark-textSoft">{
               routeSegments.map((item, index)=>{
                 if (index === routeSegments.length -1) {
                  return <span key={index}>{item}</span> 

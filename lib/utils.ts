@@ -8,3 +8,4 @@ export function cn(...inputs: ClassValue[]) {
 export function formatCurrency(number: number): string {
   return number.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 }
+

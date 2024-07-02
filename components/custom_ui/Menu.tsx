@@ -19,7 +19,6 @@ type Props = {
  const Menu: React.FC<Props>=({dishes, categories, reservation_id, orderedFoods, setOrderedFoods, deleteOrderedFood})=>{
     const [activedLink, setActiveLink] = useState<string>('all')
     const [trigger, setTrigger] = useState<boolean>(false)
-    console.log('orderedFoods in children', orderedFoods)
   
     const addOrderedFood = async (reservation_id: string ,dish_id: string): Promise<OrderedFoodType | null>=>{
       const res = await fetch('/api/reservations/orderedFood',{
