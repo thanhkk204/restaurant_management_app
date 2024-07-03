@@ -11,10 +11,12 @@ export default function OrderedFood({params}: {params: {id: string}}) {
   const {id: reservation_id} = params
   const [orderedFoods, setOrderedFoods] = useState<OrderedFoodType[] >([])
   const [loading, setLoading] = useState<boolean>(false)
+  
+  // Get all dishes and categories
   const {data: dishes, loading: dishLoading} = useGetData<DishType[]>("/api/inventories/dishes")
   const {data: categories, loading: categoryLoading} = useGetData<DishType[]>("/api/inventories/categories")
 
- 
+//  Get ordered food for reservation
   useEffect(()=>{
     const fetData = async ()=>{
        setLoading(false)

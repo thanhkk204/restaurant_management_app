@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { formatCurrency } from "@/lib/utils"
-import { OrderedFoodType, ReservationType } from "@/lib/constants/type"
+import { InvoiceType, OrderedFoodType, ReservationType } from "@/lib/constants/type"
 import { useRouter } from "next/navigation"
 import { toast } from "../ui/use-toast"
 import { Input } from "../ui/input"
@@ -59,6 +59,7 @@ const Calculator: React.FC<Props> = ({
   const totalPrice = orderedFoods.reduce((sum, item) => {
     return sum + item.quantity * item.dish_id.price
   }, 0)
+  // Get prepay
   useEffect(() => {
     const fetData = async () => {
       try {
@@ -66,13 +67,14 @@ const Calculator: React.FC<Props> = ({
           method: "GET",
         })
         if (!res.ok) {
-          toast({
+          return toast({
             variant: "destructive",
             title: "Something wrong with get prePay",
           })
         }
         const data = await res.json()
         const reservationDetail = data.reservationDetail as ReservationType
+        // console.log('reservationDetail', reservationDetail)
         setPrePay(reservationDetail.prepay)
       } catch (error) {
         toast({
@@ -135,12 +137,45 @@ const Calculator: React.FC<Props> = ({
     router.back()
   }
   const handlePayment = ()=>{
-    console.log('click');
-    
-      setIsPaid(!isPaid)
+    console.log(change)
+    if(change < 0) {
+      return toast({
+        variant: "destructive",
+        title: "Please pay all for bill",
+      })
+    }
+    const fetchData = async () => {
+      try {
+        const res = await fetch("/api/reservations/completedBill", {
+          method: "POST",
+          body: JSON.stringify({reservation_id, total_amount: totalPrice})
+        })
+        const data = await res.json()
+        if(res.status === 401){
+          return toast({
+            variant: "destructive",
+            title: data.message,
+          })
+        }
+        if (!res.ok) {
+          return toast({
+            variant: "destructive",
+            title: "Something wrong with create Bill",
+          })
+        }
+        const completedBill = data.completedBill as InvoiceType
+        // when create bill successfully, trigger thanks dialog
+        setIsPaid(!isPaid)
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Something wrong with create Bill",
+        })
+      }
+    }
+    fetchData()
+   
   }
-  console.log(isPaid);
-  
   return (
     <div className="px-3 py-4">
       <Table>
@@ -218,7 +253,7 @@ const Calculator: React.FC<Props> = ({
 
       <div className="w-full py-4 flex gap-5">
         <Button
-          onClick={() => handleGoBack()}
+          onClick={() => router.push('/dashboard/reservations')}
           className="flex-1 py-6 text-[17px] text-white dark:text-white bg-red-1 dark:bg-red-1 hover:scale-95 transition-transform duration-150 ease-linear"
         >
           Quay lại
@@ -344,7 +379,7 @@ const Calculator: React.FC<Props> = ({
               </DialogClose>
               <DialogClose asChild>
                 <Button
-                onClick={()=> router.push('/dashboard/reservations/completedBill/1')}
+                onClick={()=> router.push('/dashboard/reservations/completedBill/'+ reservation_id)}
                 className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
               text-white dark:text-white hover:scale-90 transition-all ease-in"
                 >

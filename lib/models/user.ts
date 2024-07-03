@@ -18,7 +18,8 @@ const userSchame = new mongoose.Schema({
         type: String
     },
     address: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: "address",
     },
     gender: {
         type: String

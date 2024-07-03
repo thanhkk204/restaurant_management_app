@@ -15,10 +15,10 @@ export const GET = async (req: NextRequest, {params}: {params: {id:string}}) => 
 
      if(tableDetail.status === "ISBOOKED"){
           await address.find({})
-          reservationDetail = await reservation.findOne({table_id: table_id, status: "RESERVED"}).populate('addres_id')
+          reservationDetail = await reservation.findOne({table_id: table_id, status: "RESERVED"}).populate('addres_id').populate('user_id')
           return NextResponse.json({reservationDetail}, {status: 201})
      }else if(tableDetail.status === "ISSERVING"){
-          reservationDetail = await reservation.findOne({table_id: table_id, status: "SEATED"}).populate('addres_id')
+          reservationDetail = await reservation.findOne({table_id: table_id, status: "SEATED"}).populate('addres_id').populate('user_id')
           return NextResponse.json({reservationDetail}, {status: 201})
      }
    } catch (error) {

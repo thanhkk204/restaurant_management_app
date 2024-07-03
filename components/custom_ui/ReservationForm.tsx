@@ -362,9 +362,9 @@ export default function ReservationForm({ reservation, table_id }: Props) {
                 data-testid="loader"
               />
             ) : reservation ? (
-              "Cập Nhật"
+              "Cập nhật"
             ) : (
-              "Thêm mới"
+              "Đặt bàn"
             )}
           </Button>
 

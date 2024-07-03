@@ -5,6 +5,7 @@ const invoiceSchame = new mongoose.Schema(
     reservation_id: {
       type: mongoose.Schema.ObjectId,
       ref: "reservation",
+      required: true
     },
     user_id: {
         type: mongoose.Schema.ObjectId,
@@ -16,7 +17,6 @@ const invoiceSchame = new mongoose.Schema(
     },
     time_to_fisnish: {
       type: String,
-      required: true,
     },
     discount_id: {
         type: mongoose.Schema.ObjectId,

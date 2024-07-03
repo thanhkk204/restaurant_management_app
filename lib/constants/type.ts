@@ -1,4 +1,5 @@
 import { DishType } from "@/app/(admin)/dashboard/inventories/page"
+import { TableType } from "@/app/(admin)/dashboard/reservations/page"
 
 enum PaymentMethod {
     CASHPAYMENT = "CASHPAYMENT",
@@ -11,10 +12,25 @@ enum ReservationStatus {
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
 }
+export type AddressType = {
+    _id: string,
+    province: string,
+    district: string,
+    ward: string,
+    detailAddress: string,
+}
+export type UserType = {
+    email: string,
+    password: string,
+    userName: string,
+    image: string,
+    address: AddressType,
+    gender: string,
+}
 export type ReservationType = {
     _id: string,
-    table_id: string,
-    user_id: string,
+    table_id: TableType,
+    user_id: UserType,
     userName: string,
     addres_id: AddressType,
     party_size: number,
@@ -25,13 +41,14 @@ export type ReservationType = {
     startTime: string,
     endTime: string
 }
-export type AddressType = {
-    _id: string,
-    province: string,
-    district: string,
-    ward: string,
-    detailAddress: string,
+export type InvoiceType = {
+    reservation_id: string,
+    user_id: string,
+    time_to_fisnish: string,
+    discount_id: string,
+    total_amount: Number
 }
+
 export type OrderedFoodType = {
     _id: string,
     dish_id: DishType,
