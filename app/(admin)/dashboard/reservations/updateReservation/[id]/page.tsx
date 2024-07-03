@@ -41,6 +41,8 @@ export default function CreateReservation({params}: {params: {id:string}}) {
     }
     fetData()
   },[table_id])
+  
+  console.log(reservation?.table_id.number_of_seats)
   return (
     <section className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
         <div className="w-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md flex justify-start">
@@ -54,7 +56,7 @@ export default function CreateReservation({params}: {params: {id:string}}) {
       )}
        <div className='w-full lg:w-1/2 px-3 py-4 md:px-6 md:py-6'>
            {
-            reservation && !loading && <ReservationForm reservation={reservation} table_id={table_id}/> 
+            reservation && !loading && <ReservationForm reservation={reservation} table_id={table_id} numberOfSeats={reservation.table_id.number_of_seats}/> 
            }
           </div>
         </div>

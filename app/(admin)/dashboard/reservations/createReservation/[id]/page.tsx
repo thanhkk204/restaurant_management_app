@@ -5,6 +5,7 @@ import { ReservationType } from "@/lib/constants/type"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
 import React, { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners"
+import { TableType } from "../../page"
 
 export default function CreateReservation({
   params,
@@ -13,11 +14,40 @@ export default function CreateReservation({
 }) {
   const { id: table_id } = params
   const [loading, setLoading] = useState<boolean>(false)
+  const [numberOfSeats, setNumberOfSeats] = useState<number>()
 
   // Get values were passed in context
   const value = useDashBoardContext()
   if (!value) return
   const { sideBarColor } = value
+  useEffect(() => {
+    const fetData = async () => {
+      setLoading(true)
+      try {
+        const res = await fetch("/api/reservations/tables/"+ table_id, {
+          method: "GET",
+        })
+
+        if (!res.ok) {
+          return toast({
+            variant: "destructive",
+            title: "Can't get table detail!",
+          })
+        }
+        const data = await res.json()
+        const table = data.table as TableType
+        setNumberOfSeats(table.number_of_seats)
+        setLoading(false)
+      } catch (error) {
+        setLoading(false)
+        toast({
+          variant: "destructive",
+          title: "Something wrong with get detail table in create reservation!",
+        })
+      }
+    }
+    fetData()
+  }, [])
   return (
     <section className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
       <div className="w-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md flex justify-start">
@@ -30,7 +60,7 @@ export default function CreateReservation({
               />
             </div>
           )}
-          {!loading && <ReservationForm table_id={table_id} />}
+          {!loading && table_id && numberOfSeats && <ReservationForm table_id={table_id} numberOfSeats={numberOfSeats}/>}
         </div>
       </div>
     </section>

@@ -148,8 +148,8 @@ const Calculator: React.FC<Props> = ({
       try {
         const res = await fetch("/api/reservations/completedBill", {
           method: "POST",
-          body: JSON.stringify({reservation_id, total_amount: totalPrice})
-        })
+          body: JSON.stringify({reservation_id, total_money: totalPrice, paid_money: paidMoney })
+        }) 
         const data = await res.json()
         if(res.status === 401){
           return toast({

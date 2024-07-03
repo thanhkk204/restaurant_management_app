@@ -27,7 +27,6 @@ export default function CollectionsPage() {
   if (!value) return
   const { sideBarColor } = value
 
-  // const {data, loading, error} = useGetData<CollectionType[]>('/api/inventories/collections')
   useEffect(() => {
     const fetData = async () => {
       setLoading(true)

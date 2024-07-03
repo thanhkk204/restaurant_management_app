@@ -3,10 +3,12 @@ import { CSS } from "@dnd-kit/utilities"
 import { TableType } from '../page'
 import { Button } from '@/components/ui/button'
 import { UsersRound } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
+import { ReservationType } from '@/lib/constants/type'
+import TimeInterval from '@/components/custom_ui/TimeInterval'
 
 type InputValue = {
   number_of_seats: number,
@@ -27,6 +29,7 @@ export default function Item({
   deleteTable,
   updateTable
 }:Props ) {
+  // input for updating
   const [inputValue, setInputValue] = useState<InputValue>({
     number_of_seats: table.number_of_seats,
     name: table.name,
@@ -34,7 +37,45 @@ export default function Item({
   })
   const [editModelForTextInput, setEditModelForTextInput] = useState<boolean>(false)
   const [editModleForNumberInput, setEditModleForNumberInput] = useState<boolean>(false)
+  const [reservationStartTime, setReservationStartTime] = useState<string>('')
+  const [getTimeLoading, setGetTimeLoading] = useState<boolean>(false)
   const router = useRouter()
+  
+  // Get start time for interval timer
+  const getReservationDetail = async () => {
+    setGetTimeLoading(true)
+    try {
+      const res = await fetch(
+        "/api/reservations/seatedReservation/" +
+          table._id,
+        {
+          method: "GET",
+        }
+      )
+      const data = await res.json()
+      const reservationDetail = data.reservationDetail as ReservationType
+   
+      if (!res.ok) {
+       return toast({
+          variant: "destructive",
+          title: "Something went wrong with get time interval!",
+        })
+      }
+      setReservationStartTime(reservationDetail.startTime)
+      setGetTimeLoading(false)
+    } catch (error) {
+      setGetTimeLoading(false)
+      toast({
+        variant: "destructive",
+        title: "Something went wrong with get time interval!",
+      })
+    }
+  }
+  useEffect(()=>{
+     if (table.status === 'ISSERVING') {
+      getReservationDetail()
+     }
+  },[table])
 const {
   setNodeRef,
    transform,
@@ -73,6 +114,12 @@ const {
   }
   const handleChangeInput = (e : any)=>{
     if(e.target.name === 'number_of_seats'){
+       if(parseInt(e.target.value) < 1){
+        return toast({
+          variant: "destructive",
+          title: "At least 1"
+        })
+       }
       return setInputValue(pre=>({
         ...pre,
         [e.target.name]: parseInt(e.target.value)
@@ -248,7 +295,10 @@ const {
         className='absolute z-30 inset-0 top-0 left-0 w-full h-full bg-blur_bg dark:bg-blur_bg flex items-center justify-center rounded-md'>
         {
           table.status === "ISSERVING" ? 
-          <h1 className='font-semibold text-[19px] text-light-warning dark:text-dark-warning'>Đang phục vụ</h1>:
+          (<div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
+            <h1 className='font-semibold text-[19px] text-light-warning dark:text-dark-warning'>Đang phục vụ </h1>
+           {getTimeLoading ? <div>00:00:00</div>: <TimeInterval reservationStartTime={reservationStartTime}/>} 
+          </div>):
           <h1 className='font-semibold text-[19px] text-light-error dark:text-dark-error'>Đã được đặt</h1> 
         }
         </div>

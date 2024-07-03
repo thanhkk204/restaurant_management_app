@@ -11,9 +11,13 @@ const invoiceSchame = new mongoose.Schema(
         type: mongoose.Schema.ObjectId,
         ref: "user",
     },
-    total_amount: {
+    total_money: {
       type: Number,
       required: true,
+    },
+    paid_money: {
+      type: Number,
+      required: true
     },
     time_to_fisnish: {
       type: String,

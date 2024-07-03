@@ -40,13 +40,13 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-const formSchema = z.object({
+const formSchemaFunc = (maxSeats: number) => z.object({
   userName: z.string().min(2).max(50),
   detailAddress: z.string().min(2).max(50),
   province: z.string().nonempty("Please select a province"),
   district: z.string().nonempty("Please select a district"),
   ward: z.string().nonempty("Please select a ward"),
-  party_size: z.number().min(1),
+  party_size: z.number().min(1).max(maxSeats, { message: `Number must be smaller than seats of table: ${maxSeats}` }),
   payment_method: z.enum(["CASHPAYMENT", "BANKPAYMENT"], {
     required_error: "You need to select a notification type",
   }),
@@ -54,9 +54,10 @@ const formSchema = z.object({
 type Props = {
   reservation?: ReservationType
   table_id: string
+  numberOfSeats: number
 }
 // Form reusable for update and add reservation
-export default function ReservationForm({ reservation, table_id }: Props) {
+export default function ReservationForm({ reservation, table_id, numberOfSeats}: Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const [provinces, setProvinces] = useState<ProvinceType[]>([])
   const [districts, setDistricts] = useState<DistricType[]>([])
@@ -69,6 +70,7 @@ export default function ReservationForm({ reservation, table_id }: Props) {
   if (!value) return
   const { sideBarColor } = value
   // 1. Define your form.
+  const formSchema = formSchemaFunc(numberOfSeats)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

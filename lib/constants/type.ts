@@ -46,7 +46,8 @@ export type InvoiceType = {
     user_id: string,
     time_to_fisnish: string,
     discount_id: string,
-    total_amount: Number
+    total_money: Number,
+    paid_money: Number
 }
 
 export type OrderedFoodType = {

@@ -8,8 +8,8 @@ import { NextRequest, NextResponse } from "next/server"
 
 
 export const POST = async (req: NextRequest) => {
-    const {reservation_id, total_amount} = await req.json()
-    if(! reservation_id  || !total_amount) return NextResponse.json({message: "All data fields are required"}, {status: 401})
+    const {reservation_id, total_money, paid_money} = await req.json()
+    if(! reservation_id  || !total_money || !paid_money) return NextResponse.json({message: "All data fields are required"}, {status: 401})
     await connectToDB()
    try {
     //  Check whether reservation was paid
@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
     const newReservation = await reservation.findByIdAndUpdate({_id: reservation_id},{status: "COMPLETED"}, {new: true}) as ReservationType
     const newTable = await table.findByIdAndUpdate({_id: newReservation.table_id},{status: "AVAILABLE"}, {new: true}) as TableType
     
-    const completedBill = await invoice.create({reservation_id, total_amount})
+    const completedBill = await invoice.create({reservation_id, total_money, paid_money})
    return NextResponse.json({completedBill}, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)

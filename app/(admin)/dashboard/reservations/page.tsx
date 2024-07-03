@@ -27,13 +27,18 @@ import { FadeLoader } from "react-spinners"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
 import { useGetData } from "@/hooks/useGetdata"
 
+enum TableEnum {
+  AVAILABLE = 'AVAILABLE',
+  ISSERVING = 'ISSERVING', 
+  ISBOOKED = 'ISBOOKED', 
+}
 export type TableType = {
   _id: string
   location_id: string
   name: string
   number_of_seats: number
   order: number
-  status: string
+  status: TableEnum
 }
 
 export type LocationType = {

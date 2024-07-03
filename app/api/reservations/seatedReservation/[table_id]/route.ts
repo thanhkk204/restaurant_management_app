@@ -6,8 +6,8 @@ import table from "@/lib/models/table"
 import { NextRequest, NextResponse } from "next/server"
 
 
-export const GET = async (req: NextRequest, {params}: {params: {id:string}}) => {
-    const table_id = params.id
+export const GET = async (req: NextRequest, {params}: {params: {table_id:string}}) => {
+    const {table_id} = params
     if(!table_id) return NextResponse.json({message: "Missing table id"}, {status: 201})
    try {
      const tableDetail = await table.findById(table_id) as TableType
@@ -15,10 +15,10 @@ export const GET = async (req: NextRequest, {params}: {params: {id:string}}) => 
 
      if(tableDetail.status === "ISBOOKED"){
           await address.find({})
-          reservationDetail = await reservation.findOne({table_id: table_id, status: "RESERVED"}).populate('addres_id').populate('user_id')
+          reservationDetail = await reservation.findOne({table_id: table_id, status: "RESERVED"}).populate('addres_id').populate('user_id').populate('table_id')
           return NextResponse.json({reservationDetail}, {status: 201})
      }else if(tableDetail.status === "ISSERVING"){
-          reservationDetail = await reservation.findOne({table_id: table_id, status: "SEATED"}).populate('addres_id').populate('user_id')
+          reservationDetail = await reservation.findOne({table_id: table_id, status: "SEATED"}).populate('addres_id').populate('user_id').populate('table_id')
           return NextResponse.json({reservationDetail}, {status: 201})
      }
    } catch (error) {
