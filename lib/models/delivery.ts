@@ -1,26 +1,23 @@
 import mongoose from "mongoose"
 
-const reservationSchame = new mongoose.Schema(
+const deliverySchame = new mongoose.Schema(
   {
-    table_id: {
-      type: mongoose.Schema.ObjectId,
-      ref: "table",
+    userName: {
+        type: String,
+        required: true
+    },
+    phoneNumber: {
+        type: Number,
+        required: true
     },
     user_id: {
       type: mongoose.Schema.ObjectId,
       ref: "user",
     },
-    userName: {
-        type: String
-    },
     addres_id: {
       type: mongoose.Schema.ObjectId,
       ref: "address"
     },
-    party_size: {
-        type: Number,
-        default: 1,
-      },
     dish_id: [
       {
         type: mongoose.Schema.ObjectId,
@@ -32,6 +29,14 @@ const reservationSchame = new mongoose.Schema(
         enum: ["CASHPAYMENT", "BANKPAYMENT"],
         default: "CASHPAYMENT",
     },
+    service_id: {
+        type: Number,
+        required: true
+    },
+    service_type_id: {
+        type: Number,
+        required: true
+    },
     status: {
       type: String,
       enum: ["RESERVED", "SEATED", "COMPLETED", "CANCELED"],
@@ -41,17 +46,10 @@ const reservationSchame = new mongoose.Schema(
         type: Number,
         default: 0
     },
-    startTime: {
-        type: Date,
-        default: Date.now
-    },
-    endTime: {
-        type: Date,
-    }
   },
   {
     timestamps: true,
   }
 )
 
-export default mongoose.models.reservation || mongoose.model("reservation", reservationSchame)
+export default mongoose.models.delivery || mongoose.model("delivery", deliverySchame)

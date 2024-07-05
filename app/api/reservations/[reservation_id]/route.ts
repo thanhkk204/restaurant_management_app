@@ -18,8 +18,8 @@ const getLocation = async <T>(url: string): Promise<T> =>{
    }
 }
 
-export const GET = async (req: NextRequest, {params}: {params: {id:string}}) => {
-    const reservation_id = params.id
+export const GET = async (req: NextRequest, {params}: {params: {reservation_id:string}}) => {
+    const {reservation_id} = params
     if(!reservation_id) return NextResponse.json({message: "Missing reservation_id"}, {status: 401})
       await connectToDB()
    try {
@@ -56,8 +56,8 @@ export const GET = async (req: NextRequest, {params}: {params: {id:string}}) => 
    }
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { id: string }}){
-   const {id} = params
+export async function PATCH(req: NextRequest, { params }: { params: { reservation_id: string }}){
+   const {reservation_id} = params
    const body = await req.json()
    const {
       table_id,
@@ -69,13 +69,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       district, 
       ward 
      } = body
-   if(!id) return NextResponse.json({message: "There is no Id to update reservation"}, {status: 401})
+   if(!reservation_id) return NextResponse.json({message: "There is no Id to update reservation"}, {status: 401})
     if(!userName || !party_size || !payment_method || !detailAddress || !province || !district || !ward) return NextResponse.json({message: "All data are required"}, {status: 401})
 
 
    await connectToDB()
   try {
-  const newreservation: any= await reservation.findByIdAndUpdate({_id: id}, body, {new: true})
+  const newreservation: any= await reservation.findByIdAndUpdate({_id: reservation_id}, body, {new: true})
   return NextResponse.json({message: 'Update Successfully!', reservation: newreservation}, {status: 201})
   } catch (error) {
    console.log("Inventories_Error", error)

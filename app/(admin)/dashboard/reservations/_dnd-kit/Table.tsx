@@ -54,7 +54,6 @@ export default function Item({
       )
       const data = await res.json()
       const reservationDetail = data.reservationDetail as ReservationType
-   
       if (!res.ok) {
        return toast({
           variant: "destructive",
@@ -64,6 +63,7 @@ export default function Item({
       setReservationStartTime(reservationDetail.startTime)
       setGetTimeLoading(false)
     } catch (error) {
+      console.log('error', error)
       setGetTimeLoading(false)
       toast({
         variant: "destructive",

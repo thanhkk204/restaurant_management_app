@@ -12,9 +12,8 @@ export const GET = async (req: NextRequest, {params}: {params: {table_id:string}
    try {
      const tableDetail = await table.findById(table_id) as TableType
      let reservationDetail: ReservationType
-
+     await address.find({})
      if(tableDetail.status === "ISBOOKED"){
-          await address.find({})
           reservationDetail = await reservation.findOne({table_id: table_id, status: "RESERVED"}).populate('addres_id').populate('user_id').populate('table_id')
           return NextResponse.json({reservationDetail}, {status: 201})
      }else if(tableDetail.status === "ISSERVING"){

@@ -16,8 +16,10 @@ const TimeInterval: React.FC<TimeIntervalProps> = ({ reservationStartTime }) => 
       const hours: number = Math.floor(diff / (1000 * 60 * 60));
       const minutes: number = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds: number = Math.floor((diff % (1000 * 60)) / 1000);
-
-      setElapsedTime(`${hours}h ${minutes}m ${seconds}s`);
+      
+      const formatTime = (time: number) => time.toString().padStart(2, '0');
+      
+      setElapsedTime(`${formatTime(hours)} : ${formatTime(minutes)} : ${formatTime(seconds)}`);
     }, 1000);
 
     return () => clearInterval(interval); // Clear interval on component unmount

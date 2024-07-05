@@ -7,7 +7,6 @@ enum PaymentMethod {
 }
 enum ReservationStatus {
     RESERVED = "RESERVED",
-    DELIVERY = "DELIVERY",
     SEATED = "SEATED",
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
@@ -34,7 +33,7 @@ export type ReservationType = {
     userName: string,
     addres_id: AddressType,
     party_size: number,
-    dish_id: string[],
+    dish_id: OrderedFoodType[],
     payment_method: PaymentMethod,
     status: ReservationStatus,
     prepay: number,

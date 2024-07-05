@@ -10,6 +10,8 @@ import {
   ColumnFiltersState,
   getFilteredRowModel,
   VisibilityState,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
 } from "@tanstack/react-table"
 
 import {
@@ -40,6 +42,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Plus, Trash } from "lucide-react"
+import { DataTableToolbar } from "./DataTableToolBar"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -87,6 +90,10 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     // Row selection
     onRowSelectionChange: setRowSelection,
+    // adding
+    enableRowSelection: true,
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   })
   const hadleDeleteSelectedRows = async (e: any): Promise<void> => {
     const rows: any = table.getFilteredSelectedRowModel().rows
@@ -96,13 +103,13 @@ export function DataTable<TData, TValue>({
   }
 
   
-
+console.log("rows",table.getRowModel().rows?.length)
   return (
     <div>
       <div className="flex items-center justify-between">
         <div className="w-full flex items-center gap-5">
           <div className="flex items-center py-4">
-            <Input
+            {/* <Input
               placeholder="Filter title..."
               value={
                 (table.getColumn("title")?.getFilterValue() as string) ?? ""
@@ -111,8 +118,9 @@ export function DataTable<TData, TValue>({
                 table.getColumn("title")?.setFilterValue(event.target.value)
               }
               className="max-w-sm bg-light-bg dark:bg-dark-bg dark:focus:ring-offset-0 dark:focus-visible:ring-0 focus-visible:ring-0"
-            />
+            /> */}
           </div>
+          <DataTableToolbar table={table} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="bg-light-bg dark:bg-dark-bg">
