@@ -46,6 +46,29 @@ export default function InvoicePage() {
     }
     fetData()
   }, [])
+  const handleCreateGHN_Order = async (shipment_id: string)=>{
+    try {
+      const res = await fetch("/api/invoices/shipments/"+shipment_id, {
+        method: "POST",
+      })
+      if (!res.ok) {
+        return toast({
+          variant: "destructive",
+          title: "Can't create GHN order for this ship!",
+        })
+      }
+      const data = await res.json()
+      toast({
+        variant: "sucess",
+        title: data.message,
+      })
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong with create GHN order shipments!",
+      })
+    }
+  }
   return (
     <section>
       {loading && (
@@ -59,7 +82,8 @@ export default function InvoicePage() {
       {!loading && shipments && (
         <InvoiceDataTable
           columns={ShipmentColumn({
-            shipments
+            shipments,
+            handleCreateGHN_Order
           })}
           data={shipments}
         />

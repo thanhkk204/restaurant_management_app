@@ -14,6 +14,9 @@ const shipmentSchame = new mongoose.Schema(
         type: String,
         required: true
     },
+    note: {
+        type: String,
+    },
     user_id: {
       type: mongoose.Schema.ObjectId,
       ref: "user",

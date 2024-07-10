@@ -14,6 +14,7 @@ export const POST = async (req: NextRequest) => {
     const {
          orderType,
          userName,
+         note,
          phoneNumber,
          payment_method,
          orderedDishes,
@@ -44,6 +45,7 @@ export const POST = async (req: NextRequest) => {
        const newShipment = await shipment.create({
             userName,
             phoneNumber,
+            note,
             payment_method,
             service_id,
             service_type_id,

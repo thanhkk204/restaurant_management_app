@@ -29,6 +29,7 @@ export type ShipmentType = {
     user_id: UserType,
     userName: string,
     phoneNumber: string,
+    note: string,
     addres_id: AddressType,
     dish_id: OrderedFoodType[],
     payment_method: PaymentMethod,
