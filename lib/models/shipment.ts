@@ -1,16 +1,17 @@
 import mongoose from "mongoose"
 
-const deliverySchame = new mongoose.Schema(
+const shipmentSchame = new mongoose.Schema(
   {
     order_code: {
-      type: String
+      type: String,
+      default: null
     },
     userName: {
         type: String,
         required: true
     },
     phoneNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     user_id: {
@@ -49,10 +50,14 @@ const deliverySchame = new mongoose.Schema(
         type: Number,
         default: 0
     },
+    isPaidOnline: {
+        type: Boolean,
+        required: true
+    },
   },
   {
     timestamps: true,
   }
 )
 
-export default mongoose.models.delivery || mongoose.model("delivery", deliverySchame)
+export default mongoose.models.shipment || mongoose.model("shipment", shipmentSchame)

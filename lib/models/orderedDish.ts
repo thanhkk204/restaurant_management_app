@@ -9,6 +9,10 @@ const orderedDishSchame = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: 'reservation'
     },
+    shipment_id: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'shipment'
+    },
     quantity: {
         type: Number,
         default: 1,

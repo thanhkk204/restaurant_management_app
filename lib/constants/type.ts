@@ -11,6 +11,11 @@ enum ReservationStatus {
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
 }
+enum ShipmentStatus {
+    RESERVED = "RESERVED",
+    COMPLETED = "COMPLETED",
+    CANCELED = "CANCELED",
+}
 export type AddressType = {
     _id: string,
     province: string,
@@ -18,19 +23,27 @@ export type AddressType = {
     ward: string,
     detailAddress: string,
 }
-export type UserType = {
-    email: string,
-    password: string,
+export type ShipmentType = {
+    _id: string,
+    order_code: string,
+    user_id: UserType,
     userName: string,
-    image: string,
-    address: AddressType,
-    gender: string,
+    phoneNumber: string,
+    addres_id: AddressType,
+    dish_id: OrderedFoodType[],
+    payment_method: PaymentMethod,
+    status: ShipmentStatus,
+    service_id: number,
+    service_type_id: number,
+    prepay: number,
+    isPaidOnline: boolean
 }
 export type ReservationType = {
     _id: string,
     table_id: TableType,
     user_id: UserType,
     userName: string,
+    phoneNumber: string,
     addres_id: AddressType,
     party_size: number,
     dish_id: OrderedFoodType[],
@@ -48,11 +61,19 @@ export type InvoiceType = {
     total_money: Number,
     paid_money: Number
 }
-
+export type UserType = {
+    email: string,
+    password: string,
+    userName: string,
+    image: string,
+    address: AddressType,
+    gender: string,
+}
 export type OrderedFoodType = {
     _id: string,
     dish_id: DishType,
     reservation_id: string,
+    shipment_id: string,
     quantity: number,
     isOrderedOnline: boolean
 }

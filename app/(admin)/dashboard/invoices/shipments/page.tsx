@@ -1,17 +1,17 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
 import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
 
 import { FadeLoader } from "react-spinners"
-import { ReservationType } from "@/lib/constants/type"
-import { ReservationColumn } from "./_table/ReservationColumn"
+import { ShipmentType } from "@/lib/constants/type"
 import { InvoiceDataTable } from "@/components/paginationTable/InvoiceDataTable"
+import { ShipmentColumn } from "./_table/ShipmentColumn"
 
 
 export default function InvoicePage() {
-  const [reservations, setReservations] = useState<ReservationType[]>([])
+  const [shipments, setShipments] = useState<ShipmentType[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
@@ -24,23 +24,23 @@ export default function InvoicePage() {
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/reservations", {
+        const res = await fetch("/api/invoices/shipments", {
           method: "GET",
         })
         if (!res.ok) {
           return toast({
             variant: "destructive",
-            title: "Can't get any data for reservations!",
+            title: "Can't get any data for shipments!",
           })
         }
         const data = await res.json()
-        setReservations(data.reservations)
+        setShipments(data.shipments)
         setLoading(false)
       } catch (error) {
         setLoading(false)
         toast({
           variant: "destructive",
-          title: "Something wrong with get all reservations!",
+          title: "Something wrong with get all shipments!",
         })
       }
     }
@@ -56,12 +56,12 @@ export default function InvoicePage() {
           />
         </div>
       )}
-      {!loading && reservations && (
+      {!loading && shipments && (
         <InvoiceDataTable
-          columns={ReservationColumn({
-            reservations
+          columns={ShipmentColumn({
+            shipments
           })}
-          data={reservations}
+          data={shipments}
         />
       )}
     </section>

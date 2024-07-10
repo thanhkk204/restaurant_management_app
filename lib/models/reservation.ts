@@ -13,6 +13,9 @@ const reservationSchame = new mongoose.Schema(
     userName: {
         type: String
     },
+    phoneNumber: {
+        type: String
+    },
     addres_id: {
       type: mongoose.Schema.ObjectId,
       ref: "address"
