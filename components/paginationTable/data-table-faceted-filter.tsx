@@ -29,7 +29,10 @@ export function DataTableFacetedFilter<TData, TValue>({
   console.log('get', column?.getFilterValue())
   return (
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger 
+      className="bg-light-bg_2 dark:bg-dark-bg_2 py-5 px-3"
+      asChild 
+      >
         <Button variant="outline" size="sm" className="h-8 border-dashed">
           <Plus className="mr-2 h-4 w-4" />
           {title}
@@ -68,8 +71,12 @@ export function DataTableFacetedFilter<TData, TValue>({
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
+      <PopoverContent 
+        className="w-[250px] p-0"
+        align="start"
+      >
+        <Command
+        className=" bg-light-bg_2 dark:bg-dark-bg_2">
           <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>

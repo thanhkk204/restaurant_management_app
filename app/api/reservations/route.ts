@@ -1,6 +1,7 @@
 import { TableType } from "@/app/(admin)/dashboard/reservations/page";
 import { AddressType, DistricType, ProvinceType, ReservationType, WardType } from "@/lib/constants/type";
 import address from "@/lib/models/address";
+import orderedDish from "@/lib/models/orderedDish";
 import reservation from "@/lib/models/reservation";
 import table from "@/lib/models/table";
 import { connectToDB } from "@/lib/mongoDB";
@@ -49,16 +50,10 @@ export const POST = async (req: NextRequest) => {
 }
 
 export const GET = async (req: NextRequest) => {
-    const stt = req.nextUrl.searchParams.get("status")
    await connectToDB()
-   console.log(stt)
    try {
-    let reservations: ReservationType[];
-    if(stt === 'all'){
-         reservations = await reservation.find({}).sort({ createdAt: -1 }).populate('addres_id').populate('user_id').populate('table_id').populate('dish_id') as ReservationType[]
-    }else{
-         reservations = await reservation.find({status: stt}).sort({ createdAt: -1 }).populate('addres_id').populate('user_id').populate('table_id').populate('dish_id') as ReservationType[]
-    }
+    await orderedDish.find({})
+   const  reservations = await reservation.find({}).sort({ createdAt: -1 }).populate('addres_id').populate('user_id').populate('table_id').populate('dish_id') as ReservationType[]
    return NextResponse.json({reservations}, {status: 201})
    } catch (error) {
     console.log("Inventories_Error", error)

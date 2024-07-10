@@ -20,8 +20,8 @@ const NavigateLink = [
 ]
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="w-full flex flex-col lg:py-5 lg:px-5 md:gap-5  bg-light-bg_2 dark:bg-transparent rounded-lg">
-      <SubNavigate NavigateLink={NavigateLink}/>
+    <section className="w-full flex flex-col py-2 lg:py-5 px-2 lg:px-5 md:gap-5  bg-light-bg_2 dark:bg-transparent rounded-lg">
+      {/* <SubNavigate NavigateLink={NavigateLink}/> */}
       {children}
     </section>
   )

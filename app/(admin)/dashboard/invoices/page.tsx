@@ -9,11 +9,11 @@ import { FadeLoader } from "react-spinners"
 import { useGetData } from "@/hooks/useGetdata"
 import { ReservationType } from "@/lib/constants/type"
 import { ReservationColumn } from "./_table/ReservationColumn"
+import { InvoiceDataTable } from "@/components/paginationTable/InvoiceDataTable"
 
 
 export default function InvoicePage() {
   const [reservations, setReservations] = useState<ReservationType[]>([])
-  const [status, setStatus] = useState<string>('all')
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
@@ -26,7 +26,7 @@ export default function InvoicePage() {
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/reservations?status="+status, {
+        const res = await fetch("/api/reservations", {
           method: "GET",
         })
         if (!res.ok) {
@@ -104,52 +104,7 @@ export default function InvoicePage() {
   //   fetCategories()
   // }, [])
   // Add
-  const handleAddDish = () => {
-    router.push("/dashboard/inventories/add")
-  }
-  const handleUpdateDish = (id: string) => {
-    router.push("/dashboard/inventories/" + id)
-  }
   // Delete
-  const handleDeleteDishes = async (IdsArray: string[]) => {
-    //  There are two way to delete rows, 1: at DataTable component will task delete selected rows, 2: at Column component will task delete specific row
-    // All will be converted to string ids array
-    if (IdsArray.length <= 0) {
-      toast({
-        variant: "destructive",
-        title: "There is no selected item",
-      })
-      return
-    }
-    try {
-      const res = await fetch("/api/inventories/dishes", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(IdsArray),
-      })
-      if (!res.ok) {
-        toast({
-          variant: "destructive",
-          title: "Can't delete any dishes",
-        })
-      }
-      toast({
-        variant: "sucess",
-        title: "Successfully!",
-      })
-      const newDishes: DishType[] | undefined = dishes?.filter(
-        (item) => !IdsArray.includes(item._id)
-      )
-      setDishes(newDishes)
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Something wrong with delete dishes",
-      })
-    }
-  }
   return (
     <section>
       {loading && (
@@ -161,15 +116,11 @@ export default function InvoicePage() {
         </div>
       )}
       {!loading && reservations && (
-        <DataTable
+        <InvoiceDataTable
           columns={ReservationColumn({
-            handleDeleteDishes,
-            handleUpdateDish,
             reservations
           })}
           data={reservations}
-          onDelete={handleDeleteDishes}
-          onAdd={handleAddDish}
         />
       )}
     </section>

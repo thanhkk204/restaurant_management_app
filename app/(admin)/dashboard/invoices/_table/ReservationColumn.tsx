@@ -19,20 +19,12 @@ import { ReservationType } from "@/lib/constants/type"
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 type columProp = {
-  handleDeleteDishes: (idsArray: string[]) => void
-  handleUpdateDish: (id: string) => void
   reservations: ReservationType[]
 }
-export const ReservationColumn = ({ 
-  handleDeleteDishes,
-  handleUpdateDish,
+export const ReservationColumn = ({
   reservations
  }: columProp) => {
-  const handleDelete = (id: string) => {
-    // Convert specific id to array id to reusable handleDeleteDishes at parent component
-    const IdsArray = [id]
-    handleDeleteDishes(IdsArray)
-  }
+ 
   // Columns to be returned
   const columns: ColumnDef<ReservationType>[] = [
     {
@@ -85,7 +77,7 @@ export const ReservationColumn = ({
     {
       accessorKey: "party_size",
       header: "Số người",
-      size: 200, //starting column size
+      size: 100, //starting column size
     },
     {
       accessorKey: "payment_method",
@@ -110,60 +102,21 @@ export const ReservationColumn = ({
     {
       accessorKey: "status",
       header: "Trạng thái",
+      cell: ({row})=>{
+        const status = row.original.status
+        let stt: string;
+        let colorText: string;
+        status === "RESERVED" ? (stt = 'Đặt trước', colorText= ''):
+         status === "SEATED" ? (stt = 'Đang phục vụ', colorText= '#ff9800'):
+         status === "COMPLETED" ? (stt = 'Đã hoàn thành', colorText= '#fb6340'):
+         (stt = 'Đã hủy', colorText= '#f5365c')
+         
+        return <h4 style={{color: colorText, fontSize: '18px'}}>{stt}</h4>
+      },
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id))
     },
       size: 150, //starting column size
-    },
-    {
-      id: "features",
-      header: "Features",
-      cell: ({ row }) => (
-        <div className="flex items-center justify-center gap-5">
-        <Dialog>
-          <DialogTrigger>
-            <div
-              className="px-3 py-3 rounded-full cursor-pointer text-white bg-light-error dark:bg-dark-error hover:scale-90 transition-all ease-in"
-            >
-              <Trash />
-            </div>
-          </DialogTrigger>
-          <DialogContent className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text">
-            <DialogHeader>
-              <DialogTitle>Bạn có chắc muốn xóa không?</DialogTitle>
-            </DialogHeader>
-            <div className="flex items-center justify-end py-2 gap-5">
-              <DialogClose asChild>
-                <Button
-                  className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
-                text-white dark:text-white hover:scale-90 transition-all ease-in"
-                >
-                  Đóng
-                </Button>
-              </DialogClose>
-              <DialogClose>
-              <Button
-                onClick={() => handleDelete(row.original._id)}
-                className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
-              text-white dark:text-white hover:scale-90 transition-all ease-in"
-              >
-                Xóa
-              </Button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
-        <Button
-        onClick={()=> handleUpdateDish(row.original._id)}
-        >
-        Sửa
-        </Button>
-        </div>
-      ),
-      enableSorting: false,
-      enableHiding: false,
-      size: 100, //starting column size  size: 200, //starting column size
-      minSize: 50,
     },
   ]
   return columns

@@ -29,6 +29,18 @@ const config = {
         red:{
          1: '#f5365c'
         },
+        yellow:{
+         1: '#ff9800'
+        },
+        purple: {
+          1: '#5e72e4'
+        },
+        orange: {
+          1: '#fb6340'
+        },
+        gray: {
+          1: '#344767'
+        },
         blur_bg: 'rgba(0, 0, 0, 0.6)',
         blur_bg_white: 'rgba(255, 255, 255, 19%)',
         dark: {

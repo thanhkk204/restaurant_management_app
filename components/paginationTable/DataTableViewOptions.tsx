@@ -21,13 +21,13 @@ export function DataTableViewOptions<TData>({
         <Button
           variant="outline"
           size="sm"
-          className="ml-auto hidden h-8 lg:flex"
+          className="mx-2 hidden h-8 lg:flex py-5 px-3 bg-light-bg_2 dark:bg-dark-bg_2"
         >
           {/* <MixerHorizontalIcon className="mr-2 h-4 w-4" /> */}
-          View
+          Columns
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
+      <DropdownMenuContent align="end" className="w-[200px] bg-light-bg_2 dark:bg-dark-bg_2" >
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table

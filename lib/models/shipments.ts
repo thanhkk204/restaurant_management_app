@@ -2,6 +2,9 @@ import mongoose from "mongoose"
 
 const deliverySchame = new mongoose.Schema(
   {
+    order_code: {
+      type: String
+    },
     userName: {
         type: String,
         required: true
@@ -39,7 +42,7 @@ const deliverySchame = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["RESERVED", "SEATED", "COMPLETED", "CANCELED"],
+      enum: ["RESERVED", "COMPLETED", "CANCELED"],
       default: "RESERVED",
     },
     prepay: {
