@@ -74,8 +74,8 @@ export type UserType = {
 export type OrderedFoodType = {
     _id: string,
     dish_id: DishType,
-    reservation_id: string,
-    shipment_id: string,
+    reservation_id?: string,
+    shipment_id?: string,
     quantity: number,
     isOrderedOnline: boolean
 }
@@ -97,3 +97,11 @@ export type WardType = {
     ward_type: string
 }
 
+export type CartItem = {
+    dish_id: string;
+    title: string;
+    price: number;
+    image: string;
+    quantity: number;
+  }
+  

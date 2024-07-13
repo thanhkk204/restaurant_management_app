@@ -5,6 +5,8 @@ import { DishType } from '../(admin)/dashboard/inventories/page';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Check } from 'lucide-react';
+import { useCart } from '@/lib/context/CartProvider';
+import { CartItem } from '@/lib/constants/type';
 
 export default function page() {
   const [activedLink, setActiveLink] = useState<string>('all')
@@ -12,13 +14,19 @@ export default function page() {
   const {data: dishes, loading: dishLoading} = useGetData<DishType[]>("/api/inventories/dishes")
   const {data: categories, loading: categoryLoading} = useGetData<DishType[]>("/api/inventories/categories")
   // choose dish depend on category id
-  const categoryDishes = useMemo(()=>{
+  const categoryDishes= useMemo(()=>{
     if(activedLink === 'all'){
      return dishes
     }else if(dishes){
      return [...dishes?.filter(dish=> dish.category_id === activedLink)]
     }
   },[activedLink, dishes])
+  
+  // add to cart action
+  const { addItem} = useCart();
+  const handleAddToCart = (item: CartItem)=>{
+      addItem(item)
+  }
   return (
     <section className='w-full bg-light-bg_2 dark:bg-dark-bg_2 px-3 py-4 grid grid-cols-2 [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3'>
        <div className='hidden xl:block col-span-1 row-span-2 px-3 py-4'>
@@ -35,7 +43,8 @@ export default function page() {
         {
            categories?.map(item=>(
             <div
-            onClick={()=>setActiveLink(item._id)}
+            key={item._id}
+             onClick={()=>setActiveLink(item._id)}
              className={cn(
                 'w-full px-3 py-4 rounded-md cursor-pointer text-light-text dark:text-dark-text',
                 activedLink === item._id ? 'bg-dark-bg' : ''
@@ -51,6 +60,13 @@ export default function page() {
         categoryDishes?.map(dish=>
           <div 
            key={dish._id}
+           onClick={()=>handleAddToCart({
+            dish_id: dish._id,
+            title: dish.title,
+            image: dish.image[0],
+            price: dish.price,
+            quantity: 1,
+          })}
            className='relative rounded-md overflow-hidden cursor-pointer hover:scale-95 transition-transform duration-200 ease-in'
           >
             <Image 

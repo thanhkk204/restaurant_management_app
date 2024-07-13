@@ -68,7 +68,8 @@ type Props = {
         {
            categories?.map(item=>(
             <div
-            onClick={()=>setActiveLink(item._id)}
+            key={item._id}
+             onClick={()=>setActiveLink(item._id)}
              className={cn(
                 'w-full px-3 py-4 rounded-md cursor-pointer',
                 activedLink === item._id ? 'bg-dark-bg' : ''

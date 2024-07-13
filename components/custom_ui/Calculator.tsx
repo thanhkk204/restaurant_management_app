@@ -223,6 +223,7 @@ const Calculator: React.FC<Props> = ({
                   </button>
                 </div>
               </TableCell>
+              
               <TableCell className="text-right">
                 {formatCurrency(
                   orderedFood.quantity * orderedFood.dish_id.price

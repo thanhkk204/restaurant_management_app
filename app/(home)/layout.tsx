@@ -3,11 +3,10 @@ import "../globals.css"
 import { Metadata } from "next"
 import { Poppins } from "next/font/google"
 
-import ThemeToggle from "@/components/ThemeToggle"
-import Navbar from "@/components/layouts/admin/Navbar"
-import { Button } from "@/components/ui/button"
 import ThemeContextProvider from "@/lib/context/ThemeContextProvider"
 import NavbarHome from "@/components/layouts/home/Navbar"
+import { CartProvider } from "@/lib/context/CartProvider"
+import { cn } from "@/lib/utils"
 
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
@@ -31,14 +30,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeContextProvider>
-      <body className="w-full bg-light-bg dark:bg-dark-bg">
+        <CartProvider>
+      <body className={cn(
+        "w-full bg-light-bg dark:bg-dark-bg transition-colors ease-in-out duration-300",
+        popins.className
+      )}>
       <section className="w-full min-h-[80px] px-5 flex items-center justify-end">
         <NavbarHome/>
        </section>
-       <main className="max-w-screen-2xl mx-auto">
+       <main className="max-w-screen-2xl mx-auto px-3 py-2 md:py-12">
         {children}
        </main>
       </body>
+      </CartProvider>
       </ThemeContextProvider>
     </html>
   )

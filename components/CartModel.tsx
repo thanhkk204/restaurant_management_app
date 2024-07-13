@@ -1,3 +1,4 @@
+"use client"
 import {
   Sheet,
   SheetClose,
@@ -9,9 +10,49 @@ import {
 } from "@/components/ui/sheet"
 import { ShoppingCart } from "lucide-react"
 import { Button } from "./ui/button"
-
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableFooter,
+    TableHead,
+    TableHeader,
+    TableRow,
+  } from "@/components/ui/table"
+import { useCart } from "@/lib/context/CartProvider"
+import { formatCurrency } from "@/lib/utils"
+import { useRouter } from "next/navigation"
+import { useEffect, useMemo, useState } from "react"
+import Image from "next/image"
 const CartModel = () => {
-  return (
+    const [isClient, setIsClient]= useState<boolean>(false)
+    const router = useRouter()
+    // Get cart and method from cartProvider
+    const {cart, updateQuantity, removeItem} = useCart()
+    
+    useEffect(()=>{
+        setIsClient(true)
+    },[])
+
+    const handleMinus = (dish_id: string, quantitiy: number)=>{
+        if(quantitiy < 1) return
+        updateQuantity(dish_id, quantitiy)
+    }
+    const handlePlus = (dish_id: string, quantitiy: number)=>{
+        updateQuantity(dish_id, quantitiy)
+    }
+    const handleRemoveItem = (dish_id: string)=>{
+        removeItem(dish_id)
+    }
+    const totalPrice = cart.reduce((sum, item) => {
+        return sum + item.quantity * item.price
+      }, 0)
+
+    const totalOrderedFood =  cart.reduce((sum, item)=>{ return sum += item.quantity},0) 
+     
+
+    return (
     <Sheet>
       <SheetTrigger>
         <div className="relative">
@@ -21,18 +62,120 @@ const CartModel = () => {
             height={30}
             className="cursor-pointer"
           />
-          <p className="absolute top-0 translate-x-[-50%] translate-y-[-50%] text-white bg-red-1 font-semibold w-4 h-4 rounded-full flex items-center justify-center">
-            1
+         {
+            isClient && (
+            <p className="absolute top-0 translate-x-[-50%] translate-y-[-50%] text-white bg-red-1 font-medium w-5 h-5 rounded-full flex items-center justify-center">
+            {totalOrderedFood}
           </p>
+            )
+         }
         </div>
       </SheetTrigger>
-      <SheetContent className="w-full md:max-w-[540px] border-none">
-      <div className="bg-dark-bg_2 w-full h-screen p-6">
-
-        <SheetClose className="block md:hidden">
-             <Button>Đóng</Button>
+      <SheetContent className="w-full sm:max-w-full md:max-w-[640px] h-screen border-none">
+      <div className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text w-full h-screen p-6">
+         
+      <Table className="w-full">
+        <TableHeader>
+          <TableRow>
+            <TableHead className="min-w-[200px]">Tên</TableHead>
+            <TableHead className="max-w-[130px]">Số lượng</TableHead>
+            <TableHead className="text-right min-w-[135px] max-w-[150px]">
+              Thành tiền
+            </TableHead>
+            <TableHead className="max-w-[50px]"></TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {cart.map((orderedFood) => (
+            <TableRow key={orderedFood.dish_id}>
+              <TableCell className="font-medium">
+                <div className="flex items-center gap-2">
+                <Image
+                  width={50}
+                  height={50}
+                  alt="dishImage"
+                  src={orderedFood?.image}
+                />
+                <div className="flex flex-col leading-7 truncate">
+                  <h2>{orderedFood.title}</h2>
+                  <p className="text-light-textSoft dark:text-dark-textSoft font-thin">
+                    {formatCurrency(orderedFood.price)}
+                  </p>
+                </div>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() =>
+                      handleMinus(orderedFood.dish_id, orderedFood.quantity-1 )
+                    }
+                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadown"
+                  >
+                    {" "}
+                    -{" "}
+                  </button>
+                  <span>{orderedFood.quantity}</span>
+                  <button
+                    onClick={() =>
+                      handlePlus(orderedFood.dish_id, orderedFood.quantity+1)
+                    }
+                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadown"
+                  >
+                    {" "}
+                    +{" "}
+                  </button>
+                </div>
+              </TableCell>
+              
+              <TableCell className="text-right">
+                {formatCurrency(
+                  orderedFood.quantity * orderedFood.price
+                )}
+              </TableCell>
+              <TableCell className="text-right max-w-[50px]">
+                <button
+                  onClick={(e) => handleRemoveItem(orderedFood.dish_id)}
+                  className="text-red-500"
+                >
+                  X
+                </button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow className="bg-light-bg_2 dark:bg-dark-bg_2">
+            <TableCell colSpan={2} className="text-[20px] font-medium">
+              Tổng
+            </TableCell>
+            <TableCell colSpan={2} className="text-right">
+              {formatCurrency(totalPrice)}
+            </TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+        <div className="w-full flex items-center gap-5 py-3">
+        <SheetClose className="flex-1">
+         <button className="text-[18px] w-full px-3 py-3 rounded-lg bg-gradient-to-r from-orange-1 to-red-1 text-white dark:text-white 
+         hover:scale-95 transition-transform duration-150 ease-linear"
+        >
+            Đóng
+        </button>
         </SheetClose>
+
+         <SheetClose className="flex-1">
+         <Button 
+         onClick={()=>router.push('/checkoutForm')}
+         className=" text-[18px] w-full px-3 py-6 bg-gradient-to-r from-[#11c4ef] to-[#1187ef] text-white dark:text-white 
+         hover:scale-95 transition-transform duration-150 ease-linear"
+        >
+            Check out
+        </Button>
+         </SheetClose>
+        </div>
       </div>
+
       </SheetContent>
     </Sheet>
   )
