@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils"
 import "../../globals.css"
 import Navbar from "@/components/layouts/admin/Navbar"
 import Sidebar from "@/components/layouts/admin/Sidebar"
-import DashboardContextProvider from "@/lib/context/DashboardContextProvider"
 import { Toaster } from "@/components/ui/toaster"
+import ThemeContextProvider from "@/lib/context/ThemeContextProvider"
 
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
@@ -37,7 +37,7 @@ export default function RootLayout({
           popins.className
         )}
       >
-        <DashboardContextProvider>
+        <ThemeContextProvider>
         <main className="min-h-fit relative bg-light-bg text-light-text  dark:bg-dark-bg dark:text-dark-text transition ease-in-out duration-300">
           <div className="fixed w-full min-h-[250px] bg-[#11cdef] dark:bg-dark-bg "></div>
           <div className="flex">
@@ -52,7 +52,7 @@ export default function RootLayout({
             </div>
           </div>
         </main>
-        </DashboardContextProvider>
+        </ThemeContextProvider>
         <Toaster />
       </body>
     </html>

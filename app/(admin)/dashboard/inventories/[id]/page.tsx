@@ -3,22 +3,17 @@ import { toast } from "@/components/ui/use-toast"
 import { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners"
 
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { DishType } from "../page"
 import DishForm from "@/components/custom_ui/DishForm"
-export default function UpdateDish({
-  params,
-}: {
-  params: { id: string }
-}) {
+export default function UpdateDish({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState<boolean>(false)
   const [dish, setDish] = useState<DishType | null>(null)
   const { id } = params
-  console.log(dish);
-  
+  console.log(dish)
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   useEffect(() => {

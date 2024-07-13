@@ -2,13 +2,12 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { FadeLoader } from "react-spinners"
 import { ShipmentType } from "@/lib/constants/type"
 import { InvoiceDataTable } from "@/components/paginationTable/InvoiceDataTable"
 import { ShipmentColumn } from "./_table/ShipmentColumn"
-
 
 export default function InvoicePage() {
   const [shipments, setShipments] = useState<ShipmentType[]>([])
@@ -16,10 +15,10 @@ export default function InvoicePage() {
   const router = useRouter()
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
-// Get All reservation
+  // Get All reservation
   useEffect(() => {
     const fetData = async () => {
       setLoading(true)
@@ -46,9 +45,9 @@ export default function InvoicePage() {
     }
     fetData()
   }, [])
-  const handleCreateGHN_Order = async (shipment_id: string)=>{
+  const handleCreateGHN_Order = async (shipment_id: string) => {
     try {
-      const res = await fetch("/api/invoices/shipments/"+shipment_id, {
+      const res = await fetch("/api/invoices/shipments/" + shipment_id, {
         method: "POST",
       })
       if (!res.ok) {
@@ -83,7 +82,7 @@ export default function InvoicePage() {
         <InvoiceDataTable
           columns={ShipmentColumn({
             shipments,
-            handleCreateGHN_Order
+            handleCreateGHN_Order,
           })}
           data={shipments}
         />
@@ -91,4 +90,3 @@ export default function InvoicePage() {
     </section>
   )
 }
-

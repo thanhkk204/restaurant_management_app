@@ -1,28 +1,26 @@
 "use client"
 import { Switch } from "@/components/ui/switch"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import React, { useEffect, useState } from "react"
 
 export default function ThemeToggle() {
   const [darkMode, setDarkMode] = useState<boolean>(false)
 
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
-  const {setSideBarType } = value
-  
+  const { setSideBarType } = value
+
   useEffect(() => {
-    if (
-      window.localStorage.getItem('theme') === 'dark'
-    ) {
+    if (window.localStorage.getItem("theme") === "dark") {
       document.documentElement.classList.add("dark")
       setDarkMode(true)
       // set state in useContext to change sideBar color in sideBar model
-      setSideBarType('dark')
+      setSideBarType("dark")
     } else {
       document.documentElement.classList.remove("dark")
       setDarkMode(false)
-      setSideBarType('light')
+      setSideBarType("light")
     }
   }, [darkMode])
 
@@ -36,8 +34,5 @@ export default function ThemeToggle() {
       window.localStorage.setItem("theme", "dark")
     }
   }
-  return <Switch
-  checked={darkMode} 
-  onCheckedChange={handleChecked} 
-  />
+  return <Switch checked={darkMode} onCheckedChange={handleChecked} />
 }

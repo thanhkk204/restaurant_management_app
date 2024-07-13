@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { Textarea } from "@/components/ui/textarea"
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
@@ -40,33 +40,44 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-const formSchemaFunc = (maxSeats: number) => z.object({
-  userName: z.string().min(2).max(50),
-  detailAddress: z.string().min(2).max(50),
-  province: z.string().nonempty("Please select a province"),
-  district: z.string().nonempty("Please select a district"),
-  ward: z.string().nonempty("Please select a ward"),
-  party_size: z.number().min(1).max(maxSeats, { message: `Number must be smaller than seats of table: ${maxSeats}` }),
-  payment_method: z.enum(["CASHPAYMENT", "BANKPAYMENT"], {
-    required_error: "You need to select a notification type",
-  }),
-})
+const formSchemaFunc = (maxSeats: number) =>
+  z.object({
+    userName: z.string().min(2).max(50),
+    detailAddress: z.string().min(2).max(50),
+    province: z.string().nonempty("Please select a province"),
+    district: z.string().nonempty("Please select a district"),
+    ward: z.string().nonempty("Please select a ward"),
+    party_size: z
+      .number()
+      .min(1)
+      .max(maxSeats, {
+        message: `Number must be smaller than seats of table: ${maxSeats}`,
+      }),
+    payment_method: z.enum(["CASHPAYMENT", "BANKPAYMENT"], {
+      required_error: "You need to select a notification type",
+    }),
+  })
 type Props = {
   reservation?: ReservationType
   table_id: string
   numberOfSeats: number
 }
 // Form reusable for update and add reservation
-export default function ReservationForm({ reservation, table_id, numberOfSeats}: Props) {
+export default function ReservationForm({
+  reservation,
+  table_id,
+  numberOfSeats,
+}: Props) {
   const [loading, setLoading] = useState<boolean>(false)
   const [provinces, setProvinces] = useState<ProvinceType[]>([])
   const [districts, setDistricts] = useState<DistricType[]>([])
   const [wards, setWards] = useState<WardType[]>([])
-  const [createdReservation, setCreatedReservation] = useState<ReservationType | null>(null)
+  const [createdReservation, setCreatedReservation] =
+    useState<ReservationType | null>(null)
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   // 1. Define your form.
@@ -75,7 +86,7 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
     resolver: zodResolver(formSchema),
     defaultValues: {
       userName: reservation ? reservation?.userName : "",
-      detailAddress: reservation ? reservation.addres_id.detailAddress :"",
+      detailAddress: reservation ? reservation.addres_id.detailAddress : "",
       district: reservation ? reservation.addres_id.district : "",
       province: reservation ? reservation.addres_id.province : "",
       ward: reservation ? reservation.addres_id.ward : "",
@@ -86,7 +97,7 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
   // re-render when form property change
   const selectedProvince = form.watch("province")
   const selectedDistrict = form.watch("district")
-  
+
   // fetch provinces
   useEffect(() => {
     const fetData = async () => {
@@ -131,7 +142,7 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
       setWards([])
     }
   }, [selectedDistrict, form.setValue])
-   
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
     const url = reservation
@@ -141,10 +152,10 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
     try {
       const res = await fetch(url, {
         method: reservation ? "PATCH" : "POST",
-        body: JSON.stringify({...values, table_id}),
+        body: JSON.stringify({ ...values, table_id }),
       })
       if (!res.ok) {
-       return toast({
+        return toast({
           variant: "destructive",
           title: reservation
             ? "Can't update reservation"
@@ -176,8 +187,10 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
     form.reset()
   }
   function handleOrderedMenu() {
-    const reservation_id = createdReservation ? createdReservation._id : reservation?._id
-   router.push("/dashboard/reservations/orderedFood/" + reservation_id)
+    const reservation_id = createdReservation
+      ? createdReservation._id
+      : reservation?._id
+    router.push("/dashboard/reservations/orderedFood/" + reservation_id)
   }
   return (
     <Form {...form}>
@@ -197,7 +210,7 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
             )
           }}
         />
-       
+
         <div className="flex flex-col md:flex-row gap-5">
           <FormField
             control={form.control}
@@ -206,14 +219,19 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
               <FormItem className="flex-1">
                 <FormLabel>Tỉnh/Thành phố</FormLabel>
                 <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                <Select defaultValue={field.value} onValueChange={(value) => field.onChange(value)}>
+                  <Select
+                    defaultValue={field.value}
+                    onValueChange={(value) => field.onChange(value)}
+                  >
                     <SelectTrigger className="flex-1 bg-transparent dark:bg-transparent">
                       <SelectValue placeholder="Tỉnh/Thành phố" />
                     </SelectTrigger>
-                    
+
                     <SelectContent className="bg-light-bg dark:bg-dark-bg">
                       <SelectGroup>
-                      <SelectLabel className="font-extrabold">Tỉnh/Thành phố</SelectLabel>
+                        <SelectLabel className="font-extrabold">
+                          Tỉnh/Thành phố
+                        </SelectLabel>
                         {provinces.map((item, index) => (
                           <SelectItem key={index} value={item.province_id}>
                             {item.province_name}
@@ -235,13 +253,18 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
               <FormItem className="flex-1">
                 <FormLabel>Huyện</FormLabel>
                 <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                  <Select defaultValue={field.value} onValueChange={(value) => field.onChange(value)}>
+                  <Select
+                    defaultValue={field.value}
+                    onValueChange={(value) => field.onChange(value)}
+                  >
                     <SelectTrigger className="flex-1 bg-transparent dark:bg-transparent">
                       <SelectValue placeholder="Huyện" />
                     </SelectTrigger>
                     <SelectContent className="bg-light-bg dark:bg-dark-bg">
                       <SelectGroup>
-                      <SelectLabel className="font-extrabold">Huyện</SelectLabel>
+                        <SelectLabel className="font-extrabold">
+                          Huyện
+                        </SelectLabel>
                         {districts.map((item, index) => (
                           <SelectItem key={index} value={item.district_id}>
                             {item.district_name}
@@ -262,13 +285,16 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
               <FormItem className="flex-1">
                 <FormLabel>Xã</FormLabel>
                 <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                <Select defaultValue={field.value} onValueChange={(value) => field.onChange(value)}>
+                  <Select
+                    defaultValue={field.value}
+                    onValueChange={(value) => field.onChange(value)}
+                  >
                     <SelectTrigger className="bg-transparent dark:bg-transparent">
                       <SelectValue placeholder="Xã" />
                     </SelectTrigger>
                     <SelectContent className="bg-light-bg dark:bg-dark-bg">
                       <SelectGroup>
-                      <SelectLabel className="font-extrabold">Xã</SelectLabel>
+                        <SelectLabel className="font-extrabold">Xã</SelectLabel>
                         {wards.map((item, index) => (
                           <SelectItem key={index} value={item.ward_id}>
                             {item.ward_name}
@@ -291,7 +317,7 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
             <FormItem>
               <FormLabel>Địa chỉ chi tiết</FormLabel>
               <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                <Textarea  placeholder="Customer's address" {...field} />
+                <Textarea placeholder="Customer's address" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -379,13 +405,14 @@ export default function ReservationForm({ reservation, table_id, numberOfSeats}:
           </Button>
 
           <Button
-            onClick={()=>handleOrderedMenu()}
+            onClick={() => handleOrderedMenu()}
             type="button"
             className={cn(
               "font-medium text-[16px]",
-              (reservation && reservation?.status === "SEATED") || (createdReservation && createdReservation.status === "SEATED")
-              ? "opacity-100" 
-              : "opacity-55 pointer-events-none"
+              (reservation && reservation?.status === "SEATED") ||
+                (createdReservation && createdReservation.status === "SEATED")
+                ? "opacity-100"
+                : "opacity-55 pointer-events-none"
             )}
           >
             Chọn món

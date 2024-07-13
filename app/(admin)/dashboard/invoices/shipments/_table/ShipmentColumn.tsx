@@ -104,6 +104,7 @@ export const ShipmentColumn = ({
         let stt: string;
         let colorText: string;
         status === "RESERVED" ? (stt = 'Đặt trước', colorText= ''):
+        status === "DELIVERING" ? (stt = 'Đang giao', colorText= '#11cdef'):
          status === "COMPLETED" ? (stt = 'Đã hoàn thành', colorText= '#fb6340'):
          (stt = 'Đã hủy', colorText= '#f5365c')
          

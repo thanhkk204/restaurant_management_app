@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners"
 
 import { CollectionType } from "../page"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import CollectionForm from "@/components/custom_ui/CollectionForm"
 export default function UpdateCollection({
   params,
@@ -16,7 +16,7 @@ export default function UpdateCollection({
   const { id } = params
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   useEffect(() => {

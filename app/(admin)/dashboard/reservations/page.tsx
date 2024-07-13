@@ -24,13 +24,13 @@ import Item from "./_dnd-kit/Table"
 import { toast } from "@/components/ui/use-toast"
 import Location from "./_dnd-kit/Location"
 import { FadeLoader } from "react-spinners"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { useGetData } from "@/hooks/useGetdata"
 
 enum TableEnum {
-  AVAILABLE = 'AVAILABLE',
-  ISSERVING = 'ISSERVING', 
-  ISBOOKED = 'ISBOOKED', 
+  AVAILABLE = "AVAILABLE",
+  ISSERVING = "ISSERVING",
+  ISBOOKED = "ISBOOKED",
 }
 export type TableType = {
   _id: string
@@ -60,7 +60,7 @@ export default function DnDPage() {
   const [numberOfTable, setNumberOfTable] = useState<number>()
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   // Fetch all locations
@@ -194,14 +194,12 @@ export default function DnDPage() {
           title: data.message,
         })
         // After updating table order trigger useState for fetching newest data
-        
-      //  Update useState currently to re-render
-        setLocations(pre => {
-          if(pre === null) return null
-          return ([
-            ...pre.filter(item=> item._id !== _id)
-          ])
-       })
+
+        //  Update useState currently to re-render
+        setLocations((pre) => {
+          if (pre === null) return null
+          return [...pre.filter((item) => item._id !== _id)]
+        })
       } catch (error) {
         setLoading(false)
         console.log(error)
@@ -230,14 +228,11 @@ export default function DnDPage() {
         }
         // After updating table order trigger useState for fetching newest data
 
-         // Update useState currently to re-render
-        setTables(pre => {
-          if(pre === null) return null
-          return ([
-            ...pre.filter(item=> item._id !== _id)
-           
-        ])
-       })
+        // Update useState currently to re-render
+        setTables((pre) => {
+          if (pre === null) return null
+          return [...pre.filter((item) => item._id !== _id)]
+        })
       } catch (error) {
         setLoading(false)
         console.log(error)
@@ -273,8 +268,8 @@ export default function DnDPage() {
             title: "Can't update this table",
           })
         }
-         // Get new tables after add table
-         const refreshData = await fetch("/api/reservations/tables", {
+        // Get new tables after add table
+        const refreshData = await fetch("/api/reservations/tables", {
           method: "GET",
         })
         const freshTables = await refreshData.json()
@@ -552,8 +547,8 @@ export default function DnDPage() {
           })
         }
         const data = await res.json()
-         // Get new tables after add table
-         const refreshData = await fetch("/api/reservations/tables", {
+        // Get new tables after add table
+        const refreshData = await fetch("/api/reservations/tables", {
           method: "GET",
         })
         const freshTables = await refreshData.json()

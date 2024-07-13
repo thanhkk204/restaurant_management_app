@@ -10,8 +10,8 @@ type ContextInstance = {
     setSideBarType: (value: string) => void,
 
 }
-const DashboardContext = createContext<ContextInstance | null>(null)
-export default function DashboardContextProvider({children} : {children: React.ReactNode}) {
+const ThemeContext = createContext<ContextInstance | null>(null)
+export default function ThemeContextProvider({children} : {children: React.ReactNode}) {
   // All state to pass throughout all dashboard client components 
     const [isSideBarColose, setIsSideBarClose] = useState<boolean>(false)
     const [sideBarColor, setSideBarColor] = useState<string>('')
@@ -23,7 +23,7 @@ export default function DashboardContextProvider({children} : {children: React.R
      },[])
 
   return (
-    <DashboardContext.Provider value={{
+    <ThemeContext.Provider value={{
         isSideBarColose,
         setIsSideBarClose,
         sideBarColor,
@@ -32,11 +32,11 @@ export default function DashboardContextProvider({children} : {children: React.R
         setSideBarType
      }}>
         {children}
-    </DashboardContext.Provider>
+    </ThemeContext.Provider>
   )
 }
 
 // function will be called and retrieved in needed children client components
-export function useDashBoardContext() {
-   return useContext(DashboardContext)
+export function useThemeContext() {
+   return useContext(ThemeContext)
 }

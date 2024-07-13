@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { DataTable } from "@/components/paginationTable/DataTable"
 import { toast } from "@/components/ui/use-toast"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { FadeLoader } from "react-spinners"
 import { DishColumn } from "./_table/DishColumn"
@@ -12,13 +12,13 @@ import { CollectionType } from "./collections/page"
 import { useGetData } from "@/hooks/useGetdata"
 
 export type DishType = {
-  _id: string,
-  title: string,
-  image: string[],
-  price: number,
-  desc: string,
-  isShow: boolean,
-  category_id: string,
+  _id: string
+  title: string
+  image: string[]
+  price: number
+  desc: string
+  isShow: boolean
+  category_id: string
   collection_ids: string[]
 }
 export default function DishPage() {
@@ -29,7 +29,7 @@ export default function DishPage() {
   const router = useRouter()
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
 
@@ -178,7 +178,7 @@ export default function DishPage() {
             handleDeleteDishes,
             handleUpdateDish,
             categories,
-            collections
+            collections,
           })}
           data={dishes}
           onDelete={handleDeleteDishes}
@@ -188,4 +188,3 @@ export default function DishPage() {
     </section>
   )
 }
-

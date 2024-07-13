@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { DataTable } from "@/components/paginationTable/DataTable"
 import { toast } from "@/components/ui/use-toast"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { CollectionColumn } from "./_table/CollectionColumn"
 import { FadeLoader } from "react-spinners"
@@ -23,7 +23,7 @@ export default function CollectionsPage() {
   const router = useRouter()
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
 

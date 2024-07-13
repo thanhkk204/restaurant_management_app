@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { Textarea } from "@/components/ui/textarea"
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
@@ -47,7 +47,7 @@ export default function DishForm({ dish }: Props) {
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   // 1. Define your form.
@@ -129,7 +129,7 @@ export default function DishForm({ dish }: Props) {
         body: JSON.stringify(values),
       })
       if (!res.ok) {
-       return toast({
+        return toast({
           variant: "destructive",
           title: dish ? "Can't update dish" : "Can't add new dish",
         })
@@ -143,7 +143,6 @@ export default function DishForm({ dish }: Props) {
       dish ? router.push("/dashboard/inventories") : form.reset()
       setLoading(false)
     } catch (error) {
-
       setLoading(false)
       toast({
         variant: "destructive",
@@ -157,16 +156,15 @@ export default function DishForm({ dish }: Props) {
   }
   return (
     <div>
-      {
-        loading ? 
+      {loading ? (
         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
           <FadeLoader
-              color={sideBarColor ? sideBarColor : "#11cdef"}
-              loading={loading}
-            />
+            color={sideBarColor ? sideBarColor : "#11cdef"}
+            loading={loading}
+          />
         </div>
-         :
-         (<Form {...form}>
+      ) : (
+        <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
@@ -191,7 +189,14 @@ export default function DishForm({ dish }: Props) {
                   <FormItem>
                     <FormLabel>Price</FormLabel>
                     <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                      <Input type="number" placeholder="Dish's name" {...field} onChange={e=> field.onChange(parseFloat(e.target.value))} />
+                      <Input
+                        type="number"
+                        placeholder="Dish's name"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(parseFloat(e.target.value))
+                        }
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -207,14 +212,14 @@ export default function DishForm({ dish }: Props) {
                     <FormItem className="flex-1">
                       <FormLabel>Category</FormLabel>
                       <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
-                      <OneSelect 
-                       onChange={(selectedItem) =>
-                        field.onChange(selectedItem)
-                      }
-                      placehoder="Select category"
-                      value={field.value}
-                      categories={categories}
-                      />
+                        <OneSelect
+                          onChange={(selectedItem) =>
+                            field.onChange(selectedItem)
+                          }
+                          placehoder="Select category"
+                          value={field.value}
+                          categories={categories}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -262,7 +267,7 @@ export default function DishForm({ dish }: Props) {
                 </FormItem>
               )}
             />
-    
+
             <FormField
               control={form.control}
               name="image"
@@ -272,14 +277,18 @@ export default function DishForm({ dish }: Props) {
                     <ImageUpload
                       values={field.value}
                       onChange={(url) => field.onChange([...field.value, url])}
-                      onRemove={(url)=>field.onChange([...field.value.filter(item=> item !== url)])}
+                      onRemove={(url) =>
+                        field.onChange([
+                          ...field.value.filter((item) => item !== url),
+                        ])
+                      }
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-    
+
             <div className="flex items-center">
               <Button
                 type="submit"
@@ -300,7 +309,7 @@ export default function DishForm({ dish }: Props) {
                   "Thêm mới"
                 )}
               </Button>
-    
+
               <Button
                 onClick={handleResetForm}
                 type="button"
@@ -310,8 +319,8 @@ export default function DishForm({ dish }: Props) {
               </Button>
             </div>
           </form>
-        </Form>)
-      }
+        </Form>
+      )}
     </div>
   )
 }

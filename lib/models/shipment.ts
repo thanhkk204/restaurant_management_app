@@ -46,7 +46,7 @@ const shipmentSchame = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["RESERVED", "COMPLETED", "CANCELED"],
+      enum: ["RESERVED","DELIVERING", "COMPLETED", "CANCELED"],
       default: "RESERVED",
     },
     prepay: {

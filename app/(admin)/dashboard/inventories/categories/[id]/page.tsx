@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { toast } from "@/components/ui/use-toast"
 import { FadeLoader } from "react-spinners"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { CategoryType } from "../page"
 import CategoryForm from "@/components/custom_ui/CategoryForm"
@@ -12,7 +12,7 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
   const { id } = params
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   useEffect(() => {
@@ -49,9 +49,9 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
       <div className="w-full lg:max-w-[50%]">
         {loading && (
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-            <FadeLoader 
-            color={sideBarColor ? sideBarColor : "#11cdef"}
-            loading={loading}
+            <FadeLoader
+              color={sideBarColor ? sideBarColor : "#11cdef"}
+              loading={loading}
             />
           </div>
         )}

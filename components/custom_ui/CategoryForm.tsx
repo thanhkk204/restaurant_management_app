@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
@@ -35,7 +35,7 @@ export default function CategoryForm({ category }: Props) {
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   // 1. Define your form.
@@ -135,33 +135,33 @@ export default function CategoryForm({ category }: Props) {
         />
 
         <div className="flex items-center">
-        <Button
-          type="submit"
-          className="mr-4 font-medium text-[16px]"
-          disabled={loading}
-        >
-          {loading ? (
-            <ClipLoader
-              color={sideBarColor ? sideBarColor : "#11cdef"}
-              loading={loading}
-              size={35}
-              aria-label="Loading Spinner"
-              data-testid="loader"
-            />
-          ) : category ? (
-            "Cập Nhật"
-          ) : (
-            "Thêm mới"
-          )}
-        </Button>
+          <Button
+            type="submit"
+            className="mr-4 font-medium text-[16px]"
+            disabled={loading}
+          >
+            {loading ? (
+              <ClipLoader
+                color={sideBarColor ? sideBarColor : "#11cdef"}
+                loading={loading}
+                size={35}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            ) : category ? (
+              "Cập Nhật"
+            ) : (
+              "Thêm mới"
+            )}
+          </Button>
 
-        <Button
-          onClick={handleResetForm}
-          type="button"
-          className="font-medium text-[16px]"
-        >
-          Làm mới
-        </Button>
+          <Button
+            onClick={handleResetForm}
+            type="button"
+            className="font-medium text-[16px]"
+          >
+            Làm mới
+          </Button>
         </div>
       </form>
     </Form>

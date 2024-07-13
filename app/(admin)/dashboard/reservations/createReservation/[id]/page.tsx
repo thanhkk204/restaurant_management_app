@@ -2,7 +2,7 @@
 import ReservationForm from "@/components/custom_ui/ReservationForm"
 import { toast } from "@/components/ui/use-toast"
 import { ReservationType } from "@/lib/constants/type"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import React, { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners"
 import { TableType } from "../../page"
@@ -17,14 +17,14 @@ export default function CreateReservation({
   const [numberOfSeats, setNumberOfSeats] = useState<number>()
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   useEffect(() => {
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/reservations/tables/"+ table_id, {
+        const res = await fetch("/api/reservations/tables/" + table_id, {
           method: "GET",
         })
 
@@ -60,7 +60,12 @@ export default function CreateReservation({
               />
             </div>
           )}
-          {!loading && table_id && numberOfSeats && <ReservationForm table_id={table_id} numberOfSeats={numberOfSeats}/>}
+          {!loading && table_id && numberOfSeats && (
+            <ReservationForm
+              table_id={table_id}
+              numberOfSeats={numberOfSeats}
+            />
+          )}
         </div>
       </div>
     </section>

@@ -3,7 +3,7 @@ import { CategoryType } from '@/app/(admin)/dashboard/inventories/categories/pag
 import { DishType } from '@/app/(admin)/dashboard/inventories/page'
 import { Check } from 'lucide-react'
 import Image from 'next/image'
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import OneSelect from './OneSelect'
 import { cn } from '@/lib/utils'
 import { OrderedFoodType } from '@/lib/constants/type'
@@ -18,7 +18,15 @@ type Props = {
 }
  const Menu: React.FC<Props>=({dishes, categories, reservation_id, orderedFoods, setOrderedFoods, deleteOrderedFood})=>{
     const [activedLink, setActiveLink] = useState<string>('all')
-    const [trigger, setTrigger] = useState<boolean>(false)
+   
+    // choose dish depend on category id
+    const categoryDishes = useMemo(()=>{
+         if(activedLink === 'all'){
+          return dishes
+         }else if(dishes){
+          return [...dishes?.filter(dish=> dish.category_id === activedLink)]
+         }
+    },[activedLink])
   
     const addOrderedFood = async (reservation_id: string ,dish_id: string): Promise<OrderedFoodType | null>=>{
       const res = await fetch('/api/reservations/orderedFood',{
@@ -73,7 +81,7 @@ type Props = {
         </div>
        </div>
        {
-        dishes?.map(dish=>
+        categoryDishes?.map(dish=>
           <div 
            key={dish._id}
            onClick={()=>hanleChooseDish(dish._id)}

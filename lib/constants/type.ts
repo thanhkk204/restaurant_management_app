@@ -13,6 +13,7 @@ enum ReservationStatus {
 }
 enum ShipmentStatus {
     RESERVED = "RESERVED",
+    DELIVERING = "DELIVERING",
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
 }

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 import { toast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
 import { CategoryColumn } from "./_table/CategoryColumn"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { FadeLoader } from "react-spinners"
 
 export type CategoryType = {
@@ -20,10 +20,10 @@ export default function CategoryPage() {
   const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
 
-    // Get values were passed in context
-    const value = useDashBoardContext()
-    if (!value) return
-    const { sideBarColor } = value
+  // Get values were passed in context
+  const value = useThemeContext()
+  if (!value) return
+  const { sideBarColor } = value
 
   useEffect(() => {
     const fetData = async () => {

@@ -1,13 +1,14 @@
 "use client"
-import { Bell, Home, Menu, Search, Settings, Text } from "lucide-react"
+import { Bell, Home, Menu, Search, Settings, ShoppingCart, Text } from "lucide-react"
 import { usePathname } from "next/navigation"
 import React, { useEffect, useRef, useState } from "react"
 
 import ThemeToggle from "@/components/ThemeToggle"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import SideBarModel from "@/components/SideBarModel"
+import CartModel from "@/components/CartModel"
 
-export default function Navbar() {
+export default function NavbarHome() {
   const navRef = useRef<HTMLElement>(null)
   const [lastScrollTop, setLastScrollTop] = useState<number>(0)
   const path = usePathname()
@@ -39,7 +40,7 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="w-full sticky  max-h-headerHeight bg-transparent text-white flex flex-col md:flex-row items-center justify-between px-10 py-3  gap-3 md:gap-0 transition-all  duration-400 delay-200"
+      className=" w-full sticky  max-h-headerHeight bg-transparent flex flex-col md:flex-row items-center justify-between px-10 py-3  gap-3 md:gap-0 transition-all  duration-400 delay-200"
     >
       <div className="nav_left flex gap-7 items-center">
         <div className="hidden lg:block">
@@ -79,9 +80,12 @@ export default function Navbar() {
             />
           </div>
         </form>
-        <div className="flex items-center gap-2 px-5 text-white">
-          <Bell width={20} height={20} className="cursor-pointer" />
+        <div className="flex items-center gap-2 px-5 text-light-text dark:text-dark-text">
+       
+          <CartModel/>
 
+          <Bell width={20} height={20} className="cursor-pointer" />
+  
           <SideBarModel />
         </div>
         <ThemeToggle />

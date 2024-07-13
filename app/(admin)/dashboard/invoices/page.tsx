@@ -2,13 +2,12 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "@/components/ui/use-toast"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { FadeLoader } from "react-spinners"
 import { ReservationType } from "@/lib/constants/type"
 import { ReservationColumn } from "./_table/ReservationColumn"
 import { InvoiceDataTable } from "@/components/paginationTable/InvoiceDataTable"
-
 
 export default function InvoicePage() {
   const [reservations, setReservations] = useState<ReservationType[]>([])
@@ -16,10 +15,10 @@ export default function InvoicePage() {
   const router = useRouter()
 
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
-// Get All reservation
+  // Get All reservation
   useEffect(() => {
     const fetData = async () => {
       setLoading(true)
@@ -59,7 +58,7 @@ export default function InvoicePage() {
       {!loading && reservations && (
         <InvoiceDataTable
           columns={ReservationColumn({
-            reservations
+            reservations,
           })}
           data={reservations}
         />
@@ -67,4 +66,3 @@ export default function InvoicePage() {
     </section>
   )
 }
-

@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { sideBarVariables } from "@/lib/constants"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -9,13 +9,13 @@ import { usePathname } from "next/navigation"
 export default function Sidebar() {
   const path = usePathname()
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { isSideBarColose, sideBarColor, sideBarType } = value
 
   // Get second segment after /dashboard to get exactly route must be compared
-  const secondSegment = path.split('/')[2] 
- 
+  const secondSegment = path.split("/")[2]
+
   return (
     <div
       className={cn(
@@ -59,34 +59,46 @@ export default function Sidebar() {
           <ul className="py-5 max-h-[400px] overflow-y-scroll no-scrollbar">
             {sideBarVariables.map((item, index) => (
               <li key={index}>
-                <Link 
-                href={typeof( item.title) == 'string' ? item.link : "#"}
-                style={path === item.link && !sideBarColor || (item.link.includes(secondSegment) && !sideBarColor)?
-                {background: '#051139'} :
-                path === item.link && sideBarColor || (item.link.includes(secondSegment) && sideBarColor)?
-                {background: sideBarColor} : {background: ''}}
-                className={"group flex items-start py-4 gap-5 w-full px-3 rounded-lg cursor-pointer overflow-hidden max-h-fit group"}
+                <Link
+                  href={typeof item.title == "string" ? item.link : "#"}
+                  style={
+                    (path === item.link && !sideBarColor) ||
+                    (item.link.includes(secondSegment) && !sideBarColor)
+                      ? { background: "#051139" }
+                      : (path === item.link && sideBarColor) ||
+                        (item.link.includes(secondSegment) && sideBarColor)
+                      ? { background: sideBarColor }
+                      : { background: "" }
+                  }
+                  className={
+                    "group flex items-start py-4 gap-5 w-full px-3 rounded-lg cursor-pointer overflow-hidden max-h-fit group"
+                  }
                 >
-                <div 
-                style={path === item.link || item.link.includes(secondSegment) ? {color: 'white'} : {color: item.color}}
-                className={`min-w-[20px]`} 
-                >
-                  {item.icon}
-                </div>
-                  
-                <h4
-                  className={cn(
-                    "text-light-textSoft w-full transition-transform duration-300 ease-out whitespace-nowrap",
-                    isSideBarColose
-                      ? "translate-x-[100px] opacity-25 pointer-events-none select-none"
-                      : "translate-x-0 opacity-100",
-                      path === item.link || item.link.includes(secondSegment) ? "text-white" : "dark:text-dark-textSoft"
-                  )}
-                >
-                  {item.title}
-                </h4>
+                  <div
+                    style={
+                      path === item.link || item.link.includes(secondSegment)
+                        ? { color: "white" }
+                        : { color: item.color }
+                    }
+                    className={`min-w-[20px]`}
+                  >
+                    {item.icon}
+                  </div>
+
+                  <h4
+                    className={cn(
+                      "text-light-textSoft w-full transition-transform duration-300 ease-out whitespace-nowrap",
+                      isSideBarColose
+                        ? "translate-x-[100px] opacity-25 pointer-events-none select-none"
+                        : "translate-x-0 opacity-100",
+                      path === item.link || item.link.includes(secondSegment)
+                        ? "text-white"
+                        : "dark:text-dark-textSoft"
+                    )}
+                  >
+                    {item.title}
+                  </h4>
                 </Link>
-                
               </li>
             ))}
           </ul>

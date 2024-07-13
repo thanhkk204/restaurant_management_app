@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useDashBoardContext } from "@/lib/context/DashboardContextProvider"
+import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
@@ -36,7 +36,7 @@ export default function CollectionForm({ collection }: Props) {
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
-  const value = useDashBoardContext()
+  const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
   // 1. Define your form.
@@ -76,7 +76,7 @@ export default function CollectionForm({ collection }: Props) {
         setLoading(false)
         return
       }
-      
+
       if (res.status === 401) {
         toast({
           variant: "destructive",
@@ -150,7 +150,7 @@ export default function CollectionForm({ collection }: Props) {
                 <ImageUpload
                   values={field.value ? [field.value] : []}
                   onChange={(url) => field.onChange(url)}
-                  onRemove={(url)=>field.onChange('')}
+                  onRemove={(url) => field.onChange("")}
                 />
               </FormControl>
               <FormMessage />
