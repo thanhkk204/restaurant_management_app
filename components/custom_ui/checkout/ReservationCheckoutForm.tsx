@@ -40,6 +40,7 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
+import Image from "next/image"
 
 const formSchema =  z.object({
     userName: z.string().min(2).max(50),
@@ -97,6 +98,7 @@ export default function ReservationCheckoutForm({
       ward: reservation ? reservation.addres_id.ward : "",
       party_size: reservation ? reservation.party_size : 0,
       payment_method: reservation ? reservation.payment_method : "CASHPAYMENT",
+      digital_wallet_payment: "MOMO",
       user_id: 1,
       table_id: ""
     },
@@ -448,14 +450,30 @@ export default function ReservationCheckoutForm({
                         <div className="flex flex-col md:flex-row gap-2 md:gap-5">
                           <div className="flex items-center space-x-2 cursor-pointer">
                             <RadioGroupItem value="MOMO" id="MOMO" hidden={true}/>
-                            <Label htmlFor="MOMO" className="cursor-pointer">
-                              Momo
+                            <Label htmlFor="MOMO" className={cn(
+                              "cursor-pointer",
+                              field.value === "MOMO" ? 'shadow-lg shadow-cyan-500' : ''
+                            )}>
+                              <Image 
+                              src="/images/momo_logo.png" 
+                              alt="momo logo"
+                              width={50}
+                              height={50} 
+                              />
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2 cursor-pointer">
                             <RadioGroupItem value="VNPAY" id="VNPAY" hidden={true}/>
-                            <Label htmlFor="VNPAY" className="cursor-pointer">
-                              VN Pay
+                            <Label htmlFor="VNPAY" className={cn(
+                              "cursor-pointer",
+                              field.value === "VNPAY" ? 'shadow-lg shadow-cyan-500' : ''
+                            )}>
+                               <Image 
+                              src="/images/vnpay_logo.png" 
+                              alt="momo logo"
+                              width={50}
+                              height={50} 
+                              />
                             </Label>
                           </div>
                         </div>
