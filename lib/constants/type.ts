@@ -1,5 +1,5 @@
 import { DishType } from "@/app/(admin)/dashboard/inventories/page"
-import { TableType } from "@/app/(admin)/dashboard/reservations/page"
+import { LocationType, TableType } from "@/app/(admin)/dashboard/reservations/page"
 
 enum PaymentMethod {
     CASHPAYMENT = "CASHPAYMENT",
@@ -104,4 +104,17 @@ export type CartItem = {
     image: string;
     quantity: number;
   }
-  
+
+  enum TableEnum {
+    AVAILABLE = "AVAILABLE",
+    ISSERVING = "ISSERVING",
+    ISBOOKED = "ISBOOKED",
+  }
+export type AvailableTableType = {
+    _id: string
+    location_id: LocationType
+    name: string
+    number_of_seats: number
+    order: number
+    status: TableEnum
+}

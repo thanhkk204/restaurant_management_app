@@ -35,18 +35,6 @@ export const GET = async (req: NextRequest) => {
    }
 }
 
-// export const DELETE = async (req: NextRequest) => {
-//    await connectToDB()
-//    try {
-//       const IdsArray = await req.json()
-//    const tables: any = await table.deleteMany({ _id: {$in: IdsArray}})
-//    return NextResponse.json({tables, message: "Successfully!"}, {status: 201})
-//    } catch (error) {
-//     console.log("Inventories_Error", error)
-//     return NextResponse.json({message: "Internal Server Error"}, {status: 500})
-//    }
-// }
-
 // For update table order
 export const PUT = async (req: NextRequest)=>{
    const {newArray} = await req.json()

@@ -29,7 +29,7 @@ export default function CartTable({orderedFoods}: Props) {
     <>
     {
       isClientSide && (
-        <Table className="w-full ">
+        <Table className="w-full">
               <TableHeader>
                 <TableRow>
                   <TableHead className="min-w-[200px]">Tên</TableHead>

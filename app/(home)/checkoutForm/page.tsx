@@ -1,6 +1,10 @@
 "use client"
 import CartTable from '@/components/custom_ui/CartTable';
+import ReservationCheckoutForm from '@/components/custom_ui/checkout/ReservationCheckoutForm';
+import ShipmentCheckoutForm from '@/components/custom_ui/checkout/ShipmentCheckoutForm';
 import { useCart } from '@/lib/context/CartProvider';
+import { cn } from '@/lib/utils';
+import { ReceiptText, Truck } from 'lucide-react';
 import Link from 'next/link'
 import { useState } from 'react';
 
@@ -14,15 +18,28 @@ export default function page() {
       <div className="w-full h-[50px] sticky top-0 left-0 right-0 flex justify-between">
         <button
           onClick={() => setShowShippingForm(false)}
-          className="w-full h-full bg-blue-500 text-white  cursor-pointer"
+          className={cn(
+            "w-full h-full text-light-text dark:text-dark-text transition-colors duration-200 ease-in-out cursor-pointer text-lg font-medium",
+            showShippingForm ? 'bg-transparent' : 'bg-gray-1 text-white'
+          )}
         >
+          <div className="flex items-center gap-2 justify-center">
+          <ReceiptText />
           Reservation 
+          </div>
         </button>
         <button
-          onClick={() => setShowShippingForm(true)}
-          className=" w-full h-full bg-green-500 text-white  cursor-pointer"
+          onClick={() => setShowShippingForm(true)} 
+          className={cn(
+            "w-full h-full text-light-text dark:text-dark-text transition-colors duration-200 ease-in-out cursor-pointer text-lg font-medium",
+            !showShippingForm ? 'bg-transparent' : 'bg-gray-1 text-white'
+          )}
         >
+          <div className="flex items-center gap-2 justify-center">
+          <Truck />
           Shipping 
+          </div>
+          
         </button>
       </div>
 
@@ -34,19 +51,21 @@ export default function page() {
             showShippingForm ? '-translate-x-full' : 'translate-x-0'
           }`}
         >
-          <ReservationForm />
+          <div className='w-full px-3 py-3 md:px-5 md:py-4 text-light-text dark:text-dark-text'>
+          <ReservationCheckoutForm />
+          </div>
         </div>
         <div
           className={`w-full h-full absolute top-0 left-0  transition-transform duration-500 ${
             showShippingForm ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
-          <ShippingForm />
+          <ShipmentCheckoutForm />
         </div>
       </div>
       </div>
 
-      <div className='flex-1 bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-white py-2'>
+      <div className='flex-1 bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-white py-2 rounded-tl-md rounded-bl-md'>
        <CartTable orderedFoods={cart} />
       </div>
       </div>
@@ -56,14 +75,3 @@ export default function page() {
   )
 }
 
-const ReservationForm = () => (
-  <div className="flex items-center justify-center h-full bg-transparent dark:bg-transparent">
-    <h2 className="text-2xl">Reservation Form</h2>
-  </div>
-);
-
-const ShippingForm = () => (
-  <div className="flex items-center justify-center h-full bg-transparent dark:bg-transparent">
-    <h2 className="text-2xl">Shipping Form</h2>
-  </div>
-);
