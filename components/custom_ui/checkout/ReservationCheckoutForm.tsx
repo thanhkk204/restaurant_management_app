@@ -2,8 +2,8 @@
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-
 import { Button } from "@/components/ui/button"
+
 import {
   Form,
   FormControl,
@@ -21,7 +21,7 @@ import ImageUpload from "@/components/custom_ui/ImageUpload"
 import { redirect, useRouter } from "next/navigation"
 import ClipLoader from "react-spinners/ClipLoader"
 import {
-    AvailableTableType,
+  AvailableTableType,
   DistricType,
   ProvinceType,
   ReservationType,
@@ -39,9 +39,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
-import { TableType } from "@/app/(admin)/dashboard/reservations/page"
 import Image from "next/image"
 import { useCart } from "@/lib/context/CartProvider"
+import ReactDatePicker from "@/components/ReactDatePicker"
 
 const formSchema =  z.object({
     orderType: z.string(),
@@ -56,7 +56,9 @@ const formSchema =  z.object({
     user_id: z.number(),
     table_id: z.string().optional(),
     payment_method: z.enum(["CASHPAYMENT", "BANKPAYMENT"]),
-    digital_wallet_payment: z.enum(["MOMO", "VNPAY"]).optional()
+    digital_wallet_payment: z.enum(["MOMO", "VNPAY"]).optional(),
+    startTime: z.date().optional(),
+    endTime: z.date().optional(),
 
   }).superRefine((data, ctx) => {
     const { table_id, payment_method } = data;
@@ -184,49 +186,49 @@ export default function ReservationCheckoutForm({
   
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
-    const reserUrl = "/api/checkout"
-    const momoUrl = "api/onlinePayment/momo"
-    setLoading(true)
-    const {digital_wallet_payment, ...rest} = values
-    try {
-      const res = await fetch(reserUrl, {
-        method: "POST",
-        body: JSON.stringify({...rest, orderedDishes:[...cart]}),
-      })
-      if (!res.ok) {
-        return toast({
-          variant: "destructive",
-          title: "Can't order new reservation",
-        })
-      }
-      const data = await res.json()
-      const reservation = data.reservation as ReservationType
-      toast({
-        variant: "sucess", 
-        title: data.message,
-      })
-      if(digital_wallet_payment && table_id){
-        const momoRes = await fetch(momoUrl, {
-          method: "POST",
-          body: JSON.stringify({
-            totalPrice: totalPrice,
-            checkout_id: reservation._id,
-            clientName: values.userName
-          })
-        })
-        const momoData = await momoRes.json()
-        const payUrl = momoData.data.payUrl
-        window.location.href = payUrl
-      }
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-      toast({
-        variant: "destructive",
-        title: "Something wrong with  checkout form!",
-      })
-    }
+    // const reserUrl = "/api/checkout"
+    // const momoUrl = "api/onlinePayment/momo"
+    // setLoading(true)
+    // const {digital_wallet_payment, ...rest} = values
+    // try {
+    //   const res = await fetch(reserUrl, {
+    //     method: "POST",
+    //     body: JSON.stringify({...rest, orderedDishes:[...cart]}),
+    //   })
+    //   if (!res.ok) {
+    //     return toast({
+    //       variant: "destructive",
+    //       title: "Can't order new reservation",
+    //     })
+    //   }
+    //   const data = await res.json()
+    //   const reservation = data.reservation as ReservationType
+    //   toast({
+    //     variant: "sucess", 
+    //     title: data.message,
+    //   })
+    //   if(digital_wallet_payment && table_id){
+    //     const momoRes = await fetch(momoUrl, {
+    //       method: "POST",
+    //       body: JSON.stringify({
+    //         totalPrice: totalPrice,
+    //         checkout_id: reservation._id,
+    //         clientName: values.userName
+    //       })
+    //     })
+    //     const momoData = await momoRes.json()
+    //     const payUrl = momoData.data.payUrl
+    //     window.location.href = payUrl
+    //   }
+    //   setLoading(false)
+    // } catch (error) {
+    //   console.log(error)
+    //   setLoading(false)
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Something wrong with  checkout form!",
+    //   })
+    // }
   }
   function handleResetForm(e: any) {
     e.preventDefault()
@@ -251,6 +253,25 @@ export default function ReservationCheckoutForm({
           }}
         />
 
+        <FormField
+          control={form.control}
+          name="startTime"
+          render={({ field }) => {
+            return (
+              <FormItem>
+                <FormLabel>Thời gian bắt đầu</FormLabel>
+                <FormControl className="bg-light-bg dark:bg-dark-bg border border-red-1">
+                <ReactDatePicker
+                 value={field.value}
+                 onChange={(date)=>field.onChange(date)}
+                />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+  
         <div className="flex flex-col md:flex-row gap-5">
           <FormField
             control={form.control}
