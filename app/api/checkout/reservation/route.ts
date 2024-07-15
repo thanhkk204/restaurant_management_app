@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 // Get table available
 export const GET = async (req: NextRequest) => {
-    console.log('tahnh');
     await connectToDB()
     try {
     await location.find({})

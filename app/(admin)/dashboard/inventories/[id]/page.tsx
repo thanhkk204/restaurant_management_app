@@ -16,10 +16,10 @@ export default function UpdateDish({ params }: { params: { id: string } }) {
   const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
-  useEffect(() => {
-    if (!id) return
 
+  useEffect(() => {
     const fetData = async () => {
+      if (!id) return
       setLoading(true)
       try {
         const res = await fetch("/api/inventories/dishes/" + id, {
@@ -45,6 +45,7 @@ export default function UpdateDish({ params }: { params: { id: string } }) {
     }
     fetData()
   }, [id])
+
   return (
     <section className="min-h-screen md:min-h-fit px-3 md:px-5 py-4 md:py-6">
       <div className="w-full lg:max-w-[50%]">

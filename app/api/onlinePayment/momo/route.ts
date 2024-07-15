@@ -2,24 +2,26 @@ import { NextRequest, NextResponse } from "next/server"
 
 
 export const POST = async (req: any) => {
-    // const { price, doctorId } = req.body
-    // const userId = req.userId
+    const body = await req.json()
+    const { totalPrice, checkout_id , clientName} = body
+    console.log('totalPrice', totalPrice);
+    console.log('checkout_id', checkout_id);
+    console.log('clientName', clientName);
+    
   
     // Code của momo payment
      try {
-        var accessKey = "F8BBA842ECF85"
-        var secretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz"
+        var accessKey = process.env.MOMO_ACCESS_KEY
+        var secretKey = process.env.MOMO_SECRETE_KEY as string
         var orderInfo = "pay with MoMo"
-        var partnerCode = "MOMO"
-        var redirectUrl = "http://localhost:8888/thanks"
-        var ipnUrl = "http://localhost:8888/thanks"
+        var partnerCode = process.env.MOMO_PARTNER_CODE as string
+        var redirectUrl = process.env.MOMO_REDIRECT_URL
+        var ipnUrl = process.env.MOMO_IPN_URL
         var requestType = "payWithATM"
-        var amount = '100000'
+        var amount = totalPrice
         var orderId = partnerCode + new Date().getTime()
-        var requestId = orderId
-        var extraData = btoa(JSON.stringify({_id: 'thanh'}))
-        var paymentCode =
-          "T8Qii53fAXyUftPV3m9ysyRhEanUs9KlOPfHgpMR0ON50U10Bh+vZdpJU7VY4z+Z2y77fJHkoDc69scwwzLuW5MzeUKTwPo3ZMaB29imm6YulqnWfTkgzqRaion+EuD7FN9wZ4aXE1+mRt0gHsU193y+yxtRgpmY7SDMU9hCKoQtYyHsfFR5FUAOAKMdw2fzQqpToei3rnaYvZuYaxolprm9+/+WIETnPUDlxCYOiw7vPeaaYQQH0BF0TxyU3zu36ODx980rJvPAgtJzH1gUrlxcSS1HQeQ9ZaVM1eOK/jl8KJm6ijOwErHGbgf/hVymUQG65rHU2MWz9U8QUjvDWA=="
+        var requestId = clientName + new Date().getTime()
+        var extraData = btoa(JSON.stringify({checkout_id: checkout_id}))
         var orderGroupId = ""
         var autoCapture = true
         var lang = "vi"
@@ -80,7 +82,7 @@ export const POST = async (req: any) => {
         //Create the HTTPS objects
         const https = await import("https")
         const options = {
-          hostname: "test-payment.momo.vn",
+          hostname: process.env.MOMO_BASE_URL,
           port: 443,
           path: "/v2/gateway/api/create",
           method: "POST",
@@ -115,3 +117,4 @@ export const POST = async (req: any) => {
         return NextResponse.json({data: 'Some thing went wrong with request momo payment'}, {status: 501})
      }
   }
+

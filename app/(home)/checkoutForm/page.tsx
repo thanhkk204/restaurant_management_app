@@ -13,7 +13,7 @@ export default function page() {
   const { cart} = useCart();
   return (
     <section className='w-full mx-auto shadow-button_shadown shadow-slate-600 rounded-md overflow-hidden'>
-     <div className="relative h-fit lg:h-[90vh] w-full">
+     <div className="relative h-fit lg:h-[100vh] w-full">
       
       <div className="w-full h-[50px] sticky top-0 left-0 right-0 flex justify-between">
         <button

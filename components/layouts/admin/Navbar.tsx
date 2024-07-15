@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react"
 import ThemeToggle from "@/components/ThemeToggle"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import SideBarModel from "@/components/SideBarModel"
+import Image from "next/image"
 
 export default function Navbar() {
   const navRef = useRef<HTMLElement>(null)
@@ -86,7 +87,7 @@ export default function Navbar() {
         </div>
         <ThemeToggle />
         <div className="flex items-center justify-center rounded-full overflow-hidden">
-          <img src="/images/logo2.png" alt="avatar" width={50} height={50} />
+          <Image src="/images/logo2.png" alt="avatar" width={50} height={50} />
         </div>
       </div>
     </nav>

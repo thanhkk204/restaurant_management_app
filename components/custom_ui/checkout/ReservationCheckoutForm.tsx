@@ -18,7 +18,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { useEffect, useState } from "react"
 import { useToast } from "@/components/ui/use-toast"
 import ImageUpload from "@/components/custom_ui/ImageUpload"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import ClipLoader from "react-spinners/ClipLoader"
 import {
     AvailableTableType,
@@ -41,8 +41,10 @@ import {
 import { cn } from "@/lib/utils"
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
 import Image from "next/image"
+import { useCart } from "@/lib/context/CartProvider"
 
 const formSchema =  z.object({
+    orderType: z.string(),
     userName: z.string().min(2).max(50),
     detailAddress: z.string().min(2).max(50),
     province: z.string().nonempty("Please select a province"),
@@ -86,11 +88,18 @@ export default function ReservationCheckoutForm({
   const value = useThemeContext()
   if (!value) return
   const { sideBarColor } = value
+
+  // get cart in localstorage
+  const {cart} = useCart()
+  const totalPrice = cart.reduce((sum, item) => {
+    return sum + item.quantity * item.price
+  }, 0)
   // 1. Define your form.
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      orderType: "reservation",
       userName: reservation ? reservation?.userName : "",
       detailAddress: reservation ? reservation.addres_id.detailAddress : "",
       district: reservation ? reservation.addres_id.district : "",
@@ -172,54 +181,56 @@ export default function ReservationCheckoutForm({
       }
       fetData()
   }, [form.setValue])
+  
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
-    // const url = reservation
-    //   ? "/api/reservations/" + reservation._id
-    //   : "/api/reservations"
-    // setLoading(true)
-    // try {
-    //   const res = await fetch(url, {
-    //     method: reservation ? "PATCH" : "POST",
-    //     body: JSON.stringify({ ...values, table_id }),
-    //   })
-    //   if (!res.ok) {
-    //     return toast({
-    //       variant: "destructive",
-    //       title: reservation
-    //         ? "Can't update reservation"
-    //         : "Can't add new reservation",
-    //     })
-    //   }
-    //   const data = await res.json()
-    //   const reser = data.reservation as ReservationType
-    //   setCreatedReservation(reser)
-    //   toast({
-    //     variant: "sucess",
-    //     title: reservation
-    //       ? data.message
-    //       : "You added new reservation succesfully",
-    //   })
-    //   reservation && router.push("/dashboard/reservations")
-    //   setLoading(false)
-    // } catch (error) {
-    //   console.log(error)
-    //   setLoading(false)
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Something wrong with reservation form!",
-    //   })
-    // }
+    const reserUrl = "/api/checkout"
+    const momoUrl = "api/onlinePayment/momo"
+    setLoading(true)
+    const {digital_wallet_payment, ...rest} = values
+    try {
+      const res = await fetch(reserUrl, {
+        method: "POST",
+        body: JSON.stringify({...rest, orderedDishes:[...cart]}),
+      })
+      if (!res.ok) {
+        return toast({
+          variant: "destructive",
+          title: "Can't order new reservation",
+        })
+      }
+      const data = await res.json()
+      const reservation = data.reservation as ReservationType
+      toast({
+        variant: "sucess", 
+        title: data.message,
+      })
+      if(digital_wallet_payment && table_id){
+        const momoRes = await fetch(momoUrl, {
+          method: "POST",
+          body: JSON.stringify({
+            totalPrice: totalPrice,
+            checkout_id: reservation._id,
+            clientName: values.userName
+          })
+        })
+        const momoData = await momoRes.json()
+        const payUrl = momoData.data.payUrl
+        window.location.href = payUrl
+      }
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with  checkout form!",
+      })
+    }
   }
   function handleResetForm(e: any) {
     e.preventDefault()
     form.reset()
-  }
-  function handleOrderedMenu() {
-    const reservation_id = createdReservation
-      ? createdReservation._id
-      : reservation?._id
-    router.push("/dashboard/reservations/orderedFood/" + reservation_id)
   }
   return (
     <Form {...form}>

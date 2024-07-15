@@ -7,6 +7,7 @@ import ThemeContextProvider from "@/lib/context/ThemeContextProvider"
 import NavbarHome from "@/components/layouts/home/Navbar"
 import { CartProvider } from "@/lib/context/CartProvider"
 import { cn } from "@/lib/utils"
+import { Toaster } from "@/components/ui/toaster"
 
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
@@ -41,6 +42,7 @@ export default function RootLayout({
        <main className="max-w-screen-2xl mx-auto px-3 py-2 md:py-12">
         {children}
        </main>
+       <Toaster />
       </body>
       </CartProvider>
       </ThemeContextProvider>

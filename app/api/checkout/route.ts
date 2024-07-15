@@ -62,14 +62,15 @@ export const POST = async (req: NextRequest) => {
             })
         }
     //   return
-    return NextResponse.json({message: 'Succussfully!', newOrder: newShipment}, {status: 201})
+    return NextResponse.json({message: 'Succussfully!', shipment: newShipment}, {status: 201})
     }else if(orderType === 'reservation'){
+        const reverTable_id = table_id === "" ? null : table_id
     const newReservation  = await reservation.create({
         userName,
         phoneNumber,
         party_size,
         payment_method,
-        table_id,
+        table_id: reverTable_id,
         prepay,
         addres_id: newAddress._id
     })  as ReservationType
@@ -81,7 +82,7 @@ export const POST = async (req: NextRequest) => {
         quantity: dish.quantity,
         })
         }
-    return NextResponse.json({message: 'Succussfully!', newOrder: newReservation}, {status: 201})
+    return NextResponse.json({message: 'Succussfully!', reservation: newReservation}, {status: 201})
     }
    } catch (error) {
     console.log("Inventories_Error", error)

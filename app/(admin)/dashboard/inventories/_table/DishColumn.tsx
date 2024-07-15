@@ -117,7 +117,7 @@ export const DishColumn = ({
           <div className="flex flex-wrap gap-1">
             {
              collectionList && collectionList.map(item=>(
-                <Badge variant="outline">{item.title}</Badge>
+                <Badge key={item._id} variant="outline">{item.title}</Badge>
               ))
             }
           </div>
