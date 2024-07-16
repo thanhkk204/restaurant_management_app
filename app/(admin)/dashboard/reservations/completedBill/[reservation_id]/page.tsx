@@ -34,7 +34,6 @@ const CompletedBill = ({ params }: { params: { reservation_id: string } }) => {
   }, 0)
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
 
   // Get detail reservation

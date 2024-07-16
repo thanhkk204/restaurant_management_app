@@ -38,5 +38,9 @@ export default function ThemeContextProvider({children} : {children: React.React
 
 // function will be called and retrieved in needed children client components
 export function useThemeContext() {
-   return useContext(ThemeContext)
+   const context = useContext(ThemeContext)
+   if(!context) {
+    throw new Error('useThemeContext must be used within a ThemeProvider');
+   }
+   return context
 }

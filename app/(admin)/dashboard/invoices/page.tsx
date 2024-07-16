@@ -16,7 +16,6 @@ export default function InvoicePage() {
 
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
   // Get All reservation
   useEffect(() => {

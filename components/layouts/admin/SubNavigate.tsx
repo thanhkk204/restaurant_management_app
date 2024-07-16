@@ -15,7 +15,6 @@ export default function SubNavigate({ NavigateLink }: Props) {
   const path = usePathname()
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
   return (
     <div className="fixed z-50 bottom-0 left-0 md:relative w-full ">

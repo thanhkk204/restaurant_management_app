@@ -36,7 +36,6 @@ export default function CategoryForm({ category }: Props) {
   const router = useRouter()
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({

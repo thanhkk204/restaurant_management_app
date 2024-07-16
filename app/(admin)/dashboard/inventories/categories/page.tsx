@@ -22,7 +22,6 @@ export default function CategoryPage() {
 
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
 
   useEffect(() => {

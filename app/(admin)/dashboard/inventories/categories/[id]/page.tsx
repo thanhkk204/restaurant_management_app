@@ -13,7 +13,6 @@ export default function UpdateCategory({ params }: { params: { id: string } }) {
 
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
   useEffect(() => {
     if (!id) return

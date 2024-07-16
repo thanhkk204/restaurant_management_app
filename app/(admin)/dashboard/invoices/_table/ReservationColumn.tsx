@@ -66,10 +66,16 @@ export const ReservationColumn = ({
       minSize: 200,
       enableResizing: true,
       cell: ({ row }) => {
-        const table = row.original.table_id.name
+        const table = row.original.table_id?.name
         return (
           <div className="flex flex-wrap gap-1">
-           {table}
+           {
+            table ? (
+              <h3>{table}</h3>
+            ) : (
+              <div className="text-red-1">Chưa nhận bàn</div>
+            )
+           }
           </div>
         )
       },

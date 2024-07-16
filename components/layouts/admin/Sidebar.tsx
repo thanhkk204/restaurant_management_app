@@ -10,7 +10,6 @@ export default function Sidebar() {
   const path = usePathname()
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { isSideBarColose, sideBarColor, sideBarType } = value
 
   // Get second segment after /dashboard to get exactly route must be compared

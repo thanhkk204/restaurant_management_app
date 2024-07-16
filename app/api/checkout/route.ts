@@ -14,6 +14,7 @@ export const POST = async (req: NextRequest) => {
     const {
          orderType,
          userName,
+         user_id,
          note,
          phoneNumber,
          payment_method,
@@ -28,7 +29,9 @@ export const POST = async (req: NextRequest) => {
          ward,
         // if it's reservation
          party_size,
-         table_id 
+         table_id,
+         startTime,
+         endTime
         } = body
    await connectToDB()
    try {
@@ -44,6 +47,7 @@ export const POST = async (req: NextRequest) => {
     if(orderType === 'shipment'){
        const newShipment = await shipment.create({
             userName,
+            // user_id,
             phoneNumber,
             note,
             payment_method,
@@ -64,14 +68,17 @@ export const POST = async (req: NextRequest) => {
     //   return
     return NextResponse.json({message: 'Succussfully!', shipment: newShipment}, {status: 201})
     }else if(orderType === 'reservation'){
-        const reverTable_id = table_id === "" ? null : table_id
+    const reverTable_id = table_id === "" ? null : table_id
     const newReservation  = await reservation.create({
         userName,
+        // user_id,
         phoneNumber,
         party_size,
         payment_method,
         table_id: reverTable_id,
         prepay,
+        startTime,
+        endTime,
         addres_id: newAddress._id
     })  as ReservationType
     // create ordered dishes

@@ -8,7 +8,7 @@ import { Check } from 'lucide-react';
 import { useCart } from '@/lib/context/CartProvider';
 import { CartItem } from '@/lib/constants/type';
 
-export default function page() {
+export default function RootPage() {
   const [activedLink, setActiveLink] = useState<string>('all')
   // Get all dishes and categories
   const {data: dishes, loading: dishLoading} = useGetData<DishType[]>("/api/inventories/dishes")

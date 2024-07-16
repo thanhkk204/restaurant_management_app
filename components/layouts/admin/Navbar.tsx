@@ -20,7 +20,6 @@ export default function Navbar() {
   const pathName = routeSegments[routeSegments.length - 1]
 
   const value = useThemeContext()
-  if (!value) return
   const { isSideBarColose, setIsSideBarClose } = value
 
   const handleScroll = () => {

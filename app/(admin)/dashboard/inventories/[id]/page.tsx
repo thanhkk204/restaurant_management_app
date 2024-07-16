@@ -14,36 +14,38 @@ export default function UpdateDish({ params }: { params: { id: string } }) {
 
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
 
-  useEffect(() => {
-    const fetData = async () => {
-      if (!id) return
-      setLoading(true)
-      try {
-        const res = await fetch("/api/inventories/dishes/" + id, {
-          method: "GET",
-        })
+  const fetData = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch("/api/inventories/dishes/" + id, {
+        method: "GET",
+      })
 
-        if (!res.ok) {
-          toast({
-            variant: "destructive",
-            title: "Can't get any data for dish detail!",
-          })
-        }
-        const data = (await res.json()) as DishType
-        setDish(data)
-        setLoading(false)
-      } catch (error) {
-        setLoading(false)
+      if (!res.ok) {
         toast({
           variant: "destructive",
-          title: "Something wrong with get dish detail!",
+          title: "Can't get any data for dish detail!",
         })
       }
+      const data = (await res.json()) as DishType
+      setDish(data)
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with get dish detail!",
+      })
+    } finally {
+      setLoading(false);
     }
+  }
+  useEffect(() => {
+   if(id){
     fetData()
+   }
   }, [id])
 
   return (

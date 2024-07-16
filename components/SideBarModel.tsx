@@ -21,7 +21,6 @@ const colors = [purple, green, blue, orange, red, gray]
 export default function SideBarModel() {
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor, setSideBarColor, sideBarType, setSideBarType } = value
 
   return (

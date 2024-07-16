@@ -61,7 +61,6 @@ export default function DnDPage() {
 
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
   // Fetch all locations
   useEffect(() => {

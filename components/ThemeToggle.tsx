@@ -8,7 +8,6 @@ export default function ThemeToggle() {
   const [darkMode, setDarkMode] = useState<boolean>(false)
 
   const value = useThemeContext()
-  if (!value) return
   const { setSideBarType } = value
 
   useEffect(() => {

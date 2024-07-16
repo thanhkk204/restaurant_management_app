@@ -45,7 +45,7 @@ export default function MultiSelect({
         <div className="flex flex-wrap gap-3">
         {
             selectedCollection &&  selectedCollection.map(collection=>(
-                <Badge variant="secondary" className="my-2 mx-1">
+                <Badge key={collection._id} variant="secondary" className="my-2 mx-1">
                     {collection.title}
                     <span 
                     onClick={()=>onRemove(collection._id)}

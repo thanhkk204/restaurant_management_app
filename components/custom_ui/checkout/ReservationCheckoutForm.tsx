@@ -42,6 +42,7 @@ import { cn } from "@/lib/utils"
 import Image from "next/image"
 import { useCart } from "@/lib/context/CartProvider"
 import ReactDatePicker from "@/components/ReactDatePicker"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const formSchema =  z.object({
     orderType: z.string(),
@@ -53,7 +54,7 @@ const formSchema =  z.object({
     party_size: z
       .number()
       .min(1),
-    user_id: z.number(),
+    user_id: z.string(),
     table_id: z.string().optional(),
     payment_method: z.enum(["CASHPAYMENT", "BANKPAYMENT"]),
     digital_wallet_payment: z.enum(["MOMO", "VNPAY"]).optional(),
@@ -83,12 +84,12 @@ export default function ReservationCheckoutForm({
   const [districts, setDistricts] = useState<DistricType[]>([])
   const [wards, setWards] = useState<WardType[]>([])
   const [tables, setTables] = useState<AvailableTableType[]>([])
+  const [reservations, setReservations] = useState<ReservationType[]>([])
   const [createdReservation, setCreatedReservation] = useState<ReservationType | null>(null)
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
   const value = useThemeContext()
-  if (!value) return
   const { sideBarColor } = value
 
   // get cart in localstorage
@@ -110,7 +111,7 @@ export default function ReservationCheckoutForm({
       party_size: reservation ? reservation.party_size : 0,
       payment_method: reservation ? reservation.payment_method : "CASHPAYMENT",
       digital_wallet_payment: "MOMO",
-      user_id: 1,
+      user_id: "1",
       table_id: ""
     },
   })
@@ -119,7 +120,16 @@ export default function ReservationCheckoutForm({
   const selectedDistrict = form.watch("district")
   const table_id = form.watch('table_id')
   const paymet_mehtod = form.watch('payment_method')
-
+  const startTime = form.watch('startTime')
+  
+ 
+  // calculate endTime
+  useEffect(()=>{
+      if(startTime){
+        const endTime = startTime.getTime() + 2 * 60 * 60 * 1000
+        form.setValue('endTime', new Date(endTime))
+      }
+  }, [startTime])
   // fetch provinces
   useEffect(() => {
     const fetData = async () => {
@@ -183,58 +193,85 @@ export default function ReservationCheckoutForm({
       }
       fetData()
   }, [form.setValue])
-  
+   // Get reservation for calculate time picker
+   useEffect(()=>{
+    if(!table_id) return
+    const fetData = async () => {
+      try {
+        const res = await fetch("/api/checkout/reservation/"+table_id, {
+            method: "GET",
+          })
+          if(!res){
+            return toast({
+              variant:'destructive',
+              title: "Can't get any reservation for this table"
+          })
+          }
+          const reservations = (await res.json()).reservations as ReservationType[]
+          setReservations(reservations)
+      } catch (error) {
+        toast({
+            variant:'destructive',
+            title: "Some thing went wrong with get reservatio for time picker"
+        })
+      }
+      }
+      fetData()
+      // reset value of startTime, if not user can choose the same time with existed reservation
+      form.setValue('startTime', undefined)
+}, [table_id])
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
-    // const reserUrl = "/api/checkout"
-    // const momoUrl = "api/onlinePayment/momo"
-    // setLoading(true)
-    // const {digital_wallet_payment, ...rest} = values
-    // try {
-    //   const res = await fetch(reserUrl, {
-    //     method: "POST",
-    //     body: JSON.stringify({...rest, orderedDishes:[...cart]}),
-    //   })
-    //   if (!res.ok) {
-    //     return toast({
-    //       variant: "destructive",
-    //       title: "Can't order new reservation",
-    //     })
-    //   }
-    //   const data = await res.json()
-    //   const reservation = data.reservation as ReservationType
-    //   toast({
-    //     variant: "sucess", 
-    //     title: data.message,
-    //   })
-    //   if(digital_wallet_payment && table_id){
-    //     const momoRes = await fetch(momoUrl, {
-    //       method: "POST",
-    //       body: JSON.stringify({
-    //         totalPrice: totalPrice,
-    //         checkout_id: reservation._id,
-    //         clientName: values.userName
-    //       })
-    //     })
-    //     const momoData = await momoRes.json()
-    //     const payUrl = momoData.data.payUrl
-    //     window.location.href = payUrl
-    //   }
-    //   setLoading(false)
-    // } catch (error) {
-    //   console.log(error)
-    //   setLoading(false)
-    //   toast({
-    //     variant: "destructive",
-    //     title: "Something wrong with  checkout form!",
-    //   })
-    // }
+    const reserUrl = "/api/checkout"
+    const momoUrl = "api/onlinePayment/momo"
+    setLoading(true)
+    const {digital_wallet_payment, ...rest} = values
+    try {
+      const res = await fetch(reserUrl, {
+        method: "POST",
+        body: JSON.stringify({...rest, orderedDishes:[...cart]}),
+      })
+      if (!res.ok) {
+        return toast({
+          variant: "destructive",
+          title: "Can't order new reservation",
+        })
+      }
+      const data = await res.json()
+      const reservation = data.reservation as ReservationType
+      toast({
+        variant: "sucess", 
+        title: data.message,
+      })
+      if(digital_wallet_payment && table_id){
+        const momoRes = await fetch(momoUrl, {
+          method: "POST",
+          body: JSON.stringify({
+            totalPrice: totalPrice,
+            checkout_id: reservation._id,
+            clientName: values.userName
+          })
+        })
+        const momoData = await momoRes.json()
+        const payUrl = momoData.data.payUrl
+        window.location.href = payUrl
+      }
+      setLoading(false)
+    } catch (error) {
+      console.log(error)
+      setLoading(false)
+      toast({
+        variant: "destructive",
+        title: "Something wrong with  checkout form!",
+      })
+    }
   }
   function handleResetForm(e: any) {
     e.preventDefault()
     form.reset()
   }
   return (
+    <div className="h-fit">
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -253,24 +290,6 @@ export default function ReservationCheckoutForm({
           }}
         />
 
-        <FormField
-          control={form.control}
-          name="startTime"
-          render={({ field }) => {
-            return (
-              <FormItem>
-                <FormLabel>Thời gian bắt đầu</FormLabel>
-                <FormControl className="bg-light-bg dark:bg-dark-bg border border-red-1">
-                <ReactDatePicker
-                 value={field.value}
-                 onChange={(date)=>field.onChange(date)}
-                />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )
-          }}
-        />
   
         <div className="flex flex-col md:flex-row gap-5">
           <FormField
@@ -404,12 +423,13 @@ export default function ReservationCheckoutForm({
           )}
         />
 
+      <div className="flex gap-5 md:gap-10 items-center">
         <FormField
             control={form.control}
             name="table_id"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Table (Đặt bàn trước cọc 2 lít)</FormLabel>
+              <FormItem className="flex-1">
+                <FormLabel>Table (Đặt bàn trước cọc 2 lít) (Optional !!)</FormLabel>
                 <FormControl className="bg-light-bg_2 dark:bg-dark-bg_2">
                   <Select
                     defaultValue={field.value}
@@ -434,7 +454,28 @@ export default function ReservationCheckoutForm({
               </FormItem>
             )}
           />
-
+          <FormField
+          control={form.control}
+          name="startTime"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex-1 flex flex-col gap-1 md:gap-2">
+                <FormLabel>Chọn thời gian (Mặc định 2 tiếng bắt đầu từ thời gian đã chọn)</FormLabel>
+                <FormControl >
+                {
+                  table_id ? (<ReactDatePicker
+                    value={field.value}
+                    onChange={(date)=>field.onChange(date)}
+                    reservations={reservations}
+                   />) : (<Skeleton className="h-10 w-full" />)
+                }
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </div>
         <FormField
           control={form.control}
           name="payment_method"
@@ -466,6 +507,7 @@ export default function ReservationCheckoutForm({
             </FormItem>
           )}
         />
+
 
         {
             table_id && paymet_mehtod === "BANKPAYMENT" && ( <FormField
@@ -550,5 +592,6 @@ export default function ReservationCheckoutForm({
         </div>
       </form>
     </Form>
+    </div>
   )
 }
