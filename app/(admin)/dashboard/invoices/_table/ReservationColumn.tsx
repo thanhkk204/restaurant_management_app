@@ -114,6 +114,7 @@ export const ReservationColumn = ({
         let colorText: string;
         status === "RESERVED" ? (stt = 'Đặt trước', colorText= ''):
          status === "SEATED" ? (stt = 'Đang phục vụ', colorText= '#ff9800'):
+         status === "ISNOTPAID" ? (stt = 'Chưa thanh toán', colorText= '#f5365c'):
          status === "COMPLETED" ? (stt = 'Đã hoàn thành', colorText= '#fb6340'):
          (stt = 'Đã hủy', colorText= '#f5365c')
          

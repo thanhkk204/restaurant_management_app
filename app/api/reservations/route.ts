@@ -14,6 +14,7 @@ export const POST = async (req: NextRequest) => {
          userName,
          party_size,
          payment_method,
+         startTime,
          detailAddress,
          province,
          district, 
@@ -35,6 +36,7 @@ export const POST = async (req: NextRequest) => {
         party_size,
         payment_method,
         table_id,
+        startTime,
         status: "SEATED",
         addres_id: newAddress._id
     })  as ReservationType

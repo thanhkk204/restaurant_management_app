@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { ReservationType } from '@/lib/constants/type'
 import TimeInterval from '@/components/custom_ui/TimeInterval'
+import TimeIntervalCountDown from '@/components/custom_ui/TimeIntervalCountDown'
 
 type InputValue = {
   number_of_seats: number,
@@ -72,7 +73,7 @@ export default function Item({
     }
   }
   useEffect(()=>{
-     if (table.status === 'ISSERVING') {
+     if (table.status === 'ISSERVING' || table.status === 'ISBOOKED') {
       getReservationDetail()
      }
   },[table])
@@ -298,8 +299,11 @@ const {
           (<div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
             <h1 className='font-semibold text-[19px] text-light-warning dark:text-dark-warning'>Đang phục vụ </h1>
            {getTimeLoading ? <div>00:00:00</div>: <TimeInterval reservationStartTime={reservationStartTime}/>} 
-          </div>):
-          <h1 className='font-semibold text-[19px] text-light-error dark:text-dark-error'>Đã được đặt</h1> 
+          </div>):(<div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
+            <h1 className='font-semibold text-[19px] text-light-error dark:text-dark-error'>Đã được đặt</h1> 
+            {getTimeLoading ? <div>00:00:00</div>: <TimeIntervalCountDown reservationStartTime={reservationStartTime}/>} 
+            </div>)
+             
         }
         </div>
       )

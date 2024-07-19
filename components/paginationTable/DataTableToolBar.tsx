@@ -28,6 +28,11 @@ export const statuses = [
     // icon: CircleIcon,
   },
   {
+    value: "ISNOTPAID",
+    label: "ISNOTPAID",
+    // icon: CircleIcon,
+  },
+  {
     value: "COMPLETED",
     label: "COMPLETED",
     // icon: StopwatchIcon,

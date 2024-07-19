@@ -8,6 +8,7 @@ enum PaymentMethod {
 enum ReservationStatus {
     RESERVED = "RESERVED",
     SEATED = "SEATED",
+    ISNOTPAID = "ISNOTPAID",
     COMPLETED = "COMPLETED",
     CANCELED = "CANCELED",
 }

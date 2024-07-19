@@ -151,7 +151,7 @@ export default function ReservationForm({
     try {
       const res = await fetch(url, {
         method: reservation ? "PATCH" : "POST",
-        body: JSON.stringify({ ...values, table_id }),
+        body: JSON.stringify({ ...values, table_id, startTime: new Date() }),
       })
       if (!res.ok) {
         return toast({

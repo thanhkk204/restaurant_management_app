@@ -37,7 +37,7 @@ const reservationSchame = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["RESERVED", "SEATED", "COMPLETED", "CANCELED"],
+      enum: ["RESERVED", "SEATED","ISNOTPAID", "COMPLETED", "CANCELED"],
       default: "RESERVED",
     },
     prepay: {

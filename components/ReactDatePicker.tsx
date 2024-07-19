@@ -11,7 +11,7 @@ type Props = {
 }
 function ReactDatePicker({value, onChange, reservations}:Props) {
   const [duration, setDuration] = useState<number>(1);
-  const [intervalTime, setIntervalTime] = useState<number>(15)
+  const [intervalTime, setIntervalTime] = useState<number>(5)
   const [minTime, setMinTime] = useState<Date>(()=>{
     const today = new Date()
     return new Date(today.setHours(9,0))
@@ -20,11 +20,7 @@ function ReactDatePicker({value, onChange, reservations}:Props) {
     const today = new Date()
     return new Date(today.setHours(22,0))
   })
-  // const [reservations, setReservations] = useState([
-  //   { startTime: '2024-07-15T09:00:00' },
-  //   { startTime: '2024-07-16T11:00:00' },
-  //   // Add more reservations as needed
-  // ]);
+ 
   const [excludedTimes, setExcludedTimes] = useState<Date[]>([])
 
 
@@ -46,7 +42,7 @@ function ReactDatePicker({value, onChange, reservations}:Props) {
 
          let intervalTimeAfter2Hours = currentTime.getTime()
 
-         while(intervalTimeAfter2Hours <= timeOf2HoursLater){
+         while(intervalTimeAfter2Hours < timeOf2HoursLater){
           times.push(new Date(intervalTimeAfter2Hours))
           intervalTimeAfter2Hours = intervalTimeAfter2Hours + intervalTime * 60 * 1000
          }
