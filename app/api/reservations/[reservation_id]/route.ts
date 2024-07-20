@@ -59,24 +59,15 @@ export const GET = async (req: NextRequest, {params}: {params: {reservation_id:s
 export async function PATCH(req: NextRequest, { params }: { params: { reservation_id: string }}){
    const {reservation_id} = params
    const body = await req.json()
-   const {
-      table_id,
-      userName,
-      party_size,
-      payment_method,
-      detailAddress,
-      province,
-      district, 
-      ward 
-     } = body
+   
    if(!reservation_id) return NextResponse.json({message: "There is no Id to update reservation"}, {status: 401})
-    if(!userName || !party_size || !payment_method || !detailAddress || !province || !district || !ward) return NextResponse.json({message: "All data are required"}, {status: 401})
+    if(!body) return NextResponse.json({message: "Body must be existed"}, {status: 401})
 
 
    await connectToDB()
   try {
   const newreservation: any= await reservation.findByIdAndUpdate({_id: reservation_id}, body, {new: true})
-  return NextResponse.json({message: 'Update Successfully!', reservation: newreservation}, {status: 201})
+  return NextResponse.json({message: 'Successfully!', reservation: newreservation}, {status: 201})
   } catch (error) {
    console.log("Inventories_Error", error)
    return NextResponse.json({message: "Internal Server Error"}, {status: 500})

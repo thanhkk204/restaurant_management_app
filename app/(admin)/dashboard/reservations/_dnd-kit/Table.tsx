@@ -6,7 +6,7 @@ import { UsersRound } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ReservationType } from '@/lib/constants/type'
 import TimeInterval from '@/components/custom_ui/TimeInterval'
 import TimeIntervalCountDown from '@/components/custom_ui/TimeIntervalCountDown'
@@ -41,7 +41,11 @@ export default function Item({
   const [reservationStartTime, setReservationStartTime] = useState<string>('')
   const [getTimeLoading, setGetTimeLoading] = useState<boolean>(false)
   const router = useRouter()
-  
+
+  const searchParams = useSearchParams()
+  const reservation_id = searchParams.get('reservation_id')
+  const type = searchParams.get('type')
+console.log('reservationStartTime', reservationStartTime)
   // Get start time for interval timer
   const getReservationDetail = async () => {
     setGetTimeLoading(true)
@@ -55,21 +59,11 @@ export default function Item({
       )
       const data = await res.json()
       const reservationDetail = data.reservationDetail as ReservationType
-      if (!res.ok) {
-       return toast({
-          variant: "destructive",
-          title: "Something went wrong with get time interval!",
-        })
-      }
+      
       setReservationStartTime(reservationDetail.startTime)
       setGetTimeLoading(false)
     } catch (error) {
-      console.log('error', error)
       setGetTimeLoading(false)
-      toast({
-        variant: "destructive",
-        title: "Something went wrong with get time interval!",
-      })
     }
   }
   useEffect(()=>{
@@ -131,8 +125,40 @@ const {
     [e.target.name]: e.target.value
    }))
   }
-  const createReservation = (table_id: string)=>{
-    router.push('/dashboard/reservations/createReservation/'+ table_id)
+  // Func update reservation
+  const updateReservation = async (reservation_id: string, type:string, table_id: string)=>{
+        try {
+          const res = await fetch('/api/reservations/selectTable/' + reservation_id,{
+            method: "PATCH",
+            body: JSON.stringify({table_id, type})
+          })
+          const data = await res.json()
+          if(!res.ok){
+            return toast({
+              variant: "destructive",
+              title: data.message
+            })
+          }
+           toast({
+            variant: "sucess",
+            title: data.message
+          })
+          router.push('/dashboard/invoices')
+        } catch (error) {
+          console.log(error)
+           toast({
+            variant: "destructive",
+            title: "There is something wrong with select or reselect table"
+          })
+        }
+        
+  }
+  const handleSelectTable = (table_id: string)=>{
+    if (reservation_id && type) {
+      updateReservation(reservation_id, type , table_id)
+    }else{
+      router.push('/dashboard/reservations/createReservation/'+ table_id)
+    }
   }
   const editReservation = (table_id: string)=>{
    router.push('/dashboard/reservations/updateReservation/'+ table_id)
@@ -281,7 +307,7 @@ const {
       </div>
       <div className='mt-2 w-full flex items-center justify-end'>
         <Button 
-        onClick={()=>createReservation(table._id)}
+        onClick={()=>handleSelectTable(table._id)}
         className='font-medium hover:scale-90 transition-all duration-300 ease-in-out backface-visibility-hidden'
         >
         Tạo đơn

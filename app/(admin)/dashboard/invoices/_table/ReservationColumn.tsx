@@ -15,6 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { ReservationType } from "@/lib/constants/type"
+import { formatDate } from "@/lib/utils"
+import { useRouter } from "next/navigation"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -24,7 +26,10 @@ type columProp = {
 export const ReservationColumn = ({
   reservations
  }: columProp) => {
- 
+  const router = useRouter(); 
+  const handleSelectTable = (reservation_id: string, type: string)=>{
+    router.push(`/dashboard/reservations?reservation_id=${reservation_id}&type=${type}`);
+  }
   // Columns to be returned
   const columns: ColumnDef<ReservationType>[] = [
     {
@@ -106,6 +111,15 @@ export const ReservationColumn = ({
       size: 150, //starting column size
     },
     {
+      accessorKey: "startTime",
+      header: "Thời gian đặt bàn",
+      cell: ({row})=>{
+        const startTime = row.original.startTime
+        return formatDate(startTime)
+      },
+      size: 150, //starting column size
+    },
+    {
       accessorKey: "status",
       header: "Trạng thái",
       cell: ({row})=>{
@@ -123,6 +137,21 @@ export const ReservationColumn = ({
       filterFn: (row, id, value) => {
         return value.includes(row.getValue(id))
     },
+      size: 150, //starting column size
+    },
+    {
+      accessorKey: "feature",
+      header: "",
+      cell: ({row})=>{
+        const table_id = row.original.table_id
+        return <div>
+          {
+            !table_id?
+             <Button onClick={()=>handleSelectTable(row.original._id, "SELECT")}>Nhận bàn</Button>:
+             <Button onClick={()=>handleSelectTable(row.original._id , "RESELECT")}>Đổi bàn</Button>
+          }
+        </div>
+      },
       size: 150, //starting column size
     },
   ]

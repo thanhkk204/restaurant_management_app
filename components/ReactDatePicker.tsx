@@ -8,8 +8,9 @@ type Props = {
     value: Date | undefined,
     onChange: (date: Date | null)=> void
     reservations: ReservationType[]
+    table_id: string | undefined
 }
-function ReactDatePicker({value, onChange, reservations}:Props) {
+function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
   const [duration, setDuration] = useState<number>(1);
   const [intervalTime, setIntervalTime] = useState<number>(5)
   const [minTime, setMinTime] = useState<Date>(()=>{
@@ -24,11 +25,15 @@ function ReactDatePicker({value, onChange, reservations}:Props) {
   const [excludedTimes, setExcludedTimes] = useState<Date[]>([])
 
 
-  const generateExcludedTimes = (reservations: ReservationType[]) => {
+  const generateExcludedTimes = (orders: ReservationType[]) => {
+    console.log('orders', orders)
     const times: Date[] = [];
-    reservations.forEach((reservation: any )=> {
+    console.log('thanh1')
+    orders.forEach((reservation: any )=> {
+      console.log('thanh2')
       const reservationDate = new Date(reservation.startTime);
       const selectedDate = value ? value : new Date()
+      console.log('selectedDate',selectedDate)
       if (
         reservationDate.getFullYear() === selectedDate.getFullYear() &&
         reservationDate.getMonth() === selectedDate.getMonth() &&
@@ -61,8 +66,9 @@ function ReactDatePicker({value, onChange, reservations}:Props) {
   };
 
   useEffect(()=>{
+    console.log('useEffect', reservations)
       setExcludedTimes(generateExcludedTimes(reservations))
-  }, [value])
+  }, [value, reservations])
   
   return (
     <DatePicker
@@ -76,7 +82,7 @@ function ReactDatePicker({value, onChange, reservations}:Props) {
       minTime={minTime}
       maxTime={maxTime}
       timeIntervals={intervalTime}
-      excludeTimes={excludedTimes}
+      excludeTimes={table_id ? excludedTimes : []}
     />
   )
 }

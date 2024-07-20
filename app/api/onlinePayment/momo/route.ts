@@ -3,12 +3,13 @@ import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: any) => {
     const body = await req.json()
-    const { totalPrice, checkout_id , clientName} = body
-    console.log('totalPrice', totalPrice);
+    const { deposit, checkout_id , clientName} = body
+    console.log('deposit', deposit);
     console.log('checkout_id', checkout_id);
     console.log('clientName', clientName);
-    
-  
+
+    const nameParts = clientName.trim().split(' ');
+    const firstName = nameParts[nameParts.length - 1];
     // Code của momo payment
      try {
         var accessKey = process.env.MOMO_ACCESS_KEY
@@ -18,9 +19,9 @@ export const POST = async (req: any) => {
         var redirectUrl = process.env.MOMO_REDIRECT_URL
         var ipnUrl = process.env.MOMO_IPN_URL
         var requestType = "payWithATM"
-        var amount = totalPrice
+        var amount = deposit
         var orderId = partnerCode + new Date().getTime()
-        var requestId = clientName + new Date().getTime()
+        var requestId = firstName + new Date().getTime()
         var extraData = btoa(JSON.stringify({checkout_id: checkout_id}))
         var orderGroupId = ""
         var autoCapture = true
@@ -49,17 +50,12 @@ export const POST = async (req: any) => {
           requestId +
           "&requestType=" +
           requestType
-        //puts raw signature
-        console.log("--------------------RAW SIGNATURE----------------")
-        console.log(rawSignature)
         //signature
         const crypto = await import("crypto")
         var signature = crypto
           .createHmac("sha256", secretKey)
           .update(rawSignature)
           .digest("hex")
-        console.log("--------------------SIGNATURE----------------")
-        console.log(signature)
       
         //json object send to MoMo endpoint
         const requestBody = JSON.stringify({

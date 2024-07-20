@@ -62,7 +62,7 @@ const formSchema =  z.object({
     endTime: z.date().optional(),
 
   }).superRefine((data, ctx) => {
-    const { table_id, payment_method } = data;
+    const { table_id, payment_method, startTime } = data;
     if (table_id && payment_method !== "BANKPAYMENT") {
       ctx.addIssue({
         code: "custom",
@@ -70,6 +70,14 @@ const formSchema =  z.object({
         message: "Đặt cọc 2 lít bẳng chuyển khoản trước khi đặt bàn"
       });
     } 
+    //  handle if user is not provide startTime
+    if(startTime === undefined){
+      ctx.addIssue({
+        code: "custom",
+        path: ["startTime"],
+        message: "Start time is required"
+      });
+    }
   });
 
 type Props = {
@@ -79,6 +87,7 @@ type Props = {
 export default function ReservationCheckoutForm({
   reservation,
 }: Props) {
+  const [deposit, setDeposit] = useState<number>(200000)
   const [loading, setLoading] = useState<boolean>(false)
   const [provinces, setProvinces] = useState<ProvinceType[]>([])
   const [districts, setDistricts] = useState<DistricType[]>([])
@@ -94,9 +103,6 @@ export default function ReservationCheckoutForm({
 
   // get cart in localstorage
   const {cart} = useCart()
-  const totalPrice = cart.reduce((sum, item) => {
-    return sum + item.quantity * item.price
-  }, 0)
   // 1. Define your form.
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -121,11 +127,10 @@ export default function ReservationCheckoutForm({
   const table_id = form.watch('table_id')
   const paymet_mehtod = form.watch('payment_method')
   const startTime = form.watch('startTime')
-  
  
   // calculate endTime
   useEffect(()=>{
-      if(startTime){
+      if(startTime && table_id){
         const endTime = startTime.getTime() + 1 * 60 * 60 * 1000
         form.setValue('endTime', new Date(endTime))
       }
@@ -176,7 +181,6 @@ export default function ReservationCheckoutForm({
   }, [selectedDistrict, form.setValue])
   // fetch available table
   useEffect(() => {
-
       const fetData = async () => {
       try {
         const res = await fetch("/api/checkout/reservation", {
@@ -220,6 +224,7 @@ export default function ReservationCheckoutForm({
       // reset value of startTime, if not user can choose the same time with existed reservation
       form.setValue('startTime', undefined)
 }, [table_id])
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
     const reserUrl = "/api/checkout"
@@ -247,7 +252,7 @@ export default function ReservationCheckoutForm({
         const momoRes = await fetch(momoUrl, {
           method: "POST",
           body: JSON.stringify({
-            totalPrice: totalPrice,
+            deposit: deposit,
             checkout_id: reservation._id,
             clientName: values.userName
           })
@@ -460,15 +465,14 @@ export default function ReservationCheckoutForm({
           render={({ field }) => {
             return (
               <FormItem className="flex-1 flex flex-col gap-1 md:gap-2">
-                <FormLabel>Chọn thời gian (Mặc định 2 tiếng bắt đầu từ thời gian đã chọn)</FormLabel>
+                <FormLabel>Đặt bàn: 2 tiếng &gt;&lt; Tùy chọn</FormLabel>
                 <FormControl >
-                {
-                  table_id ? (<ReactDatePicker
+                   <ReactDatePicker
                     value={field.value}
                     onChange={(date)=>field.onChange(date)}
                     reservations={reservations}
-                   />) : (<Skeleton className="h-10 w-full" />)
-                }
+                    table_id={table_id}
+                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>

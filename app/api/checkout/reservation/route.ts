@@ -9,7 +9,7 @@ export const GET = async (req: NextRequest) => {
     await connectToDB()
     try {
     await location.find({})
-    const tables = await table.find({status: "AVAILABLE"}).populate('location_id').sort({ order: 1 })
+    const tables = await table.find({status: { $ne: 'ISSERVING' }}).populate('location_id').sort({ order: 1 })
     return NextResponse.json({tables}, {status: 201})
     } catch (error) {
      console.log("Inventories_Error", error)
