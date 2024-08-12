@@ -27,7 +27,6 @@ const userSchame = new mongoose.Schema({
 }, 
 {
     timestamps: true
-}
-)
+})
 
-export default mongoose.models.user || mongoose.model("user", userSchame)
+export default mongoose.models?.user || mongoose.model("user", userSchame)

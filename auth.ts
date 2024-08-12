@@ -1,35 +1,11 @@
 import NextAuth from "next-auth"
-import Credentials from "next-auth/providers/credentials"
+
+import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import { LogInSchema } from "./lib/authSchemaZod";
+import client from "./lib/mongoDbClient";
+import authConfig from "./auth.config"
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    Credentials({
-      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-      // e.g. domain, username, password, 2FA token, etc.
-      credentials: {
-        email: {},
-        password: {},
-      },
-      authorize: async (credentials) => {
-        let user = null
-        console.log('credentials in provider',credentials);
-        const { email, password } = await LogInSchema.parseAsync(credentials)
- 
-        // // logic to salt and hash password
-        // const pwHash = saltAndHashPassword(credentials.password)
- 
-        // // logic to verify if user exists
-        // user = await getUserFromDb(credentials.email, pwHash)
- 
-        // if (!user) {
-        //   // No user found, so this is their first attempt to login
-        //   // meaning this is also the place you could do registration
-        //   throw new Error("User not found.")
-        // }
- 
-        // return user object with the their profile data
-        return user
-      },
-    }),
-  ],
+  adapter: MongoDBAdapter(client),
+  session: { strategy: "jwt" },
+  ...authConfig,
 })

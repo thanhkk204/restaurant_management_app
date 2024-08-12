@@ -372,9 +372,9 @@ export default function DnDPage() {
                         tables={tables?.filter(
                           (item) => item.location_id === location._id
                         )}
-                        addNewTable={addNewTable}
                         deleteLocation={deleteLocation}
                         updateLocation={updateLocation}
+                        addNewTable={addNewTable}
                         deleteTable={deleteTable}
                         updateTable={updateTable}
                       />

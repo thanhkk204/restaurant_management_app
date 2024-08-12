@@ -19,8 +19,13 @@ export default function ThemeContextProvider({children} : {children: React.React
   //  Check used user color was stored in local storge and then set up sideBar type to set default value
     useEffect(()=>{
       const currentTheme = window.localStorage.getItem('theme')
-      if(currentTheme) setSideBarType(currentTheme)
+      if(!currentTheme) return
+      
+      document.documentElement.classList.add(currentTheme)
+      setSideBarType(currentTheme)
      },[])
+
+     
 
   return (
     <ThemeContext.Provider value={{
