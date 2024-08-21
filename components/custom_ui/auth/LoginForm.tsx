@@ -1,27 +1,35 @@
 "use client"
 import { LogInSchema } from "@/lib/authSchemaZod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import React, { useState, useTransition } from "react"
+import React, { useEffect, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { signIn } from "@/auth"
 import { LoginAction } from "@/actions/credentials"
 import { BadgeCheck, ShieldAlert } from "lucide-react"
+import { signIn } from "next-auth/react"; // Đúng cho phía client
+import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 export default function LoginForm() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const param = searchParams.get('error')
+
   const [error, setError] = useState<string | undefined>()
   const [success, setSuccess] = useState<string | undefined>()
   const [isPeding, startTransition] = useTransition()
+
+  useEffect(()=>{
+    if(param) setError(param)
+  },[param])
   // 1. Define your form.
   const form = useForm<z.infer<typeof LogInSchema>>({
     resolver: zodResolver(LogInSchema),
@@ -33,27 +41,44 @@ export default function LoginForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof LogInSchema>) {
+    setError(undefined)
+    setSuccess(undefined)
     startTransition(() =>
       LoginAction(values)
         .then((data) => {
+          console.log({data})
           setSuccess(data.success), setError(data.error)
+          if(data.success) router.push('/')
         })
         .catch((data) => setError(data.error))
     )
+
+    /**
+     * For directly navigate, cause isn't work in server action
+     */
+    // const {email, password} = values
+    // await signIn("credentials", {
+    //   email,
+    //   password,
+    //   // redirectTo: DEFAULT_LOGIN_REDIRECT
+    //   redirect: true,
+    //   callbackUrl: '/'
+    // })
   }
+  
+  
   return (
     <Form {...form}>
       <form
         onSubmit={(e) => {
           e.preventDefault(), onSubmit(form.getValues())
         }}
-        className="space-y-6"
       >
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mt-6">
               <FormLabel className="text-[17px] text-light-textSoft dark:text-dark-textSoft">
                 Email
               </FormLabel>
@@ -73,7 +98,7 @@ export default function LoginForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mt-6">
               <FormLabel className="text-[17px] text-light-textSoft dark:text-dark-textSoft">
                 Password
               </FormLabel>
@@ -89,23 +114,26 @@ export default function LoginForm() {
           )}
         />
         {error && (
-          <div className="flex items-center gap-2 px-3 py-4 bg-red-400 rounded-sm text-white">
+          <div className="flex items-center gap-2 px-3 py-3 bg-red-400 rounded-sm text-white mt-6">
             <ShieldAlert /> <p>{error}</p>
           </div>
         )}
         {success && (
-          <div className="flex items-center gap-2 px-3 py-4 bg-green-400 rounded-sm text-white">
+          <div className="flex items-center gap-2 px-3 py-3 bg-green-400 rounded-sm text-white mt-6">
             <BadgeCheck /> <p>{success}</p>
           </div>
         )}
         <Button
           disabled={isPeding}
           type="submit"
-          className="w-full px-4 py-6 bg-light-bg dark:bg-dark-bg text-lg text-light-text dark:text-dark-text
+          className="w-full px-4 py-6 mt-6 bg-light-bg dark:bg-dark-bg text-lg text-light-text dark:text-dark-text
            shadow-md hover:shadow-cyan-500/50 transition-all ease-linear"
         >
-          Login
+          {isPeding ? '...' : 'Login'}
         </Button>
+        <div className="w-full text-end leading-7 py-2 text-light-text dark:text-dark-text">
+          Don't you have account ? <Link href={'/register'} className="text-blue-1 mt-0">Register</Link>
+        </div>
       </form>
     </Form>
   )

@@ -1,8 +1,10 @@
+"use client"
 import Image from 'next/image'
 import React, { ReactNode } from 'react'
 import SocialCard from './SocialCard'
 import { FcGoogle } from "react-icons/fc"
 import { FaGithub } from "react-icons/fa";
+import { signIn } from 'next-auth/react'
 
 const AuthCard = ({children}: {children: ReactNode}) => {
   return (
@@ -26,19 +28,18 @@ const AuthCard = ({children}: {children: ReactNode}) => {
       </div>
 
       <div className='w-full flex items-center gap-5 pt-5'>
-        <div className='flex-1'>
+        <div className='flex-1' onClick={() => signIn("google", { redirectTo: "/" })}>
         <SocialCard 
          icons={<FcGoogle className='text-[25px]'/>}
         />
         </div>
-        <div className='flex-1'>
+        <div className='flex-1' onClick={() => signIn("github", { redirectTo: "/" })}>
         <SocialCard 
         icons={<FaGithub className='text-[25px]  dark:text-white'/>}
         />
         </div>
-       
-        
       </div>
+      
     </div>
   )
 }

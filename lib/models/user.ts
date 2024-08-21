@@ -8,9 +8,8 @@ const userSchame = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
     },
-    userName: {
+    name: {
         type: String,
         required: true
     },
@@ -21,9 +20,25 @@ const userSchame = new mongoose.Schema({
         type: mongoose.Schema.ObjectId,
         ref: "address",
     },
+    role: {
+        type: String,
+        enum: ['CLIENT', 'ADMIN'],
+        default: "CLIENT",
+        required: true
+    },
+    emailVerified:{
+        type: Date,
+        default: null
+    },
     gender: {
         type: String
     },
+    accounts: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: "account",
+        }
+    ]
 }, 
 {
     timestamps: true

@@ -1,7 +1,7 @@
 "use client"
 // context/CartContext.tsx
 import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { CartItem } from '../constants/type';
+import { CartItem } from '../../types/type';
 
 
 type CartState = CartItem[];

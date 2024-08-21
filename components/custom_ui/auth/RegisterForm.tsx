@@ -1,7 +1,7 @@
 "use client"
 import { RegisterSchema } from "@/lib/authSchemaZod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import React from "react"
+import React, { useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
@@ -15,7 +15,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { RegisterAction } from "@/actions/credentials"
+import { BadgeCheck, ShieldAlert } from "lucide-react"
+import Link from "next/link"
 export default function RegisterForm() {
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState<string | undefined>()
+  const [isPeding, startTransition] = useTransition()
   // 1. Define your form.
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -28,16 +33,24 @@ export default function RegisterForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof RegisterSchema>) {
-    RegisterAction(values)
+    setError(undefined)
+    setSuccess(undefined)
+    startTransition(() =>
+      RegisterAction(values)
+        .then((data) => {
+          setSuccess(data.success), setError(data.error)
+        })
+        .catch((data) => setError(data.error))
+    )
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)}>
       <FormField
           control={form.control}
           name="userName"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mt-6">
               <FormLabel className="text-[17px] text-light-textSoft dark:text-dark-textSoft">
                 Name
               </FormLabel>
@@ -58,7 +71,7 @@ export default function RegisterForm() {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mt-6">
               <FormLabel className="text-[17px] text-light-textSoft dark:text-dark-textSoft">
                 Email
               </FormLabel>
@@ -79,7 +92,7 @@ export default function RegisterForm() {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="mt-6">
               <FormLabel className="text-[17px] text-light-textSoft dark:text-dark-textSoft">
                 Password
               </FormLabel>
@@ -95,13 +108,27 @@ export default function RegisterForm() {
             </FormItem>
           )}
         />
+        {error && (
+          <div className="flex items-center gap-2 px-3 py-3 bg-red-400 rounded-sm text-white mt-6">
+            <ShieldAlert /> <p>{error}</p>
+          </div>
+        )}
+        {success && (
+          <div className="flex items-center gap-2 px-3 py-3 bg-green-400 rounded-sm text-white mt-6">
+            <BadgeCheck /> <p>{success}</p>
+          </div>
+        )}
         <Button
+          disabled={isPeding}
           type="submit"
-          className="w-full px-4 py-6 bg-light-bg dark:bg-dark-bg text-lg text-light-text dark:text-dark-text
+          className="w-full px-4 py-6 mt-6 bg-light-bg dark:bg-dark-bg text-lg text-light-text dark:text-dark-text
            shadow-md hover:shadow-cyan-500/50 transition-all ease-linear"
         >
-          Register
+          {isPeding ? "...": "Register"}
         </Button>
+        <div className="w-full text-end leading-7 py-2 text-light-text dark:text-dark-text">
+          You already have account ? <Link href={'/login'} className="text-blue-1 mt-0">Login</Link>
+        </div>
       </form>
     </Form>
   )

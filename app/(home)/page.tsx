@@ -4,11 +4,14 @@ import { useMemo, useState } from 'react';
 import { DishType } from '../(admin)/dashboard/inventories/page';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
 import { useCart } from '@/lib/context/CartProvider';
-import { CartItem } from '@/lib/constants/type';
+import { AppProps } from 'next/app';
+import { CartItem } from '@/types/type';
+import { signOut } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
+import { getUserById } from '@/actions/users';
 
-export default function RootPage() {
+export default function RootPage({ Component, pageProps }: AppProps) {
   const [activedLink, setActiveLink] = useState<string>('all')
   // Get all dishes and categories
   const {data: dishes, loading: dishLoading} = useGetData<DishType[]>("/api/inventories/dishes")
@@ -21,13 +24,18 @@ export default function RootPage() {
      return [...dishes?.filter(dish=> dish.category_id === activedLink)]
     }
   },[activedLink, dishes])
-  
+
+   async function SignOut() {
+    await signOut({callbackUrl: '/login'})
+   }
   // add to cart action
   const { addItem} = useCart();
   const handleAddToCart = (item: CartItem)=>{
       addItem(item)
   }
   return (
+   <>
+    <Button onClick={()=>SignOut()}>Sign out</Button>
     <section className='w-full bg-light-bg_2 dark:bg-dark-bg_2 px-3 py-4 grid grid-cols-2 [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3'>
        <div className='hidden xl:block col-span-1 row-span-2 px-3 py-4'>
         <div className='xl:flex flex-col items-center justify-center h-full'>
@@ -87,5 +95,6 @@ export default function RootPage() {
         )
        }
     </section>
+   </>
   )
 }
