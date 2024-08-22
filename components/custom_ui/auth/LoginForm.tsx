@@ -131,8 +131,8 @@ export default function LoginForm() {
         >
           {isPeding ? '...' : 'Login'}
         </Button>
-        <div className="w-full text-end leading-7 py-2 text-light-text dark:text-dark-text">
-          Don't you have account ? <Link href={'/register'} className="text-blue-1 mt-0">Register</Link>
+        <div className="w-full text-start leading-7 py-4 text-light-textSoft dark:text-dark-textSoft">
+          Forgot? <Button className="px-0" variant={"link"}><Link href={'/forgotPassword'} className="text-light-textSoft dark:text-dark-textSoft mt-0">Password</Link></Button>
         </div>
       </form>
     </Form>

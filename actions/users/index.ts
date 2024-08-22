@@ -15,6 +15,7 @@ export const getUserByEmail = async(email: string)=>{
     const existingUser = await User.findOne({email: email})
     return existingUser
    } catch (error) {
+    console.log('get user by email error: ', error)
     return {error: "Can't get user by Email"}
    }
 }

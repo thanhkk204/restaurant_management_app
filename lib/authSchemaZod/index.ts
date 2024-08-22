@@ -10,3 +10,8 @@ export const RegisterSchema = z.object({
   email: z.string().email(),
   password: z.string()
 })
+export const resetPasswordSchema = z.object({
+  email: z.string().email(),
+  password: z.string().optional(),
+  code: z.string().optional()
+})

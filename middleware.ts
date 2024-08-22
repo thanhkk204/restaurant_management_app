@@ -31,11 +31,11 @@ export default auth(async function middleware(req) {
   }
   console.log({isPublicRoute, isLoggin})
 
-  if(isPublicRoute){
-     if(!isLoggin) {
-      return NextResponse.redirect(new URL('/login', nextUrl))
-     }
-  }
+  // if(isPublicRoute){
+  //    if(!isLoggin) {
+  //     return NextResponse.redirect(new URL('/login', nextUrl))
+  //    }
+  // }
   return NextResponse.next()
 })
 export const config = {

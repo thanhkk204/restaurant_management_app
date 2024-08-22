@@ -121,14 +121,11 @@ export default function RegisterForm() {
         <Button
           disabled={isPeding}
           type="submit"
-          className="w-full px-4 py-6 mt-6 bg-light-bg dark:bg-dark-bg text-lg text-light-text dark:text-dark-text
+          className="w-full px-4 py-6 my-6 bg-light-bg dark:bg-dark-bg text-lg text-light-text dark:text-dark-text
            shadow-md hover:shadow-cyan-500/50 transition-all ease-linear"
         >
           {isPeding ? "...": "Register"}
         </Button>
-        <div className="w-full text-end leading-7 py-2 text-light-text dark:text-dark-text">
-          You already have account ? <Link href={'/login'} className="text-blue-1 mt-0">Login</Link>
-        </div>
       </form>
     </Form>
   )

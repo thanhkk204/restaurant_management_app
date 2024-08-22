@@ -31,7 +31,8 @@ const toastVariants = cva(
       variant: {
         default: "border bg-white text-gray-950 dark:bg-gray-950 dark:text-gray-50",
         destructive: "bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error text-white dark:text-white border",
-        sucess: "bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success text-white dark:text-white"
+        sucess: "bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success text-white dark:text-white",
+        infor: "bg-light-warning dark:bg-dark-warning hover:bg-light-warning dark:hover:bg-dark-warning text-white dark:text-white"
       },
     },
     defaultVariants: {
