@@ -5,9 +5,9 @@ import { toast } from "@/components/ui/use-toast"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { FadeLoader } from "react-spinners"
-import { ReservationType } from "@/lib/constants/type"
 import { ReservationColumn } from "./_table/ReservationColumn"
 import { InvoiceDataTable } from "@/components/paginationTable/InvoiceDataTable"
+import { ReservationType } from "@/types/type"
 
 export default function InvoicePage() {
   const [reservations, setReservations] = useState<ReservationType[]>([])

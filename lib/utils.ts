@@ -42,6 +42,11 @@ export function formatDate(dateString: string) {
 
   return `${day}-${month}-${year}, ${hours}:${minutes}`;
 }
-
+// Decode code
+export function decodeBase64(encodedString: string): string {
+  // Chuyển đổi từ base64
+  const decodedString = Buffer.from(encodedString, 'base64').toString('utf-8');
+  return decodedString;
+}
 
 

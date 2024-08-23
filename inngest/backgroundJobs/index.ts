@@ -52,12 +52,34 @@ export const updateSeatedReservationsStatus = async () => {
       { _id: { $in: reservationIds } },
       { $set: { status: "ISNOTPAID" } }
     )
-
+    
     // Cập nhật trạng thái của tables
-    await table.updateMany(
-      { _id: { $in: tableIds } },
-      { $set: { status: "AVAILABLE" } }
-    )
+    const updateTableStatuses = async (tableIds: string[]) => {
+      const now = new Date();
+    
+      for (const tableId of tableIds) {
+        // Tìm reservation có trạng thái "RESERVED" trong tương lai cho table này
+        const reservedReservation = await reservation.findOne({
+          table_id: tableId,
+          status: "RESERVED",
+          startTime: { $gte: now },
+        });
+    
+        // Cập nhật trạng thái của table dựa trên điều kiện
+        const newStatus = reservedReservation ? "ISBOOKED" : "AVAILABLE";
+    
+        await table.updateOne(
+          { _id: tableId },
+          { $set: { status: newStatus } }
+        );
+      }
+    };
+
+    updateTableStatuses(tableIds)
+    // await table.updateMany(
+    //   { _id: { $in: tableIds } },
+    //   { $set: { status: "AVAILABLE" } }
+    // )
 
     console.log(
       "Updated reservations and tables status to ISNOTPAID and AVAILABLE"
@@ -66,27 +88,27 @@ export const updateSeatedReservationsStatus = async () => {
     console.error("Error updating reservations and tables status:", error)
   }
 }
-export const updateReservedTable = async () => {
-  const now = new Date();
-  const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+// export const updateReservedTable = async () => {
+//   const now = new Date();
+//   const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
-  try {
-    const reservations = await reservation.find({
-      startTime: { $lte: oneHourLater },
-      status: 'RESERVED',
-      table_id: { $exists: true },
-    });
+//   try {
+//     const reservations = await reservation.find({
+//       startTime: { $lte: oneHourLater },
+//       status: 'RESERVED',
+//       table_id: { $exists: true },
+//     });
 
-    const tableIds = reservations.map(res => res.table_id);
+//     const tableIds = reservations.map(res => res.table_id);
 
-    // Cập nhật trạng thái của tables
-    await table.updateMany(
-      { _id: { $in: tableIds } },
-      { $set: { status: 'ISBOOKED' } }
-    );
+//     // Cập nhật trạng thái của tables
+//     await table.updateMany(
+//       { _id: { $in: tableIds } },
+//       { $set: { status: 'ISBOOKED' } }
+//     );
 
-    console.log('Updated tables status to RESERVED for upcoming reservations');
-  } catch (error) {
-    console.error('Error updating tables status:', error);
-  }
-}
+//     console.log('Updated tables status to RESERVED for upcoming reservations');
+//   } catch (error) {
+//     console.error('Error updating tables status:', error);
+//   }
+// }

@@ -24,12 +24,12 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "../ui/button"
 import { formatCurrency } from "@/lib/utils"
-import { InvoiceType, OrderedFoodType, ReservationType } from "@/lib/constants/type"
 import { useRouter } from "next/navigation"
 import { toast } from "../ui/use-toast"
 import { Input } from "../ui/input"
 import CurrencyInput from 'react-currency-input-field';
 import { Check } from "lucide-react"
+import { InvoiceType, OrderedFoodType, ReservationType } from "@/types/type"
 type Props = {
   dishes: DishType[] | null
   categories: CategoryType[] | null
@@ -74,7 +74,7 @@ const Calculator: React.FC<Props> = ({
         }
         const data = await res.json()
         const reservationDetail = data.reservationDetail as ReservationType
-        // console.log('reservationDetail', reservationDetail)
+        console.log('reservationDetail', reservationDetail)
         setPrePay(reservationDetail.prepay)
       } catch (error) {
         toast({
@@ -89,7 +89,7 @@ const Calculator: React.FC<Props> = ({
   useEffect(()=>{
     setNeededPaid(totalPrice - prePay)
     setChange(paidMoney - neededPaid)
-  },[paidMoney, totalPrice])
+  },[paidMoney, totalPrice, prePay])
   // delete orderedFood
   const handleDeleteOrderedFood = async (e: any, orderedFood_id: string) => {
     e.preventDefault()
@@ -137,7 +137,6 @@ const Calculator: React.FC<Props> = ({
     router.back()
   }
   const handlePayment = ()=>{
-    console.log(change)
     if(change < 0) {
       return toast({
         variant: "destructive",

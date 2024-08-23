@@ -11,12 +11,13 @@ import { DotLoader } from 'react-spinners';
 type Props = {
   title: string,
   link: string,
+  linkDisplay: string,
   message: string  | undefined,
   error?: string | undefined,
   success?: string | undefined,
   isPending?: boolean
 }
-export default function CheckCard({error, success, isPending , link, title, message}: Props) {
+export default function CheckCard({error, success, isPending , link , linkDisplay, title, message}: Props) {
   return (
     <div className='min-w-[400px] max-w-[500px] px-3 py-4 md:px-5 md:py-6 rounded-md shadow-lg bg-light-bg_2 dark:bg-dark-bg_2 flex flex-col items-center'>
       <div className='flex gap-1 items-center justify-center'>
@@ -54,7 +55,7 @@ export default function CheckCard({error, success, isPending , link, title, mess
         </div>
         )
       }
-      <div className='text-light-text dark:text-dark-text'>Get back to <Link href={link} className='text-blue-1'>login!</Link></div>
+      <div className='text-light-text dark:text-dark-text'>Get back to <Link href={link} className='text-blue-1'>{linkDisplay}!</Link></div>
       
     </div>
   )

@@ -14,9 +14,9 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
-import { ReservationType } from "@/lib/constants/type"
 import { formatDate } from "@/lib/utils"
 import { useRouter } from "next/navigation"
+import { ReservationType } from "@/types/type"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.

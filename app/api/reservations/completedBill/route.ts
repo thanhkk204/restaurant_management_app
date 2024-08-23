@@ -1,9 +1,9 @@
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
-import { InvoiceType, ReservationType } from "@/lib/constants/type"
 import invoice from "@/lib/models/invoice"
 import reservation from "@/lib/models/reservation"
 import table from "@/lib/models/table"
 import { connectToDB } from "@/lib/mongoDb"
+import { ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -25,16 +25,19 @@ export const POST = async (req: NextRequest) => {
         { status: 401 }
       )
     // Reset status of reservation and table before create
-    const newReservation = (await reservation.findByIdAndUpdate(
+    const completedReservation = (await reservation.findByIdAndUpdate(
       { _id: reservation_id },
       { status: "COMPLETED" },
       { new: true }
     )) as ReservationType
-    const newTable = (await table.findByIdAndUpdate(
-      { _id: newReservation.table_id },
-      { status: "AVAILABLE" },
+    // check the next reservation to decide how to update table status
+    const nextReservation = await reservation.findOne({table_id: completedReservation.table_id, status: "RESERVED"})
+    const newStatus = nextReservation ? "ISBOOKED" : "AVAILABLE"
+    await table.findByIdAndUpdate(
+      { _id: completedReservation.table_id },
+      { status: newStatus },
       { new: true }
-    )) as TableType
+    )
 
     const completedBill = await invoice.create({
       reservation_id,

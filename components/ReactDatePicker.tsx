@@ -1,5 +1,5 @@
 "use client"
-import { ReservationType } from "@/lib/constants/type";
+import { ReservationType } from "@/types/type";
 import React, { useEffect, useState } from "react"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,8 +11,7 @@ type Props = {
     table_id: string | undefined
 }
 function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
-  const [duration, setDuration] = useState<number>(1);
-  const [intervalTime, setIntervalTime] = useState<number>(5)
+  const [timeSpace, setTimeSpace] = useState<number>(5)
   const [minTime, setMinTime] = useState<Date>(()=>{
     const today = new Date()
     return new Date(today.setHours(9,0))
@@ -26,39 +25,26 @@ function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
 
 
   const generateExcludedTimes = (orders: ReservationType[]) => {
-    console.log('orders', orders)
     const times: Date[] = [];
-    console.log('thanh1')
     orders.forEach((reservation: any )=> {
-      console.log('thanh2')
-      const reservationDate = new Date(reservation.startTime);
+      const reservationStartTime = new Date(reservation.startTime);
+      const reservationEndTime = new Date(reservation.endTime)
+
       const selectedDate = value ? value : new Date()
-      console.log('selectedDate',selectedDate)
       if (
-        reservationDate.getFullYear() === selectedDate.getFullYear() &&
-        reservationDate.getMonth() === selectedDate.getMonth() &&
-        reservationDate.getDate() === selectedDate.getDate()
+        reservationStartTime.getFullYear() === selectedDate.getFullYear() &&
+        reservationStartTime.getMonth() === selectedDate.getMonth() &&
+        reservationStartTime.getDate() === selectedDate.getDate()
       ) {
         // Loại trừ thời gian hiện tại
-         const currentTime = new Date(reservationDate)
+         const currentTime = new Date(reservationStartTime)
          times.push(currentTime)
-        // Loại trừ 2 giờ trước startTime
-        const timeOf2HoursLater = new Date(reservation.startTime).getTime() + duration * 60 * 60 * 1000
 
-         let intervalTimeAfter2Hours = currentTime.getTime()
+         let timeDuration = currentTime.getTime()
 
-         while(intervalTimeAfter2Hours < timeOf2HoursLater){
-          times.push(new Date(intervalTimeAfter2Hours))
-          intervalTimeAfter2Hours = intervalTimeAfter2Hours + intervalTime * 60 * 1000
-         }
-
-        // Loại trừ 2 giờ sau startTime
-        const timeOf2HoursBefore = new Date(reservation.startTime).getTime() - duration * 60 * 60 * 1000
-        let intervalTimeBefore2Hours = currentTime.getTime()
-
-         while(intervalTimeBefore2Hours >= timeOf2HoursBefore){
-          times.push(new Date(intervalTimeBefore2Hours))
-          intervalTimeBefore2Hours = intervalTimeBefore2Hours - intervalTime * 60 * 1000
+         while(timeDuration <= reservationEndTime.getTime()){
+          times.push(new Date(timeDuration))
+          timeDuration = timeDuration + timeSpace * 60 * 1000
          }
       }
     });
@@ -66,10 +52,8 @@ function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
   };
 
   useEffect(()=>{
-    console.log('useEffect', reservations)
       setExcludedTimes(generateExcludedTimes(reservations))
   }, [value, reservations])
-  
   return (
     <DatePicker
      className="w-full bg-light-bg dark:bg-dark-bg focus:outline-none px-3 py-2 border border-gray-200 dark:border-gray-800 rounded-md"
@@ -81,7 +65,7 @@ function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
       timeFormat="HH:mm"
       minTime={minTime}
       maxTime={maxTime}
-      timeIntervals={intervalTime}
+      timeIntervals={timeSpace}
       excludeTimes={table_id ? excludedTimes : []}
     />
   )

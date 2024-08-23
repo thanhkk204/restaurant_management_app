@@ -8,6 +8,7 @@ import { CartProvider } from "@/lib/context/CartProvider"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { auth, signOut } from "@/auth"
+import { SessionProvider } from "next-auth/react"
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
   style: ["normal", "italic"],
@@ -27,10 +28,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-   const session = await auth()
+  const session = await auth()
   return (
     <html lang="en">
       <ThemeContextProvider>
+      <SessionProvider session={session}>
         <CartProvider>
       <body className={cn(
         "w-full bg-light-bg dark:bg-dark-bg transition-colors ease-in-out duration-300",
@@ -40,12 +42,12 @@ export default async function RootLayout({
         <NavbarHome/>
        </section>
        <main className="max-w-screen-2xl mx-auto px-3 py-2 md:py-12">
-        <div className="text-white">{JSON.stringify(session?.user)}</div>
         {children}
        </main>
        <Toaster />
       </body>
       </CartProvider>
+      </SessionProvider>
       </ThemeContextProvider>
     </html>
   )

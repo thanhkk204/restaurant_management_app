@@ -1,7 +1,7 @@
 import reservation from "@/lib/models/reservation"
 import { inngest } from "../inngest.client"
 import table from "@/lib/models/table"
-import { updateReservedReservationsStatus, updateReservedTable, updateSeatedReservationsStatus } from "../backgroundJobs"
+import { updateReservedReservationsStatus, updateSeatedReservationsStatus } from "../backgroundJobs"
 
 // export const helloWorld = inngest.createFunction(
 //   { id: "hello-world" },
@@ -19,6 +19,5 @@ export const cronJob = inngest.createFunction(
     console.log("cron job after 5 minute")
     updateReservedReservationsStatus()
     updateSeatedReservationsStatus()
-    updateReservedTable()
   }
 )

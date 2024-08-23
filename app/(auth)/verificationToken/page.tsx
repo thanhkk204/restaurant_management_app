@@ -46,6 +46,7 @@ export default function VerificationToken({ searchParams }: { searchParams: { [k
       success={success}
       message={error ? error : success}
       link="/login"
+      linkDisplay="login"
       isPending={isPending}
       />
     </section>

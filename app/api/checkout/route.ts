@@ -1,19 +1,11 @@
-import {
-  AddressType,
-  DistricType,
-  OrderedFoodType,
-  ProvinceType,
-  ReservationType,
-  ShipmentType,
-  WardType,
-} from "@/lib/constants/type"
+
 import address from "@/lib/models/address"
-import dish from "@/lib/models/dish"
 import orderedDish from "@/lib/models/orderedDish"
 import reservation from "@/lib/models/reservation"
 import shipment from "@/lib/models/shipment"
 import table from "@/lib/models/table"
 import { connectToDB } from "@/lib/mongoDb"
+import { AddressType, ReservationType, ShipmentType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
@@ -58,7 +50,7 @@ export const POST = async (req: NextRequest) => {
     if (orderType === "shipment") {
       const newShipment = (await shipment.create({
         userName,
-        // user_id,
+        user_id,
         phoneNumber,
         note,
         payment_method,
@@ -85,7 +77,7 @@ export const POST = async (req: NextRequest) => {
       const reverTable_id = table_id === "" ? null : table_id
       const newReservation = (await reservation.create({
         userName,
-        // user_id,
+        user_id,
         phoneNumber,
         party_size,
         payment_method,
@@ -130,6 +122,22 @@ export const GET = async (req: NextRequest) => {
     console.log("Inventories_Error", error)
     return NextResponse.json(
       { message: "Internal Server Error" },
+      { status: 500 }
+    )
+  }
+}
+
+export const PUT = async (req: NextRequest) => {
+  await connectToDB()
+  const {amount , checkout_id} = await req.json() 
+  try {
+   const bookedReservation = await reservation.findByIdAndUpdate(checkout_id,{prepay: amount})
+   await table.findByIdAndUpdate(bookedReservation.table_id, {status: "ISBOOKED"})
+    return NextResponse.json({success: "Successfully!" }, { status: 201 })
+  } catch (error) {
+    console.log("Inventories_Error", error)
+    return NextResponse.json(
+      { error: "Internal Server Error" },
       { status: 500 }
     )
   }

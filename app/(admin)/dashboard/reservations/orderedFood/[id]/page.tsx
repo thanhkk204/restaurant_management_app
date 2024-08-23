@@ -4,8 +4,8 @@ import Menu from "@/components/custom_ui/Menu";
 import { useGetData } from "@/hooks/useGetdata";
 import { useEffect, useState } from "react";
 import { DishType } from "../../../inventories/page";
-import { OrderedFoodType } from "@/lib/constants/type";
 import { toast } from "@/components/ui/use-toast";
+import { OrderedFoodType } from "@/types/type";
 
 export default function OrderedFood({params}: {params: {id: string}}) {
   const {id: reservation_id} = params

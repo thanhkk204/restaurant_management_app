@@ -20,13 +20,7 @@ import { useToast } from "@/components/ui/use-toast"
 import ImageUpload from "@/components/custom_ui/ImageUpload"
 import { redirect, useRouter } from "next/navigation"
 import ClipLoader from "react-spinners/ClipLoader"
-import {
-  AvailableTableType,
-  DistricType,
-  ProvinceType,
-  ReservationType,
-  WardType,
-} from "@/lib/constants/type"
+
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -43,6 +37,8 @@ import Image from "next/image"
 import { useCart } from "@/lib/context/CartProvider"
 import ReactDatePicker from "@/components/ReactDatePicker"
 import { Skeleton } from "@/components/ui/skeleton"
+import { AvailableTableType, DistricType, ProvinceType, ReservationType, WardType } from "@/types/type"
+import { useSession } from "next-auth/react"
 
 const formSchema =  z.object({
     orderType: z.string(),
@@ -62,7 +58,7 @@ const formSchema =  z.object({
     endTime: z.date().optional(),
 
   }).superRefine((data, ctx) => {
-    const { table_id, payment_method, startTime } = data;
+    const { table_id, payment_method, startTime , endTime} = data;
     if (table_id && payment_method !== "BANKPAYMENT") {
       ctx.addIssue({
         code: "custom",
@@ -78,6 +74,50 @@ const formSchema =  z.object({
         message: "Start time is required"
       });
     }
+    //  handle if user is not provide endTime
+    if(endTime === undefined){
+      ctx.addIssue({
+        code: "custom",
+        path: ["endTime"],
+        message: "End time is required"
+      });
+    }
+    // handle if time between startTime and andTime smaller than 1 hour or larger than 3 hours
+    if(startTime && endTime){
+      const startT = new Date(startTime).getTime()
+      const endT = new Date(endTime).getTime()
+      const duration = (endT - startT) / 1000 / 60 / 60
+      if(startT < new Date().getTime()) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["startTime"],
+          message: "Start time must larger than now"
+        });
+      }
+      if(endT < startT){
+        ctx.addIssue({
+          code: "custom",
+          path: ["endTime"],
+          message: "End time must larger than Start time"
+        });
+      }
+      // if(duration < 0.9){
+      //   ctx.addIssue({
+      //     code: "custom",
+      //     path: ["endTime"],
+      //     message: "Duration must larger than 1"
+      //   });
+      // }
+      // if(duration > 3){
+      //   ctx.addIssue({
+      //     code: "custom",
+      //     path: ["endTime"],
+      //     message: "Duration must smaller than 3"
+      //   });
+      // }
+
+    }
+
   });
 
 type Props = {
@@ -98,9 +138,9 @@ export default function ReservationCheckoutForm({
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
+  const session = useSession()
   const value = useThemeContext()
   const { sideBarColor } = value
-
   // get cart in localstorage
   const {cart} = useCart()
   // 1. Define your form.
@@ -127,14 +167,20 @@ export default function ReservationCheckoutForm({
   const table_id = form.watch('table_id')
   const paymet_mehtod = form.watch('payment_method')
   const startTime = form.watch('startTime')
+  const endTime = form.watch('endTime')
  
-  // calculate endTime
-  useEffect(()=>{
-      if(startTime && table_id){
-        const endTime = startTime.getTime() + 1 * 60 * 60 * 1000
-        form.setValue('endTime', new Date(endTime))
-      }
-  }, [startTime])
+
+  const isTimeOverLap = (reservations: ReservationType[])=> {
+    if(!startTime || !endTime) return
+
+    return reservations.some(reservation=>{
+       return (
+        new Date(startTime) < new Date(reservation.startTime) &&
+        new Date(endTime) > new Date(reservation.endTime)
+      )
+    })
+  }
+ 
   // fetch provinces
   useEffect(() => {
     const fetData = async () => {
@@ -223,10 +269,13 @@ export default function ReservationCheckoutForm({
       fetData()
       // reset value of startTime, if not user can choose the same time with existed reservation
       form.setValue('startTime', undefined)
+      form.setValue('endTime', undefined)
 }, [table_id])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    if(!session.data?.user) return toast({variant: "destructive", title: "Please log in before make reservation"})
+      
+    if(isTimeOverLap(reservations)) return toast({variant: "destructive", title: "You can't put reservation time overlap"})
     const reserUrl = "/api/checkout"
     const momoUrl = "api/onlinePayment/momo"
     setLoading(true)
@@ -234,7 +283,7 @@ export default function ReservationCheckoutForm({
     try {
       const res = await fetch(reserUrl, {
         method: "POST",
-        body: JSON.stringify({...rest, orderedDishes:[...cart]}),
+        body: JSON.stringify({...rest, orderedDishes:[...cart], user_id: session.data.user.id}),
       })
       if (!res.ok) {
         return toast({
@@ -248,6 +297,7 @@ export default function ReservationCheckoutForm({
         variant: "sucess", 
         title: data.message,
       })
+      // if customer reserve table this will fire for privious payment
       if(digital_wallet_payment && table_id){
         const momoRes = await fetch(momoUrl, {
           method: "POST",
@@ -262,6 +312,7 @@ export default function ReservationCheckoutForm({
         window.location.href = payUrl
       }
       setLoading(false)
+      form.reset()
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -428,7 +479,6 @@ export default function ReservationCheckoutForm({
           )}
         />
 
-      <div className="flex gap-5 md:gap-10 items-center">
         <FormField
             control={form.control}
             name="table_id"
@@ -459,13 +509,34 @@ export default function ReservationCheckoutForm({
               </FormItem>
             )}
           />
+      <div className="flex gap-5 md:gap-10 items-center">
           <FormField
           control={form.control}
           name="startTime"
           render={({ field }) => {
             return (
               <FormItem className="flex-1 flex flex-col gap-1 md:gap-2">
-                <FormLabel>Đặt bàn: 2 tiếng &gt;&lt; Tùy chọn</FormLabel>
+                <FormLabel>Start Time &gt;&lt; Tùy chọn</FormLabel>
+                <FormControl >
+                   <ReactDatePicker
+                    value={field.value}
+                    onChange={(date)=>field.onChange(date)}
+                    reservations={reservations}
+                    table_id={table_id}
+                   />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+          <FormField
+          control={form.control}
+          name="endTime"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex-1 flex flex-col gap-1 md:gap-2">
+                <FormLabel>End Time &gt;&lt; Tùy chọn</FormLabel>
                 <FormControl >
                    <ReactDatePicker
                     value={field.value}

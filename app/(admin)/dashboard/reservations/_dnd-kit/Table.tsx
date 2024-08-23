@@ -7,9 +7,18 @@ import { useEffect, useState } from 'react'
 import { toast } from '@/components/ui/use-toast'
 import { cn } from '@/lib/utils'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { ReservationType } from '@/lib/constants/type'
 import TimeInterval from '@/components/custom_ui/TimeInterval'
 import TimeIntervalCountDown from '@/components/custom_ui/TimeIntervalCountDown'
+import { ReservationType } from '@/types/type'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Trash } from "lucide-react"
 
 type InputValue = {
   number_of_seats: number,
@@ -45,7 +54,26 @@ export default function Item({
   const searchParams = useSearchParams()
   const reservation_id = searchParams.get('reservation_id')
   const type = searchParams.get('type')
-console.log('reservationStartTime', reservationStartTime)
+
+  const {
+    setNodeRef,
+     transform,
+     transition,
+     listeners,
+     attributes,
+     isDragging
+    } = useSortable({
+      id: table._id,
+      data: {
+        type: "table",
+        table
+      },
+    })
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+    }
+
   // Get start time for interval timer
   const getReservationDetail = async () => {
     setGetTimeLoading(true)
@@ -59,7 +87,7 @@ console.log('reservationStartTime', reservationStartTime)
       )
       const data = await res.json()
       const reservationDetail = data.reservationDetail as ReservationType
-      
+      console.log({reservationDetail})
       setReservationStartTime(reservationDetail.startTime)
       setGetTimeLoading(false)
     } catch (error) {
@@ -71,24 +99,7 @@ console.log('reservationStartTime', reservationStartTime)
       getReservationDetail()
      }
   },[table])
-const {
-  setNodeRef,
-   transform,
-   transition,
-   listeners,
-   attributes,
-   isDragging
-  } = useSortable({
-    id: table._id,
-    data: {
-      type: "table",
-      table
-    },
-  })
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
+  console.log({table})
   const handleDelete = (e:MouseEvent) =>{
     e.preventDefault()
     deleteTable(table._id)
@@ -250,7 +261,7 @@ const {
     style={style}
     {...attributes}
     {...listeners}
-    className='relative'
+    className='relative max-h-[177px]'
     >
     <div className={
       cn(
@@ -317,21 +328,64 @@ const {
 
     {
       !(table.status === "AVAILABLE") && (
-        <div 
-        onClick={()=>editReservation(table._id)}
-        className='absolute z-30 inset-0 top-0 left-0 w-full h-full bg-blur_bg dark:bg-blur_bg flex items-center justify-center rounded-md'>
-        {
-          table.status === "ISSERVING" ? 
-          (<div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
+        <>
+          { table.status === "ISSERVING" ? (
+          <div 
+          onClick={()=>editReservation(table._id)}
+          className='absolute z-30 inset-0 top-0 left-0 w-full h-full bg-blur_bg dark:bg-blur_bg flex items-center justify-center rounded-md'>
+            <div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
             <h1 className='font-semibold text-[19px] text-light-warning dark:text-dark-warning'>Đang phục vụ </h1>
-           {getTimeLoading ? <div>00:00:00</div>: <TimeInterval reservationStartTime={reservationStartTime}/>} 
-          </div>):(<div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
-            <h1 className='font-semibold text-[19px] text-light-error dark:text-dark-error'>Đã được đặt</h1> 
-            {getTimeLoading ? <div>00:00:00</div>: <TimeIntervalCountDown reservationStartTime={reservationStartTime}/>} 
-            </div>)
-             
-        }
+            {getTimeLoading ? <div>00:00:00</div>: <TimeInterval reservationStartTime={reservationStartTime}/>} 
+            </div>
         </div>
+        ): ( 
+          <Dialog>
+          <DialogTrigger>
+              <div
+              className='absolute z-30 inset-0 top-0 left-0 w-full h-full bg-blur_bg dark:bg-blur_bg flex items-center justify-center rounded-md'>
+              <div className='w-full h-full flex flex-col gap-1 items-center justify-center'>
+              <h1 className='font-semibold text-[19px] text-light-error dark:text-dark-error'>Đã được đặt</h1> 
+              {getTimeLoading ? <div>00:00:00</div>: <TimeIntervalCountDown reservationStartTime={reservationStartTime}/>} 
+              </div>
+              </div> 
+          </DialogTrigger>
+          <DialogContent className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text">
+            <DialogHeader>
+              <DialogTitle className='text-light-textSoft dark:text-dark-textSoft font-normal'>
+               Bạn có chắc muốn đặt 1 bàn hiện tại không? 
+              </DialogTitle>
+              <div className='flex items-center gap-2 py-2 text-light-textSoft dark:text-dark-textSoft font-normal'>
+               Book gần nhất:
+              <div className='text-light-text dark:text-dark-text'>
+              {getTimeLoading ? <div>00:00:00</div>: <TimeIntervalCountDown reservationStartTime={reservationStartTime}/>} 
+              </div>
+              </div>
+            </DialogHeader>
+            <div className="flex items-center justify-end py-2 gap-5">
+              <DialogClose asChild>
+                <Button
+                  className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
+                text-white dark:text-white hover:scale-90 transition-all ease-in"
+                >
+                  Đóng
+                </Button>
+              </DialogClose>
+              <DialogClose>
+              <Button
+                onClick={()=>handleSelectTable(table._id)}
+                className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
+              text-white dark:text-white hover:scale-90 transition-all ease-in"
+              >
+                Ok
+              </Button>
+              </DialogClose>
+            </div>
+          </DialogContent>
+        </Dialog>
+           
+          )
+        } 
+        </>
       )
     }
     </div>

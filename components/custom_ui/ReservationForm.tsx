@@ -20,12 +20,7 @@ import { useToast } from "@/components/ui/use-toast"
 import ImageUpload from "@/components/custom_ui/ImageUpload"
 import { useRouter } from "next/navigation"
 import ClipLoader from "react-spinners/ClipLoader"
-import {
-  DistricType,
-  ProvinceType,
-  ReservationType,
-  WardType,
-} from "@/lib/constants/type"
+
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import SelectScrollable from "./SelectScrollable"
@@ -39,6 +34,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
+import { DistricType, ProvinceType, ReservationType, WardType } from "@/types/type"
 
 const formSchemaFunc = (maxSeats: number) =>
   z.object({
