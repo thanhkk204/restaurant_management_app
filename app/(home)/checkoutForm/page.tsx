@@ -60,8 +60,11 @@ export default function CheckoutForm() {
             showShippingForm ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
+           <div className='w-full px-3 py-3 md:px-5 md:py-4 text-light-text dark:text-dark-text'>
           <ShipmentCheckoutForm />
+          </div>
         </div>
+
       </div>
 
       <div className='flex-1 bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-white py-2 rounded-tl-md rounded-bl-md'>

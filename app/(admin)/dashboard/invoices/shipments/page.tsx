@@ -5,9 +5,9 @@ import { toast } from "@/components/ui/use-toast"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 
 import { FadeLoader } from "react-spinners"
-import { ShipmentType } from "@/lib/constants/type"
 import { InvoiceDataTable } from "@/components/paginationTable/InvoiceDataTable"
 import { ShipmentColumn } from "./_table/ShipmentColumn"
+import { ShipmentType } from "@/types/type"
 
 export default function InvoicePage() {
   const [shipments, setShipments] = useState<ShipmentType[]>([])
@@ -22,16 +22,17 @@ export default function InvoicePage() {
     const fetData = async () => {
       setLoading(true)
       try {
-        const res = await fetch("/api/invoices/shipments", {
+        const res = await fetch("/api/checkout", {
           method: "GET",
         })
         if (!res.ok) {
-          return toast({
+          toast({
             variant: "destructive",
             title: "Can't get any data for shipments!",
           })
         }
         const data = await res.json()
+        console.log({dataInShipment: data})
         setShipments(data.shipments)
         setLoading(false)
       } catch (error) {
@@ -49,13 +50,14 @@ export default function InvoicePage() {
       const res = await fetch("/api/invoices/shipments/" + shipment_id, {
         method: "POST",
       })
+      const data = await res.json()
+      console.log({data})
       if (!res.ok) {
         return toast({
           variant: "destructive",
-          title: "Can't create GHN order for this ship!",
+          title: data.message,
         })
       }
-      const data = await res.json()
       toast({
         variant: "sucess",
         title: data.message,

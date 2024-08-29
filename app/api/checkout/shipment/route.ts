@@ -12,7 +12,6 @@ export const POST = async (req: NextRequest) => {
   const body = await req.json()
   console.log({body})
   const {
-    orderType,
     userName,
     user_id,
     note,
@@ -27,11 +26,6 @@ export const POST = async (req: NextRequest) => {
     province,
     district,
     ward,
-    // if it's reservation
-    party_size,
-    table_id,
-    startTime,
-    endTime,
   } = body
   await connectToDB()
   try {
@@ -47,8 +41,8 @@ export const POST = async (req: NextRequest) => {
       ward: ward,
       detailAddress,
     })) as AddressType
-    // 4: create shipment or reservation
-    if (orderType === "shipment") {
+    // 4: create shipment or reservation_id
+
       const newShipment = (await shipment.create({
         userName,
         user_id,
@@ -70,37 +64,11 @@ export const POST = async (req: NextRequest) => {
         })
       }
       //   return
+      
       return NextResponse.json(
         { message: "Succussfully!", shipment: newShipment },
         { status: 201 }
       )
-    } else if (orderType === "reservation") {
-      const reverTable_id = table_id === "" ? null : table_id
-      const newReservation = (await reservation.create({
-        userName,
-        user_id,
-        phoneNumber,
-        party_size,
-        payment_method,
-        table_id: reverTable_id,
-        prepay,
-        startTime,
-        endTime,
-        addres_id: newAddress._id,
-      })) as ReservationType
-      // create ordered dishes
-      for (const dish of orderedDishes) {
-        await orderedDish.create({
-          reservation_id: newReservation._id,
-          dish_id: dish.dish_id,
-          quantity: dish.quantity,
-        })
-      }
-      return NextResponse.json(
-        { message: "Succussfully!", reservation: newReservation },
-        { status: 201 }
-      )
-    }
   } catch (error) {
     console.log("Inventories_Error", error)
     return NextResponse.json(
@@ -128,18 +96,3 @@ export const GET = async (req: NextRequest) => {
   }
 }
 
-export const PUT = async (req: NextRequest) => {
-  await connectToDB()
-  const {amount , checkout_id} = await req.json() 
-  try {
-   const bookedReservation = await reservation.findByIdAndUpdate(checkout_id,{prepay: amount})
-   await table.findByIdAndUpdate(bookedReservation.table_id, {status: "ISBOOKED"})
-    return NextResponse.json({success: "Successfully!" }, { status: 201 })
-  } catch (error) {
-    console.log("Inventories_Error", error)
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    )
-  }
-}

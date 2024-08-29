@@ -1,8 +1,8 @@
-import { OrderedFoodType, ShipmentType } from "@/lib/constants/type"
 import dish from "@/lib/models/dish"
 import orderedDish from "@/lib/models/orderedDish"
 import shipment from "@/lib/models/shipment"
 import { connectToDB } from "@/lib/mongoDb"
+import { OrderedFoodType, ShipmentType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(
@@ -13,7 +13,7 @@ export async function POST(
   if (!shipment_id)
     return NextResponse.json(
       { message: "There is no ID for create ordered" },
-      { status: 500 }
+      { status: 491 }
     )
 
   await connectToDB()
@@ -25,6 +25,17 @@ export async function POST(
     const orderedDishes = (await orderedDish
       .find({ shipment_id: shipment_id })
       .populate("dish_id")) as OrderedFoodType[]
+    if(!shipment || !orderedDishes){
+      return NextResponse.json(
+        { message: "Can't get information of shipment" },
+        { status: 491 }
+      )
+    }
+    const itemArr = orderedDishes.map(orderedDish=>({
+      name: orderedDish.dish_id.title,
+      quantity: orderedDish.quantity,
+      price: orderedDish.dish_id.price
+    }))
     const totalPrice = orderedDishes.reduce((total, item) => {
       return (total += item.dish_id.price * item.quantity)
     }, 0)
@@ -45,27 +56,22 @@ export async function POST(
       to_name: shipmentInfor.userName, // client field
       to_phone: shipmentInfor.phoneNumber, // client field
       to_address: shipmentInfor.addres_id.detailAddress, // client field
-      to_ward_code: "20308", // client field
-      to_district_id: 1444, // client field
+      to_ward_code: shipmentInfor.addres_id.ward, // client field
+      to_district_id: Number(shipmentInfor.addres_id.district), // client field
       cod_amount: totalPrice,
       content: "Giao đồ ăn nhanh cho khách",
       weight: 200,
-      length: 1,
-      width: 19,
-      height: 10,
+      // length: 1,
+      // width: 19,
+      // height: 10,
       pick_station_id: 1444,
       deliver_station_id: null,
       insurance_value: totalPrice,
-      service_id: 53321, // client field
-      service_type_id: 2, // client field
+      service_id: Number(shipmentInfor.service_id), // client field
+      // service_type_id: 2, // client field
       // "coupon":null,
       // "pick_shift":[2, 3, 4],
-      items: [
-        {
-          name: "food",
-          quantity: 3,
-        },
-      ],
+      items: itemArr
     }
     //   const GHN_BODY = {
     //     payment_type_id: 2, // choosen person who pay for this ship // 1: shop/seller, 2: buyer
@@ -139,6 +145,12 @@ export async function POST(
     )
     const res = await GHN_Order.json()
     console.log("GHN_Order", res)
+    if(res.code === 400){
+      return NextResponse.json(
+        { message:  res.code_message_value},
+        { status: 500 }
+      )
+    }
     if (res.message === "Success") {
       await shipment.findOneAndUpdate(
         { _id: shipment_id },

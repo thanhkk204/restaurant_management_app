@@ -97,7 +97,32 @@ export type WardType = {
     ward_name: string,
     ward_type: string
 }
-
+export type ProvinceShipmentType = {
+    ProvinceID: number,
+    ProvinceName: string,
+    CountryID: number,
+    Code: string
+}
+export type DistrictShipmentType = {
+    DistrictID: number,
+    DistrictName: string,
+    DeliverType: number,
+    ProvinceID: number,
+    Code: string
+}
+export type WardShipmentType = {
+    WardCode: string
+    WardName: string,
+    DeliverType: number,
+    DistrictID: number,
+}
+export type ServiceShipmentType = {
+    service_id: number
+    service_type_id: number
+    short_name: string
+    config_fee_id: string
+    extra_cost_id: string
+}
 export type CartItem = {
     dish_id: string;
     title: string;

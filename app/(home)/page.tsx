@@ -10,6 +10,7 @@ import { CartItem } from '@/types/type';
 import { signOut } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { getUserById } from '@/actions/users';
+import GoogleMap from '@/components/GoogleMap';
 
 export default function RootPage({ Component, pageProps }: AppProps) {
   const [activedLink, setActiveLink] = useState<string>('all')
@@ -36,6 +37,7 @@ export default function RootPage({ Component, pageProps }: AppProps) {
   return (
    <>
     <Button onClick={()=>SignOut()}>Sign out</Button>
+    <GoogleMap/>
     <section className='w-full bg-light-bg_2 dark:bg-dark-bg_2 px-3 py-4 grid grid-cols-2 [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3'>
        <div className='hidden xl:block col-span-1 row-span-2 px-3 py-4'>
         <div className='xl:flex flex-col items-center justify-center h-full'>

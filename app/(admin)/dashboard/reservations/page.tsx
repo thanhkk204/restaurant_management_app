@@ -25,7 +25,6 @@ import { toast } from "@/components/ui/use-toast"
 import Location from "./_dnd-kit/Location"
 import { FadeLoader } from "react-spinners"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
-import { useGetData } from "@/hooks/useGetdata"
 
 enum TableEnum {
   AVAILABLE = "AVAILABLE",
@@ -449,6 +448,7 @@ export default function DnDPage() {
         if (!tables) return null
         const oldIndex = tables?.findIndex((table) => table._id === active.id)
         const newIndex = tables?.findIndex((table) => table._id === over.id)
+        // if table is currently located in difference new location, move to new location
         if (tables[oldIndex].location_id !== tables[newIndex].location_id) {
           tables[oldIndex].location_id = tables[newIndex].location_id
         }

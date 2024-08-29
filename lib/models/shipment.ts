@@ -42,7 +42,6 @@ const shipmentSchame = new mongoose.Schema(
     },
     service_type_id: {
         type: Number,
-        required: true
     },
     status: {
       type: String,

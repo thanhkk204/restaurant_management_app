@@ -1,7 +1,7 @@
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
-import { ReservationType } from "@/lib/constants/type"
 import reservation from "@/lib/models/reservation"
 import { connectToDB } from "@/lib/mongoDb"
+import { ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function GET(

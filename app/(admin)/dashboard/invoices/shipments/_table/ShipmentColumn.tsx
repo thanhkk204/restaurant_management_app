@@ -14,7 +14,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
-import {ShipmentType } from "@/lib/constants/type"
+import { ShipmentType } from "@/types/type"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -120,35 +120,37 @@ export const ShipmentColumn = ({
       header: "Features",
       cell: ({ row }) => (
         <div className="flex items-center justify-center gap-5">
-        <Dialog>
-          <DialogTrigger>
-            <Button>Xác nhận đơn</Button>
-          </DialogTrigger>
-          <DialogContent className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text">
-            <DialogHeader>
-              <DialogTitle>Xác nhận tạo đơn hàng</DialogTitle>
-            </DialogHeader>
-            <div className="flex items-center justify-end py-2 gap-5">
-              <DialogClose asChild>
+        {
+          row.original.status === "RESERVED" && (  <Dialog>
+            <DialogTrigger>
+              <Button>Xác nhận đơn</Button>
+            </DialogTrigger>
+            <DialogContent className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text">
+              <DialogHeader>
+                <DialogTitle>Xác nhận tạo đơn hàng</DialogTitle>
+              </DialogHeader>
+              <div className="flex items-center justify-end py-2 gap-5">
+                <DialogClose asChild>
+                  <Button
+                    className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
+                  text-white dark:text-white hover:scale-90 transition-all ease-in"
+                  >
+                    Đóng
+                  </Button>
+                </DialogClose>
+                <DialogClose>
                 <Button
-                  className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
+                  onClick={() => handleCreateGHN_Order(row.original._id)}
+                  className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
                 text-white dark:text-white hover:scale-90 transition-all ease-in"
                 >
-                  Đóng
+                  Tạo 
                 </Button>
-              </DialogClose>
-              <DialogClose>
-              <Button
-                onClick={() => handleCreateGHN_Order(row.original._id)}
-                className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
-              text-white dark:text-white hover:scale-90 transition-all ease-in"
-              >
-                Tạo 
-              </Button>
-              </DialogClose>
-            </div>
-          </DialogContent>
-        </Dialog>
+                </DialogClose>
+              </div>
+            </DialogContent>
+          </Dialog>)
+        }
         </div>
       ),
       enableSorting: false,

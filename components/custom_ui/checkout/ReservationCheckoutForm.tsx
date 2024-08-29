@@ -101,20 +101,20 @@ const formSchema =  z.object({
           message: "End time must larger than Start time"
         });
       }
-      // if(duration < 0.9){
-      //   ctx.addIssue({
-      //     code: "custom",
-      //     path: ["endTime"],
-      //     message: "Duration must larger than 1"
-      //   });
-      // }
-      // if(duration > 3){
-      //   ctx.addIssue({
-      //     code: "custom",
-      //     path: ["endTime"],
-      //     message: "Duration must smaller than 3"
-      //   });
-      // }
+      if(duration < 0.9){
+        ctx.addIssue({
+          code: "custom",
+          path: ["endTime"],
+          message: "Duration must larger than 1"
+        });
+      }
+      if(duration > 3){
+        ctx.addIssue({
+          code: "custom",
+          path: ["endTime"],
+          message: "Duration must smaller than 3"
+        });
+      }
 
     }
 
@@ -157,7 +157,7 @@ export default function ReservationCheckoutForm({
       party_size: reservation ? reservation.party_size : 0,
       payment_method: reservation ? reservation.payment_method : "CASHPAYMENT",
       digital_wallet_payment: "MOMO",
-      user_id: "1",
+      user_id: session.data?.user.id,
       table_id: ""
     },
   })
