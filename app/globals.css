@@ -16,10 +16,57 @@ body,
 .hiddenNavbar{
   transform: translateY(-140%);
 }
+
+@keyframes biani {
+  0% {
+      border-radius: 48% 52% 57% 43% / 34% 44% 56% 66%;
+  }
+  25% {
+      border-radius: 62% 38% 64% 36% / 34% 55% 45% 66%;
+  }
+  50% {
+      border-radius: 43% 57% 51% 49% / 33% 42% 58% 67%;
+  }
+  100% {
+      border-radius: 40% 60% 43% 57% / 52% 32% 68% 48%;
+  }
+}
+@layer base {
+  section{
+   @apply max-w-screen-2xl min-h-screen px-10 mx-auto py-[75px];
+  }
+}
 @layer components {
+  .flexCenter {
+    @apply flex items-center justify-center
+  }
+  .flexBetween {
+    @apply flex items-center justify-between
+  }
+  .textHeading {
+    @apply text-[44px] leading-[54px] font-[700] text-light-text dark:text-dark-text;
+  }
+  .text__para {
+    @apply text-[18px] leading-[30px] font-[400] text-light-textSoft dark:text-dark-textSoft mt-[18px];
+  }
   .separate_line{
     @apply bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none
   }
+  .btnCustom {
+    @apply rounded-md px-4 py-2;
+    box-shadow: inset 6px 6px 7px #dadada, inset -6px -6px 7px #ffffff;
+  }
+  .btnCustom_dark {
+    @apply rounded-md px-4 py-2;
+    box-shadow: inset 4px 4px 6px #1094f4, inset -6px -6px 7px #051139;
+  }
+  .parallax_img{
+   animation: biani 4.5s linear infinite alternate;
+  }
+  .bannerBackGroundImage {
+    background: url('/images/main-b.jpg') center/cover no-repeat;
+  }
+
 }
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -31,5 +78,23 @@ body,
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
 }
+ 
 }
 
+@media only screen and (max-width: 1024px) {
+  section {
+    @apply py-[35px] px-6;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  section {
+    @apply px-3
+  }
+  .heading {
+    @apply text-[26px] leading-[36px];
+  }
+  .text__para {
+    @apply text-[16px] leading-7 mt-3;
+  }
+}

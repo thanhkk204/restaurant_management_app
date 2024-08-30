@@ -38,10 +38,9 @@ export default async function RootLayout({
         "w-full bg-light-bg dark:bg-dark-bg transition-colors ease-in-out duration-300",
         popins.className
       )}>
-      <section className="w-full min-h-[80px] px-5 flex items-center justify-end">
         <NavbarHome/>
-       </section>
-       <main className="max-w-screen-2xl mx-auto px-3 py-2 md:py-12">
+
+       <main className="w-full min-h-screen relative pt-[160px] overflow-hidden">
         {children}
        </main>
        <Toaster />

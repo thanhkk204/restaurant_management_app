@@ -3,9 +3,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { ShoppingCart } from "lucide-react"
@@ -55,7 +52,7 @@ const CartModel = () => {
     return (
     <Sheet>
       <SheetTrigger>
-        <div className="relative">
+        <div className="relative btnCustom dark:btnCustom_dark px-2 py-2 dark:px-2 dark:py-2">
           <ShoppingCart
             width={30}
             strokeWidth={"1.5px"}
@@ -64,7 +61,7 @@ const CartModel = () => {
           />
          {
             isClient && (
-            <p className="absolute top-0 translate-x-[-50%] translate-y-[-50%] text-white bg-red-1 font-medium w-5 h-5 rounded-full flex items-center justify-center">
+            <p className="absolute top-0 translate-x-[-60%] translate-y-[-50%] text-white bg-red-1 font-medium w-5 h-5 rounded-full flex items-center justify-center">
             {totalOrderedFood}
           </p>
             )
