@@ -69,7 +69,7 @@ export default function SideBarModel() {
               <button
                 onClick={() => setSideBarType("light")}
                 className={cn(
-                  "flex-grow border border-blue-1 rounded-md py-2 px-2 text-white dark:text-blue-1 bg-transparent cursor-pointer hover:translate-y-[-2%] transition-transform hover:shadow-input_shadown hover:shadow-cyan-500/50",
+                  "flex-grow border border-blue-1 rounded-md py-2 px-2 text-white dark:text-blue-1 bg-transparent cursor-pointer hover:translate-y-[-2%] transition-transform hover:shadow-input_shadow hover:shadow-cyan-500/50",
                   sideBarType === "light"
                     ? "bg-gradient-to-r from-[#11c4ef] to-[#1187ef]"
                     : ""
@@ -80,7 +80,7 @@ export default function SideBarModel() {
               <button
                 onClick={() => setSideBarType("dark")}
                 className={cn(
-                  "flex-grow border border-blue-1 rounded-md py-2 px-2 text-white dark:text-blue-1 bg-transparent cursor-pointer hover:translate-y-[-2%] transition-transform hover:shadow-input_shadown hover:shadow-cyan-500/50",
+                  "flex-grow border border-blue-1 rounded-md py-2 px-2 text-white dark:text-blue-1 bg-transparent cursor-pointer hover:translate-y-[-2%] transition-transform hover:shadow-input_shadow hover:shadow-cyan-500/50",
                   sideBarType === "dark"
                     ? "bg-gradient-to-r from-[#11c4ef] to-[#1187ef]"
                     : ""

@@ -205,7 +205,7 @@ const Calculator: React.FC<Props> = ({
                     onClick={() =>
                       handleMinus(orderedFood._id, orderedFood.quantity)
                     }
-                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadown"
+                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadow"
                   >
                     {" "}
                     -{" "}
@@ -215,7 +215,7 @@ const Calculator: React.FC<Props> = ({
                     onClick={() =>
                       handlePlus(orderedFood._id, orderedFood.quantity)
                     }
-                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadown"
+                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadow"
                   >
                     {" "}
                     +{" "}
@@ -308,7 +308,7 @@ const Calculator: React.FC<Props> = ({
               </p>
               <CurrencyInput
                 id="input-example"
-                className="flex-[2] shadow-input_shadown focus-within:shadow-indigo-500/50 focus:border-none focus:outline-none px-2 py-2 bg-transparent dark:bg-transparent "
+                className="flex-[2] shadow-input_shadow focus-within:shadow-indigo-500/50 focus:border-none focus:outline-none px-2 py-2 bg-transparent dark:bg-transparent "
                 name="input-name"
                 placeholder="Please enter a number"
                 decimalsLimit={2}

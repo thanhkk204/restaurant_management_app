@@ -70,7 +70,7 @@ export default function Navbar() {
 
       <div className="nav_right flex items-center gap-5">
         <form action="">
-          <div className="px-3 py-3 bg-white dark:bg-dark-bg_2 rounded-lg dark:border dark:border-dark-bg_2 flex items-center gap-3 focus-within:shadow-input_shadown focus-within:shadow-cyan-500/50">
+          <div className="px-3 py-3 bg-white dark:bg-dark-bg_2 rounded-lg dark:border dark:border-dark-bg_2 flex items-center gap-3 focus-within:shadow-input_shadow focus-within:shadow-cyan-500/50">
             <Search className="text-dark-bg_2 dark:text-dark-textSoft" />
             <input
               type="text"

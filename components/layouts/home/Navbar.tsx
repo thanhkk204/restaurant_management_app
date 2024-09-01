@@ -77,7 +77,7 @@ export default function NavbarHome() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollTop])
   return (
-    <header className="fixed z-50 top-0 left-0 w-full h-[80px]"
+    <header className="fixed z-50 top-0 left-0 w-full h-[80px] transition-all duration-300"
     ref={navRef}
     >
       <div className="max-w-screen-2xl h-full mx-auto flex items-center justify-between">
@@ -224,7 +224,7 @@ export default function NavbarHome() {
 
     //   <div className="nav_right flex items-center gap-5">
     //     <form action="">
-    //       <div className="px-3 py-3 bg-white dark:bg-dark-bg_2 rounded-lg dark:border dark:border-dark-bg_2 flex items-center gap-3 focus-within:shadow-input_shadown focus-within:shadow-cyan-500/50">
+    //       <div className="px-3 py-3 bg-white dark:bg-dark-bg_2 rounded-lg dark:border dark:border-dark-bg_2 flex items-center gap-3 focus-within:shadow-input_shadow focus-within:shadow-cyan-500/50">
     //         <Search className="text-dark-bg_2 dark:text-dark-textSoft" />
     //         <input
     //           type="text"

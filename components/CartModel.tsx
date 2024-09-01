@@ -107,7 +107,7 @@ const CartModel = () => {
                     onClick={() =>
                       handleMinus(orderedFood.dish_id, orderedFood.quantity-1 )
                     }
-                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadown"
+                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadow"
                   >
                     {" "}
                     -{" "}
@@ -117,7 +117,7 @@ const CartModel = () => {
                     onClick={() =>
                       handlePlus(orderedFood.dish_id, orderedFood.quantity+1)
                     }
-                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadown"
+                    className="px-3 py-2 text-white bg-blur_bg dark:bg-blur_bg rounded-lg cursor-pointer hover:scale-[80%] transition-all ease-in hover:shadow-button_shadow"
                   >
                     {" "}
                     +{" "}

@@ -15,8 +15,9 @@ const config = {
         'sideBarScreen': '350px',
       },
       boxShadow: {
-        'input_shadown': '0 0 10px 0 ',
-        'button_shadown': '0 0 5px 0 ',
+        'main_shadow' : '3px 3px 4px 2px',
+        'input_shadow': '0 0 10px 0 ',
+        'button_shadow': '0 0 5px 0 ',
         'shadown_hover': '1px 1px 3px 0 ',
       },
       colors: {

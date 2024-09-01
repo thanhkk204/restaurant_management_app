@@ -31,6 +31,7 @@ body,
       border-radius: 40% 60% 43% 57% / 52% 32% 68% 48%;
   }
 }
+
 @layer base {
   section{
    @apply max-w-screen-2xl min-h-screen px-10 mx-auto py-[75px];
@@ -43,7 +44,7 @@ body,
   .flexBetween {
     @apply flex items-center justify-between
   }
-  .textHeading {
+  .text__heading {
     @apply text-[44px] leading-[54px] font-[700] text-light-text dark:text-dark-text;
   }
   .text__para {
@@ -51,6 +52,9 @@ body,
   }
   .separate_line{
     @apply bg-gradient-to-r from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent w-full h-[1px] border-none
+  }
+  .ver_separate_line{
+    @apply bg-gradient-to-b from-transparent via-gray-400 dark:via-[#FFFFFF66] opacity-75 to-transparent h-full w-[1px] border-none
   }
   .btnCustom {
     @apply rounded-md px-4 py-2;
@@ -60,12 +64,32 @@ body,
     @apply rounded-md px-4 py-2;
     box-shadow: inset 4px 4px 6px #1094f4, inset -6px -6px 7px #051139;
   }
+  .yellowBtn {
+    @apply rounded-md px-4 py-2 bg-gradient-to-br from-[#ffc954] to-[#ffbc00] hover:from-[#e3a92b] hover:to-[#ffc933];
+    box-shadow: inset 4px 4px 8px #d6a029, inset -4px -4px 8px #ffd837;
+  }
+  .yellowBtn_dark {
+    @apply rounded-md px-4 py-2 bg-gradient-to-br from-[#ffc954] to-[#ffbc00];
+    box-shadow: inset 4px 4px 8px #d6a029, inset -4px -4px 8px #ffd837;
+  }
+  .product_shadow{
+    @apply bg-gradient-to-br from-[#ececec] to-[#ffffff];
+    box-shadow:  28px 28px 45px #d4d4d4, -28px -28px 45px #ffffff;
+  }
+  .product_shadow_dark{
+    @apply bg-gradient-to-br from-[#47657a] to-[#051139];
+    box-shadow:  28px 28px 45px #111c44, -28px -28px 45px #111c44;
+  }
   .parallax_img{
    animation: biani 4.5s linear infinite alternate;
   }
   .bannerBackGroundImage {
     background: url('/images/main-b.jpg') center/cover no-repeat;
   }
+  .menuBackGroundImage {
+    background: url('/images/blog-pattern-bg.png') center/cover no-repeat;
+  }
+  
 
 }
 @layer utilities {
@@ -91,7 +115,7 @@ body,
   section {
     @apply px-3
   }
-  .heading {
+  .text__heading {
     @apply text-[26px] leading-[36px];
   }
   .text__para {

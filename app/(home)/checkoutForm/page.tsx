@@ -12,7 +12,7 @@ export default function CheckoutForm() {
   const [showShippingForm, setShowShippingForm] = useState(false);
   const { cart} = useCart();
   return (
-    <section className='w-full mx-auto shadow-button_shadown shadow-slate-600 rounded-md overflow-hidden'>
+    <section className='w-full mx-auto shadow-button_shadow shadow-slate-600 rounded-md overflow-hidden'>
      <div className="relative w-full">
       
       <div className="w-full h-[50px] sticky top-0 left-0 right-0 flex justify-between">

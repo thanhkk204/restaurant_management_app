@@ -11,11 +11,14 @@ import { signOut } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { getUserById } from "@/actions/users"
 import GoogleMap from "@/components/GoogleMap"
-import { ArrowDown } from "lucide-react"
+import { ArrowDown, ArrowRight } from "lucide-react"
 import {
   MouseParallaxContainer,
   MouseParallaxChild,
 } from "react-parallax-mouse"
+import { BrandSection } from "@/components/BrandSection"
+import MenuSection from "@/components/MenuSection"
+import {motion} from 'framer-motion'
 export default function RootPage({ Component, pageProps }: AppProps) {
   const [activedLink, setActiveLink] = useState<string>("all")
   // Get all dishes and categories
@@ -42,16 +45,17 @@ export default function RootPage({ Component, pageProps }: AppProps) {
   const handleAddToCart = (item: CartItem) => {
     addItem(item)
   }
+  const MotionArrowRight = motion(ArrowRight);
   return (
     <>
       <section className="relative ">
         {/* Banner */}
         <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-9 md:gap-11 lg:gap-0">
-          <div className="flex-1 overflow-x-hidden relative z-20">
+          <div className="flex-1 overflow-x-hidden relative z-20 text-wrap">
             <h1 className="text-5xl lg:text-8xl font-semibold font-serif text-light-text dark:text-dark-text capitalize text-wrap ">
               Welcome to our <span className="text-orange-1 dark:text-dark-primaryColor">greate</span> restaurant
             </h1>
-            <p className="text__para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio nemo ullam nostrum unde dolor reprehenderit
+            <p className="text__para text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio nemo ullam nostrum unde dolor reprehenderit
               quam nulla esse consectetur, cum quaerat ut qui est recusandae mollitia corporis quas facere nesciunt.</p>
           </div>
           <div className="flex-1 flex items-center justify-center">
@@ -63,7 +67,7 @@ export default function RootPage({ Component, pageProps }: AppProps) {
         <div className="absolute w-full h-full top-0 left-0 z-10">
           <MouseParallaxContainer className="w-full h-full" containerStyle={{ overflow: 'visible' }}>
 
-            <MouseParallaxChild factorX={0.1} factorY={0.1} className="absolute bottom-0 left-[-5%]">
+            <MouseParallaxChild factorX={0.1} factorY={0.1} className="absolute bottom-[-10%] left-[-5%]">
               <Image src={"/images/leaf.png"} className="blur-[1px]" width={355} height={355} alt="image" />
             </MouseParallaxChild>
 
@@ -75,12 +79,76 @@ export default function RootPage({ Component, pageProps }: AppProps) {
 
         </div>
       </section>
+      
+      <BrandSection/>
+      <MenuSection/>
 
+      <section>
+        <div className="w-full flex flex-col md:flex-row ">
+          <div className="flex-1 flex items-center justify-center">
+            <Image
+              src={"/images/pizza.png"}
+              width={350}
+              height={350}
+              alt="dish"
+            />
+          </div>
+
+          <div className="flex-1 flex flex-col">
+            <h1 className="text__heading">
+              Pizza chicken prime
+            </h1>
+            <p className="text__para text-justify">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
+              esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
+              rem consequatur, amet necessitatibus!
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
+              esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
+              rem consequatur, amet necessitatibus!
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
+              esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
+              rem consequatur, amet necessitatibus!
+              </p>
+
+            <motion.button
+              className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
+               bg-light-text dark:bg-dark-text text-dark-text dark:text-light-text"
+               initial={'initial'}
+               whileHover="hover"
+               animate={'initial'}
+               >
+              Explore
+              <motion.span
+                className="ml-2 md:ml-3 w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-bold bg-light-warning dark:bg-light-primaryColor"
+               
+              >
+                <MotionArrowRight 
+                 variants={{
+                  initial: {
+                    x: 0,
+                    opacity: 1,
+                    transition: { duration: 0.4, ease: "easeIn" }
+                  },
+                  hover: {
+                    x: [0, 20, -20], // Di chuyển sang phải 20px, rồi sang trái -20px, rồi trở lại vị trí ban đầu
+                    opacity: [1, 0 , 0],
+                    transition: { duration: 0.4, ease: "easeIn", times: [0, 0.8 , 1] },// Thời gian cho cả quá trình là 0.6 giây
+                    
+                  },
+                }}
+                />
+              </motion.span>
+            </motion.button>
+          </div>
+
+        </div>
+
+      </section>
 
       {/* <Button onClick={() => SignOut()}>Sign out</Button>
       <GoogleMap /> */}
 
-      <section className="bg-light-bg_2 dark:bg-dark-bg_2 px-3 py-4 grid grid-cols-2 [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3">
+      {/* <section className="bg-light-bg_2 dark:bg-dark-bg_2 px-3 py-4 grid grid-cols-2 [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3">
         <div className="hidden xl:block col-span-1 row-span-2 px-3 py-4">
           <div className="xl:flex flex-col items-center justify-center h-full">
             <div
@@ -130,15 +198,9 @@ export default function RootPage({ Component, pageProps }: AppProps) {
             <h2 className="absolute z-20 left-0 bottom-0 w-full h-[50px] flex items-center justify-center bg-blur_bg text-white">
               {dish.title}
             </h2>
-            {/* <div className={cn(
-                'absolute top-0 left-0 z-30 bg-blur_bg dark:bg-blur_bg rounded-md',
-                orderedFoods.find(orderedFood => orderedFood.dish_id._id === dish._id )? 'block' : 'hidden'
-            )}>
-            <Check width={35} height={35} className='font-extrabold text-light-success dark:text-dark-success' />
-            </div> */}
           </div>
         ))}
-      </section>
+      </section> */}
     </>
   )
 }
