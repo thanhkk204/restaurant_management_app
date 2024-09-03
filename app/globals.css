@@ -9,7 +9,30 @@ html,
 body,
 :root {
   height: 100vh;
+  position: relative;
 }
+/* Swiper */
+.swiper-button-prev::after, .swiper-button-next::after {
+  display: none;
+}
+.swiper-pagination {
+  position: relative !important;
+  width: fit-content !important;
+}
+.swiper-pagination-bullet {
+  opacity: 0.8 !important;
+  background-color: #1094f4 !important;
+  width: 10px !important;
+  height: 10px !important;
+  margin: 0px 10px !important;
+  border-radius: 10px !important;
+  transition: 0.8s cubic-bezier(0.22, 0.78, 0.45, 1.02) !important;
+}
+.swiper-pagination-bullet-active{
+  background-color: #fcbc30 !important;
+  width: 30px !important;
+}
+/*  */
 .bg_transparent{
   background-color: rgba(255, 255, 255, 8%);
 }
@@ -38,6 +61,9 @@ body,
   }
 }
 @layer components {
+  .container{
+    @apply max-w-screen-2xl px-10 mx-auto py-[75px];
+   }
   .flexCenter {
     @apply flex items-center justify-center
   }
@@ -78,7 +104,7 @@ body,
   }
   .product_shadow_dark{
     @apply bg-gradient-to-br from-[#47657a] to-[#051139];
-    box-shadow:  28px 28px 45px #111c44, -28px -28px 45px #111c44;
+    box-shadow:  9px 14px 25px #111c44, -28px -28px 45px #111c44;
   }
   .parallax_img{
    animation: biani 4.5s linear infinite alternate;
@@ -89,8 +115,6 @@ body,
   .menuBackGroundImage {
     background: url('/images/blog-pattern-bg.png') center/cover no-repeat;
   }
-  
-
 }
 @layer utilities {
   /* Hide scrollbar for Chrome, Safari and Opera */
@@ -109,10 +133,16 @@ body,
   section {
     @apply py-[35px] px-6;
   }
+  .container {
+    @apply py-[35px] px-6;
+  }
 }
 
 @media only screen and (max-width: 768px) {
   section {
+    @apply px-3
+  }
+  .container {
     @apply px-3
   }
   .text__heading {

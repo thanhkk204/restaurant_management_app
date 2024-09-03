@@ -149,7 +149,7 @@ export default function NavbarHome() {
                       ))
                     }
                     </ul>
-                    <div className="absolute bottom-0 left-0 w-full h-[250px] gap-5 px-5 py-8 bg-black/25 rounded-tl-[50px] rounded-tr-[50px]">
+                    <div className="absolute bottom-0 left-0 w-full h-[130px]  gap-5 px-5 py-8 bg-black/25 rounded-tl-[50px] rounded-tr-[50px]">
                       <SheetClose className="w-full">
                         <button className="text-[18px] w-full px-3 py-3 rounded-lg bg-gradient-to-r from-orange-1 to-red-1 text-white dark:text-white 
                          hover:scale-95 transition-transform duration-150 ease-linear"

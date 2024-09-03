@@ -17,7 +17,7 @@ const popins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Restaurant Dashboard",
+  title: "I need 800+ toeic",
   icons: {
     icon: "/images/logo2.png",
   },

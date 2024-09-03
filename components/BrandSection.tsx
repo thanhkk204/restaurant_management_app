@@ -9,6 +9,7 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
+import { HeadingSection } from './HeadingSection'
 
 export const BrandSection = () => {
   return (
@@ -34,19 +35,11 @@ export const BrandSection = () => {
           </div>
 
           <div className='py-[35px] flex flex-col items-center justify-center'>
-              <h4 className='px-2 py-2 rounded-xl shadow-xl inline-block mx-auto text-light-warning 
-              dark:text-dark-warning font-medium'>
-                  About us
-              </h4>
-              <h1 className='text__heading uppercase max-w-[350px] md:max-w-[450px] text-center py-4 md:py-6'>
-                Discorver our restaurant story
-              </h1>
-              <Image
-                  width={150}
-                  height={150}
-                  alt='Brand image'
-                  src={`/images/title-shape.svg`}
-              />
+            <HeadingSection 
+             title='About us'
+             desc='Discorver our restaurant story'
+            />
+             
               <p className='text__para text-wrap text-justify'>
                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Totam o
                fficiis veritatis sint iure quam, quas excepturi explicabo veniam possimus distinctio cumque tempora volu
@@ -54,7 +47,7 @@ export const BrandSection = () => {
                fficiis veritatis sint iure quam, quas excepturi explicabo veniam possimus distinctio cumque tempora volu
                ptas temporibus saepe assumenda similique non aliquid sunt.lorem
               </p>
-
+             
               <div className='py-6 md:py-8'>
               <Image 
                   className='object-cover rounded-3xl'
@@ -64,10 +57,6 @@ export const BrandSection = () => {
                   src={`/images/about.jpg`}
               />
               </div>
-
-              
-              
-
               <Dialog>
                   <DialogTrigger>
                       <div className='w-16 h-16 dark:bg-dark-bg_2 flex items-center justify-center rounded-full shadow-main_shadow dark:shadow-button_shadow shadow-black/10 dark:shadow-blue-1 cursor-pointer active:shadow-inner'>

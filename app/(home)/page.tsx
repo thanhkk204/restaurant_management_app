@@ -19,23 +19,26 @@ import {
 import { BrandSection } from "@/components/BrandSection"
 import MenuSection from "@/components/MenuSection"
 import {motion} from 'framer-motion'
+import { OrderTableSection } from "@/components/OrderTableSection"
+import { SwiperSliderShow } from "@/components/SwiperSliderShow"
+import { TeamChefGallery } from "@/components/TeamChefGallery"
 export default function RootPage({ Component, pageProps }: AppProps) {
   const [activedLink, setActiveLink] = useState<string>("all")
   // Get all dishes and categories
-  const { data: dishes, loading: dishLoading } = useGetData<DishType[]>(
-    "/api/inventories/dishes"
-  )
-  const { data: categories, loading: categoryLoading } = useGetData<DishType[]>(
-    "/api/inventories/categories"
-  )
+  // const { data: dishes, loading: dishLoading } = useGetData<DishType[]>(
+  //   "/api/inventories/dishes"
+  // )
+  // const { data: categories, loading: categoryLoading } = useGetData<DishType[]>(
+  //   "/api/inventories/categories"
+  // )
   // choose dish depend on category id
-  const categoryDishes = useMemo(() => {
-    if (activedLink === "all") {
-      return dishes
-    } else if (dishes) {
-      return [...dishes?.filter((dish) => dish.category_id === activedLink)]
-    }
-  }, [activedLink, dishes])
+  // const categoryDishes = useMemo(() => {
+  //   if (activedLink === "all") {
+  //     return dishes
+  //   } else if (dishes) {
+  //     return [...dishes?.filter((dish) => dish.category_id === activedLink)]
+  //   }
+  // }, [activedLink, dishes])
 
   async function SignOut() {
     await signOut({ callbackUrl: "/login" })
@@ -84,7 +87,8 @@ export default function RootPage({ Component, pageProps }: AppProps) {
       <MenuSection/>
 
       <section>
-        <div className="w-full flex flex-col md:flex-row ">
+        {/* pizza information */}
+        <div className="w-full py-6 md:py-10 flex flex-col md:flex-row gap-5">
           <div className="flex-1 flex items-center justify-center">
             <Image
               src={"/images/pizza.png"}
@@ -110,7 +114,8 @@ export default function RootPage({ Component, pageProps }: AppProps) {
               rem consequatur, amet necessitatibus!
               </p>
 
-            <motion.button
+           <div className="w-full flex justify-end md:justify-start">
+           <motion.button
               className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
                bg-light-text dark:bg-dark-text text-dark-text dark:text-light-text"
                initial={'initial'}
@@ -139,11 +144,78 @@ export default function RootPage({ Component, pageProps }: AppProps) {
                 />
               </motion.span>
             </motion.button>
+           </div>
           </div>
 
         </div>
+        {/* Sushi information */}
+        <div className="w-full py-6 md:py-10 flex flex-col md:flex-row gap-5">
 
-      </section>
+          <div className="flex-1 flex flex-col order-2 md:order-1">
+            <h1 className="text__heading">
+              Pizza chicken prime
+            </h1>
+            <p className="text__para text-justify">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
+              esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
+              rem consequatur, amet necessitatibus!
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
+              esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
+              rem consequatur, amet necessitatibus!
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
+              esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
+              rem consequatur, amet necessitatibus!
+              </p>
+
+           <div className="w-full flex justify-end md:justify-start">
+           <motion.button
+              className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
+               bg-light-text dark:bg-dark-text text-dark-text dark:text-light-text"
+               initial={'initial'}
+               whileHover="hover"
+               animate={'initial'}
+               >
+              Explore
+              <motion.span
+                className="ml-2 md:ml-3 w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-bold bg-light-warning dark:bg-light-primaryColor"
+               
+              >
+                <MotionArrowRight 
+                 variants={{
+                  initial: {
+                    x: 0,
+                    opacity: 1,
+                    transition: { duration: 0.4, ease: "easeIn" }
+                  },
+                  hover: {
+                    x: [0, 20, -20], // Di chuyển sang phải 20px, rồi sang trái -20px, rồi trở lại vị trí ban đầu
+                    opacity: [1, 0 , 0],
+                    transition: { duration: 0.4, ease: "easeIn", times: [0, 0.8 , 1] },// Thời gian cho cả quá trình là 0.6 giây
+                    
+                  },
+                }}
+                />
+              </motion.span>
+            </motion.button>
+           </div>
+          </div>
+
+           <div className="flex-1 order-1 md:order-2 flex items-center justify-center">
+            <Image
+              src={"/images/sushi.png"}
+              width={350}
+              height={350}
+              alt="dish"
+            />
+          </div>
+
+        </div>
+      </section> 
+      
+        <OrderTableSection/>
+
+        <SwiperSliderShow/>
+        <TeamChefGallery />
 
       {/* <Button onClick={() => SignOut()}>Sign out</Button>
       <GoogleMap /> */}
