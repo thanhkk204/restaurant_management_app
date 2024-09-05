@@ -1,5 +1,5 @@
 import reservation from "@/lib/models/reservation"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { DistricType, ProvinceType, WardType } from "@/lib/constants/type"
+import { ProvinceType } from "@/types/type"
 type Props = {
     onChange: (value: string) => void
     address: ProvinceType[]

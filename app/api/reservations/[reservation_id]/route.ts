@@ -1,11 +1,7 @@
-import {
-  DistricType,
-  ProvinceType,
-  ReservationType,
-  WardType,
-} from "@/lib/constants/type"
+
 import reservation from "@/lib/models/reservation"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
+import { DistricType, ProvinceType, WardType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 const getLocation = async <T>(url: string): Promise<T> => {

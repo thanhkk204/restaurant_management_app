@@ -3,7 +3,7 @@ import { closestCenter, DndContext, DragEndEvent, DragOverEvent, DragStartEvent,
 import { arrayMove, rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import React, { useState } from 'react'
 import Column from './_dnd-kit/Column'
-import MyBook from '@/components/MyBook'
+// import MyBook from '@/components/MyBook'
 
 const Locations = [
   {
@@ -42,7 +42,7 @@ export default function MenuPage() {
       <section>
      <div className="bg-light-bg_2 dark:bg-dark-bg_2 px-3 lg:px-5 py-4 lg:py-6 rounded-md min-h-fit w-full">
       
-           <MyBook/>
+           {/* <MyBook/> */}
     </div>
   
 </section>

@@ -1,16 +1,15 @@
-
 import address from "@/lib/models/address"
 import orderedDish from "@/lib/models/orderedDish"
 import reservation from "@/lib/models/reservation"
 import shipment from "@/lib/models/shipment"
 import table from "@/lib/models/table"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { AddressType, ReservationType, ShipmentType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json()
-  console.log({body})
+  console.log({ body })
   const {
     orderType,
     userName,
@@ -130,11 +129,15 @@ export const GET = async (req: NextRequest) => {
 
 export const PUT = async (req: NextRequest) => {
   await connectToDB()
-  const {amount , checkout_id} = await req.json() 
+  const { amount, checkout_id } = await req.json()
   try {
-   const bookedReservation = await reservation.findByIdAndUpdate(checkout_id,{prepay: amount})
-   await table.findByIdAndUpdate(bookedReservation.table_id, {status: "ISBOOKED"})
-    return NextResponse.json({success: "Successfully!" }, { status: 201 })
+    const bookedReservation = await reservation.findByIdAndUpdate(checkout_id, {
+      prepay: amount,
+    })
+    await table.findByIdAndUpdate(bookedReservation.table_id, {
+      status: "ISBOOKED",
+    })
+    return NextResponse.json({ success: "Successfully!" }, { status: 201 })
   } catch (error) {
     console.log("Inventories_Error", error)
     return NextResponse.json(

@@ -7,9 +7,10 @@ export default function AuthErrorPage({ searchParams }: { searchParams: { [key: 
     <section className="w-full min-h-screen flex items-center justify-center">
       <CheckCard 
       title="There some thing wrong"
-      icon={<ShieldAlert/>}
       message={error}
       link="/login"
+      linkDisplay={"Login"}
+      error={error}
       />
     </section>
   )

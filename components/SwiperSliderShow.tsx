@@ -58,7 +58,7 @@ export const SwiperSliderShow = () => {
       //     spaceBetween: -20,
       //   },
       // }}
-      className=' md:h-[550px]'
+      className='h-[350px] md:h-[550px]'
     >
         <SwiperSlide className='overflow-hidden rounded-[35px] h-full'>
           <div className="w-full h-full bg-[url('/images/bt1.jpg')] bg-center">

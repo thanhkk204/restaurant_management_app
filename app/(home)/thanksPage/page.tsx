@@ -1,12 +1,11 @@
 "use client"
-
 import CheckCard from "@/components/custom_ui/auth/CheckCard"
 import { toast } from "@/components/ui/use-toast"
 import { decodeBase64 } from "@/lib/utils"
 import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 
-const thanksPage = () => {
+const ThanksPage = () => {
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | undefined>()
   const [success, setSuccess] = useState<string | undefined>()
@@ -67,4 +66,4 @@ const thanksPage = () => {
   )
 }
 
-export default thanksPage
+export default ThanksPage

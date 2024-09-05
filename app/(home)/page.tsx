@@ -5,12 +5,8 @@ import { DishType } from "../(admin)/dashboard/inventories/page"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useCart } from "@/lib/context/CartProvider"
-import { AppProps } from "next/app"
 import { CartItem } from "@/types/type"
 import { signOut } from "next-auth/react"
-import { Button } from "@/components/ui/button"
-import { getUserById } from "@/actions/users"
-import GoogleMap from "@/components/GoogleMap"
 import { ArrowDown, ArrowRight } from "lucide-react"
 import {
   MouseParallaxContainer,
@@ -22,7 +18,10 @@ import {motion} from 'framer-motion'
 import { OrderTableSection } from "@/components/OrderTableSection"
 import { SwiperSliderShow } from "@/components/SwiperSliderShow"
 import { TeamChefGallery } from "@/components/TeamChefGallery"
-export default function RootPage({ Component, pageProps }: AppProps) {
+import { Testimonial } from "@/components/Testimonial"
+import SubcribeSection from "@/components/SubcribeSection"
+
+export default function RootPage() {
   const [activedLink, setActiveLink] = useState<string>("all")
   // Get all dishes and categories
   // const { data: dishes, loading: dishLoading } = useGetData<DishType[]>(
@@ -49,8 +48,19 @@ export default function RootPage({ Component, pageProps }: AppProps) {
     addItem(item)
   }
   const MotionArrowRight = motion(ArrowRight);
+
+  // const scrollToTop = (e: any) => {
+  //   e.preventDefault()
+  //   window.scrollTo({
+  //     top: 100,
+  //     left: 100,
+  //     behavior: "smooth",
+  //   });
+  // };
   return (
     <>
+     {/* <button className="fixed bottom-5 right-5 py-5 px-5 rounded-3xl bg-orange-1 z-50" onClick={e=>scrollToTop(e)}>Scroll to Top</button> */}
+
       <section className="relative ">
         {/* Banner */}
         <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-9 md:gap-11 lg:gap-0">
@@ -82,9 +92,9 @@ export default function RootPage({ Component, pageProps }: AppProps) {
 
         </div>
       </section>
-      
-      <BrandSection/>
-      <MenuSection/>
+
+      <BrandSection />
+      <MenuSection />
 
       <section>
         {/* pizza information */}
@@ -112,39 +122,39 @@ export default function RootPage({ Component, pageProps }: AppProps) {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
               esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
               rem consequatur, amet necessitatibus!
-              </p>
+            </p>
 
-           <div className="w-full flex justify-end md:justify-start">
-           <motion.button
-              className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
+            <div className="w-full flex justify-end md:justify-start">
+              <motion.button
+                className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
                bg-light-text dark:bg-dark-text text-dark-text dark:text-light-text"
-               initial={'initial'}
-               whileHover="hover"
-               animate={'initial'}
-               >
-              Explore
-              <motion.span
-                className="ml-2 md:ml-3 w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-bold bg-light-warning dark:bg-light-primaryColor"
-               
+                initial={'initial'}
+                whileHover="hover"
+                animate={'initial'}
               >
-                <MotionArrowRight 
-                 variants={{
-                  initial: {
-                    x: 0,
-                    opacity: 1,
-                    transition: { duration: 0.4, ease: "easeIn" }
-                  },
-                  hover: {
-                    x: [0, 20, -20], // Di chuyển sang phải 20px, rồi sang trái -20px, rồi trở lại vị trí ban đầu
-                    opacity: [1, 0 , 0],
-                    transition: { duration: 0.4, ease: "easeIn", times: [0, 0.8 , 1] },// Thời gian cho cả quá trình là 0.6 giây
-                    
-                  },
-                }}
-                />
-              </motion.span>
-            </motion.button>
-           </div>
+                Explore
+                <motion.span
+                  className="ml-2 md:ml-3 w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-bold bg-light-warning dark:bg-light-primaryColor"
+
+                >
+                  <MotionArrowRight
+                    variants={{
+                      initial: {
+                        x: 0,
+                        opacity: 1,
+                        transition: { duration: 0.4, ease: "easeIn" }
+                      },
+                      hover: {
+                        x: [0, 20, -20], // Di chuyển sang phải 20px, rồi sang trái -20px, rồi trở lại vị trí ban đầu
+                        opacity: [1, 0, 0],
+                        transition: { duration: 0.4, ease: "easeIn", times: [0, 0.8, 1] },// Thời gian cho cả quá trình là 0.6 giây
+
+                      },
+                    }}
+                  />
+                </motion.span>
+              </motion.button>
+            </div>
           </div>
 
         </div>
@@ -165,42 +175,42 @@ export default function RootPage({ Component, pageProps }: AppProps) {
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae quod aperiam
               esse suscipit, corporis fuga debitis, voluptate harum sit hic illo eos similique nisi quos
               rem consequatur, amet necessitatibus!
-              </p>
+            </p>
 
-           <div className="w-full flex justify-end md:justify-start">
-           <motion.button
-              className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
+            <div className="w-full flex justify-end md:justify-start">
+              <motion.button
+                className="w-fit my-3 md:my-5 px-3 py-2 rounded-full flex items-center justify-between font-semibold
                bg-light-text dark:bg-dark-text text-dark-text dark:text-light-text"
-               initial={'initial'}
-               whileHover="hover"
-               animate={'initial'}
-               >
-              Explore
-              <motion.span
-                className="ml-2 md:ml-3 w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-bold bg-light-warning dark:bg-light-primaryColor"
-               
+                initial={'initial'}
+                whileHover="hover"
+                animate={'initial'}
               >
-                <MotionArrowRight 
-                 variants={{
-                  initial: {
-                    x: 0,
-                    opacity: 1,
-                    transition: { duration: 0.4, ease: "easeIn" }
-                  },
-                  hover: {
-                    x: [0, 20, -20], // Di chuyển sang phải 20px, rồi sang trái -20px, rồi trở lại vị trí ban đầu
-                    opacity: [1, 0 , 0],
-                    transition: { duration: 0.4, ease: "easeIn", times: [0, 0.8 , 1] },// Thời gian cho cả quá trình là 0.6 giây
-                    
-                  },
-                }}
-                />
-              </motion.span>
-            </motion.button>
-           </div>
+                Explore
+                <motion.span
+                  className="ml-2 md:ml-3 w-8 h-8 flex items-center justify-center rounded-full text-white text-sm font-bold bg-light-warning dark:bg-light-primaryColor"
+
+                >
+                  <MotionArrowRight
+                    variants={{
+                      initial: {
+                        x: 0,
+                        opacity: 1,
+                        transition: { duration: 0.4, ease: "easeIn" }
+                      },
+                      hover: {
+                        x: [0, 20, -20], // Di chuyển sang phải 20px, rồi sang trái -20px, rồi trở lại vị trí ban đầu
+                        opacity: [1, 0, 0],
+                        transition: { duration: 0.4, ease: "easeIn", times: [0, 0.8, 1] },// Thời gian cho cả quá trình là 0.6 giây
+
+                      },
+                    }}
+                  />
+                </motion.span>
+              </motion.button>
+            </div>
           </div>
 
-           <div className="flex-1 order-1 md:order-2 flex items-center justify-center">
+          <div className="flex-1 order-1 md:order-2 flex items-center justify-center">
             <Image
               src={"/images/sushi.png"}
               width={350}
@@ -210,15 +220,17 @@ export default function RootPage({ Component, pageProps }: AppProps) {
           </div>
 
         </div>
-      </section> 
-      
-        <OrderTableSection/>
+      </section>
 
-        <SwiperSliderShow/>
-        <TeamChefGallery />
+      <OrderTableSection />
+
+      <SwiperSliderShow />
+      <TeamChefGallery />
+      <Testimonial />
+      <SubcribeSection />
 
       {/* <Button onClick={() => SignOut()}>Sign out</Button>
-      <GoogleMap /> */}
+      
 
       {/* <section className="bg-light-bg_2 dark:bg-dark-bg_2 px-3 py-4 grid grid-cols-2 [grid-auto-rows:200px] md:grid-cols-3 xl:grid-cols-4 gap-3">
         <div className="hidden xl:block col-span-1 row-span-2 px-3 py-4">

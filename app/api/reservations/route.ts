@@ -1,16 +1,10 @@
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
-import {
-  AddressType,
-  DistricType,
-  ProvinceType,
-  ReservationType,
-  WardType,
-} from "@/lib/constants/type"
 import address from "@/lib/models/address"
 import orderedDish from "@/lib/models/orderedDish"
 import reservation from "@/lib/models/reservation"
 import table from "@/lib/models/table"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
+import { AddressType, ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {

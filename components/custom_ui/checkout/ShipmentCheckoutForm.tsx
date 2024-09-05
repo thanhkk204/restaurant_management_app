@@ -443,8 +443,10 @@ export default function ShipmentCheckoutForm({
                       >
                         <div className="flex flex-col gap-2 md:gap-5">
                           {
-                            services.map(service=>(
-                            <div className="flex items-center space-x-2 cursor-pointer">
+                            services.map((service, index)=>(
+                            <div 
+                             key={index}
+                            className="flex items-center space-x-2 cursor-pointer">
                               <RadioGroupItem value={String(service.service_id)} id={String(service.service_id)} />
                               <Label htmlFor={String(service.service_id)} className={cn(
                                 "cursor-pointer",

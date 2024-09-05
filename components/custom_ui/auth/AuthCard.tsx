@@ -39,7 +39,7 @@ const AuthCard = ({children, SocialCard, link, linkTitle}: Props) => {
       {SocialCard}
 
       <div className="w-full text-center leading-7 pt-4 text-light-text dark:text-dark-text">
-          Don't you have account ? <Button className='px-0' variant={"link"}><Link href={link || '/'} className="text-blue-1 mt-0">{linkTitle}</Link></Button>
+          Don&apos;t you have account ? <Button className='px-0' variant={"link"}><Link href={link || '/'} className="text-blue-1 mt-0">{linkTitle}</Link></Button>
         </div>
       
     </div>

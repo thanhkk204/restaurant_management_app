@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import authConfig from "./auth.config"
 import NextAuth from "next-auth"
 import { apiAuthPrefix, authenRoutes, publicRoutes } from "./route"
-import { redirect } from 'next/navigation'
  
 // Use only one of the two middleware options below
 // 1. Use middleware directly
@@ -10,7 +9,9 @@ import { redirect } from 'next/navigation'
  
 // 2. Wrapped middleware option
 const { auth } = NextAuth(authConfig)
+
 export default auth(async function middleware(req) {
+ 
   // Your custom middleware logic goes here
   const {nextUrl} = req
   const isLoggin = !!req.auth
@@ -39,6 +40,10 @@ export default auth(async function middleware(req) {
   return NextResponse.next()
 })
 export const config = {
+  unstable_allowDynamic: [
+    '/lib/models/user.ts',
+    '/node_modules/function-bind/**', // use a glob to allow anything in the function-bind 3rd party module
+  ],
     matcher: [
     // Chỉ áp dụng middleware cho các yêu cầu trang, bỏ qua các yêu cầu API
     '/((?!api|_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',

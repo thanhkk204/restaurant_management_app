@@ -8,8 +8,8 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
-import { CartItem, OrderedFoodType } from "@/lib/constants/type"
 import { formatCurrency } from "@/lib/utils"
+import { CartItem } from "@/types/type"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 

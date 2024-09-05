@@ -1,7 +1,7 @@
-import { ReservationType } from "@/lib/constants/type"
 import reservation from "@/lib/models/reservation"
 import table from "@/lib/models/table"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
+import { ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function PATCH(

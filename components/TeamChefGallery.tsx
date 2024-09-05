@@ -70,7 +70,7 @@ export const TeamChefGallery = () => {
                 height={350}
               />
             </div>
-            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef's Name</h1>
+            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef&apos;s Name</h1>
             <div className=' flex items-center justify-center'>
              <div className='px-5'>
              <Facebook
@@ -112,7 +112,7 @@ export const TeamChefGallery = () => {
                 height={350}
               />
             </div>
-            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef's Name</h1>
+            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef&apos;s Name</h1>
             <div className=' flex items-center justify-center'>
              <div className='px-5'>
              <Facebook
@@ -154,7 +154,7 @@ export const TeamChefGallery = () => {
                 height={350}
               />
             </div>
-            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef's Name</h1>
+            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef&apos;s Name</h1>
             <div className=' flex items-center justify-center'>
              <div className='px-5'>
              <Facebook
@@ -196,7 +196,7 @@ export const TeamChefGallery = () => {
                 height={350}
               />
             </div>
-            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef's Name</h1>
+            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef&apos;s Name</h1>
             <div className=' flex items-center justify-center'>
              <div className='px-5'>
              <Facebook
@@ -238,7 +238,7 @@ export const TeamChefGallery = () => {
                 height={350}
               />
             </div>
-            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef's Name</h1>
+            <h1 className='font-semibold font-serif text-2xl leading-7 py-3 md:py-5 text-light-text dark:text-dark-text'>Chef&apos;s Name</h1>
             <div className=' flex items-center justify-center'>
              <div className='px-5'>
              <Facebook

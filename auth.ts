@@ -1,5 +1,4 @@
 import NextAuth from "next-auth"
-
 import { MongoDBAdapter } from "@auth/mongodb-adapter"
 import client from "./lib/mongoDbClient"
 import authConfig from "./auth.config"
@@ -42,7 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       const existingUser = await getUserById(token?.sub)
       token.role = existingUser.role
       return token
-    },
+    },  
   },
   adapter: MongoDBAdapter(client),
   session: { strategy: "jwt" },

@@ -1,7 +1,7 @@
 import { DishType } from "@/app/(admin)/dashboard/inventories/page"
 import category from "@/lib/models/category"
 import dish from "@/lib/models/dish"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {

@@ -1,7 +1,7 @@
 import dish from "@/lib/models/dish"
 import orderedDish from "@/lib/models/orderedDish"
 import shipment from "@/lib/models/shipment"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { OrderedFoodType, ShipmentType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -25,16 +25,16 @@ export async function POST(
     const orderedDishes = (await orderedDish
       .find({ shipment_id: shipment_id })
       .populate("dish_id")) as OrderedFoodType[]
-    if(!shipment || !orderedDishes){
+    if (!shipment || !orderedDishes) {
       return NextResponse.json(
         { message: "Can't get information of shipment" },
         { status: 491 }
       )
     }
-    const itemArr = orderedDishes.map(orderedDish=>({
+    const itemArr = orderedDishes.map((orderedDish) => ({
       name: orderedDish.dish_id.title,
       quantity: orderedDish.quantity,
-      price: orderedDish.dish_id.price
+      price: orderedDish.dish_id.price,
     }))
     const totalPrice = orderedDishes.reduce((total, item) => {
       return (total += item.dish_id.price * item.quantity)
@@ -71,7 +71,7 @@ export async function POST(
       // service_type_id: 2, // client field
       // "coupon":null,
       // "pick_shift":[2, 3, 4],
-      items: itemArr
+      items: itemArr,
     }
     //   const GHN_BODY = {
     //     payment_type_id: 2, // choosen person who pay for this ship // 1: shop/seller, 2: buyer
@@ -145,9 +145,9 @@ export async function POST(
     )
     const res = await GHN_Order.json()
     console.log("GHN_Order", res)
-    if(res.code === 400){
+    if (res.code === 400) {
       return NextResponse.json(
-        { message:  res.code_message_value},
+        { message: res.code_message_value },
         { status: 500 }
       )
     }

@@ -2,7 +2,7 @@ import { TableType } from "@/app/(admin)/dashboard/reservations/page"
 import invoice from "@/lib/models/invoice"
 import reservation from "@/lib/models/reservation"
 import table from "@/lib/models/table"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -31,7 +31,10 @@ export const POST = async (req: NextRequest) => {
       { new: true }
     )) as ReservationType
     // check the next reservation to decide how to update table status
-    const nextReservation = await reservation.findOne({table_id: completedReservation.table_id, status: "RESERVED"})
+    const nextReservation = await reservation.findOne({
+      table_id: completedReservation.table_id,
+      status: "RESERVED",
+    })
     const newStatus = nextReservation ? "ISBOOKED" : "AVAILABLE"
     await table.findByIdAndUpdate(
       { _id: completedReservation.table_id },

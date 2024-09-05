@@ -18,6 +18,7 @@ import { BadgeCheck, ShieldAlert } from "lucide-react"
 import { signIn } from "next-auth/react"; // Đúng cho phía client
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
+import SuspenseWrapper from "@/components/suspense/SuspenseWrapper"
 export default function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()

@@ -9,6 +9,10 @@ import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { auth, signOut } from "@/auth"
 import { SessionProvider } from "next-auth/react"
+import { Testimonial } from "@/components/Testimonial"
+import SubcribeSection from "@/components/SubcribeSection"
+import { SendHorizontal } from "lucide-react"
+import { Footer } from "@/components/Footer"
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
   style: ["normal", "italic"],
@@ -43,6 +47,8 @@ export default async function RootLayout({
        <main className="w-full min-h-screen relative pt-[160px] overflow-hidden">
         {children}
        </main>
+        <Footer />
+
        <Toaster />
       </body>
       </CartProvider>

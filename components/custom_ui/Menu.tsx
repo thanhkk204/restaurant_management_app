@@ -6,7 +6,7 @@ import Image from 'next/image'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import OneSelect from './OneSelect'
 import { cn } from '@/lib/utils'
-import { OrderedFoodType } from '@/lib/constants/type'
+import { OrderedFoodType } from '@/types/type'
 
 type Props = {
     dishes: DishType[] | null

@@ -1,16 +1,14 @@
-
 import address from "@/lib/models/address"
 import orderedDish from "@/lib/models/orderedDish"
 import reservation from "@/lib/models/reservation"
 import shipment from "@/lib/models/shipment"
-import table from "@/lib/models/table"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { AddressType, ReservationType, ShipmentType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {
   const body = await req.json()
-  console.log({body})
+  console.log({ body })
   const {
     userName,
     user_id,
@@ -43,32 +41,32 @@ export const POST = async (req: NextRequest) => {
     })) as AddressType
     // 4: create shipment or reservation_id
 
-      const newShipment = (await shipment.create({
-        userName,
-        user_id,
-        phoneNumber,
-        note,
-        payment_method,
-        service_id,
-        service_type_id,
-        isPaidOnline,
-        prepay,
-        addres_id: newAddress._id,
-      })) as ShipmentType
-      // create ordered dishes
-      for (const dish of orderedDishes) {
-        await orderedDish.create({
-          shipment_id: newShipment._id,
-          dish_id: dish.dish_id,
-          quantity: dish.quantity,
-        })
-      }
-      //   return
-      
-      return NextResponse.json(
-        { message: "Succussfully!", shipment: newShipment },
-        { status: 201 }
-      )
+    const newShipment = (await shipment.create({
+      userName,
+      user_id,
+      phoneNumber,
+      note,
+      payment_method,
+      service_id,
+      service_type_id,
+      isPaidOnline,
+      prepay,
+      addres_id: newAddress._id,
+    })) as ShipmentType
+    // create ordered dishes
+    for (const dish of orderedDishes) {
+      await orderedDish.create({
+        shipment_id: newShipment._id,
+        dish_id: dish.dish_id,
+        quantity: dish.quantity,
+      })
+    }
+    //   return
+
+    return NextResponse.json(
+      { message: "Succussfully!", shipment: newShipment },
+      { status: 201 }
+    )
   } catch (error) {
     console.log("Inventories_Error", error)
     return NextResponse.json(
@@ -95,4 +93,3 @@ export const GET = async (req: NextRequest) => {
     )
   }
 }
-

@@ -1,8 +1,8 @@
 import { TableType } from "@/app/(admin)/dashboard/reservations/page"
 import reservation from "@/lib/models/reservation"
-import { connectToDB } from "@/lib/mongoDb"
 import { ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
+import { connectToDB } from "@/lib/mongoDB"
 
 export async function GET(
   req: NextRequest,

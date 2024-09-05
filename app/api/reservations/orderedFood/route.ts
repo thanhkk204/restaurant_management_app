@@ -1,6 +1,7 @@
-import { OrderedFoodType } from "@/lib/constants/type"
+
 import orderedDish from "@/lib/models/orderedDish"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
+import { OrderedFoodType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
 export const POST = async (req: NextRequest) => {

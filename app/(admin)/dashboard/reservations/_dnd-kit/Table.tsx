@@ -52,6 +52,7 @@ export default function Item({
   const router = useRouter()
 
   const searchParams = useSearchParams()
+  
   const reservation_id = searchParams.get('reservation_id')
   const type = searchParams.get('type')
 

@@ -1,5 +1,5 @@
 import dish from "@/lib/models/dish"
-import { connectToDB } from "@/lib/mongoDb"
+import { connectToDB } from "@/lib/mongoDB"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function PATCH(

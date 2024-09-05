@@ -1,8 +1,8 @@
 "use client"
 import ReservationForm from "@/components/custom_ui/ReservationForm"
 import { toast } from "@/components/ui/use-toast"
-import { ReservationType } from "@/lib/constants/type"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
+import { ReservationType } from "@/types/type"
 import React, { useEffect, useState } from "react"
 import { FadeLoader } from "react-spinners"
 

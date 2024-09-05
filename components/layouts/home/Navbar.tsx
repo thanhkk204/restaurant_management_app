@@ -27,7 +27,7 @@ import { FcMenu } from "react-icons/fc"
 import { Button } from "@/components/ui/button"
 
 
-const headerLink = [
+export const headerLink = [
   {
     link: "/",
     display: "Home"
@@ -53,7 +53,6 @@ export default function NavbarHome() {
   const navRef = useRef<HTMLElement>(null)
   const [lastScrollTop, setLastScrollTop] = useState<number>(0)
   const path = usePathname()
-  console.log('path')
 
   const handleScroll = useDebouncedCallback(
     // function
@@ -93,8 +92,10 @@ export default function NavbarHome() {
      <div className="flex-[2] hidden lg:block">
       <ul className="flex items-center justify-around">
       {
-        headerLink.map(item=>(
-          <li className={
+        headerLink.map((item, index)=>(
+          <li 
+           key={index}
+          className={
             cn("hover:cursor-pointer px-4 py-2 text-lg text-light-text dark:text-dark-text hover:btnCustom dark:hover:btnCustom_dark transition-all duration-200 ease-in",
               path === item.link ? 'btnCustom dark:btnCustom_dark text-orange-1' : ''
             )
@@ -138,8 +139,8 @@ export default function NavbarHome() {
                   <div className="relative bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text w-full h-screen px-6 py-12">
                     <ul style={{ height: 'calc(100% - 250px)' }} className="flex flex-col items-center justify-around w-full h-[calc(100% - 250px)] ">
                     {
-                      headerLink.map(item => (
-                        <li className={
+                      headerLink.map((item, index) => (
+                        <li key={index} className={
                           cn("w-full text-center hover:cursor-pointer text-lg text-light-text dark:text-dark-text hover:py-8 hover:btnCustom dark:hover:btnCustom_dark transition-all duration-200 ease-in py-8 dark:py-8",
                             path === item.link ? 'btnCustom dark:btnCustom_dark  text-orange-1 dark:text-dark-error' : ''
                           )

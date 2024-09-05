@@ -5,7 +5,6 @@ import Image from "next/image"
 import React, { useEffect, useRef, useState } from "react"
 import { useReactToPrint } from "react-to-print"
 import { DishType } from "../../../inventories/page"
-import { OrderedFoodType, ReservationType } from "@/lib/constants/type"
 import { toast } from "@/components/ui/use-toast"
 import {
   Table,
@@ -21,6 +20,7 @@ import { useRouter } from "next/navigation"
 import { useThemeContext } from "@/lib/context/ThemeContextProvider"
 import { FadeLoader } from "react-spinners"
 import { Button } from "@/components/ui/button"
+import { OrderedFoodType, ReservationType } from "@/types/type"
 
 const CompletedBill = ({ params }: { params: { reservation_id: string } }) => {
   const router = useRouter()
