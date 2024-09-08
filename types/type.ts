@@ -1,3 +1,5 @@
+import { CategoryType } from "@/app/(admin)/dashboard/inventories/categories/page"
+import { CollectionType } from "@/app/(admin)/dashboard/inventories/collections/page"
 import { DishType } from "@/app/(admin)/dashboard/inventories/page"
 import { LocationType, TableType } from "@/app/(admin)/dashboard/reservations/page"
 
@@ -143,4 +145,15 @@ export type AvailableTableType = {
     number_of_seats: number
     order: number
     status: TableEnum
+}
+
+export type FilteredProductType = {
+    _id: string
+    title: string
+    image: string[]
+    price: number
+    desc: string
+    isShow: boolean
+    category_id: CategoryType
+    collection_ids: CollectionType[]
 }

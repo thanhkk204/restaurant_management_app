@@ -4,7 +4,7 @@ import * as React from "react";
 import { Range } from "react-range";
 const STEP = 1;
 const MIN = 100_000;
-const MAX = 5_000_000;
+const MAX = 2_000_000;
 
 export interface ITrackBackground {
     min: number;
@@ -49,11 +49,14 @@ export function getTrackBackground({
       colors[colors.length - 1]
     } 100%)`;
   }
-
-const PriceRange: React.FC<{ rtl: boolean }> = ({ rtl }) => {
-  const [values, setValues] = React.useState([100_000, 500_000]);
-
-  console.log(values)
+type Props = {
+  rtl: boolean,
+  priceFilterChange: (numbers: number[]) => void,
+  min: number,
+  max: number
+}
+const PriceRange: React.FC<Props> = ({ rtl, priceFilterChange, min, max}) => {
+  const [values, setValues] = React.useState([min, max]);
   return (
     <div
       style={{
@@ -71,6 +74,8 @@ const PriceRange: React.FC<{ rtl: boolean }> = ({ rtl }) => {
         rtl={rtl}
         onChange={(values: number[]) => {
           setValues(values);
+          priceFilterChange(values)
+          
         }}
         renderTrack={({ props, children }) => (
           <div

@@ -183,6 +183,20 @@ body,
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
 }
+.page_shadow {
+  box-shadow:
+  0px 10px 20px rgba(0, 0, 0, 0.15),  /* Shadow phía dưới */
+  0px -10px 20px rgba(0, 0, 0, 0.15), /* Shadow phía trên */
+  10px 0px 20px rgba(0, 0, 0, 0.15),  /* Shadow phía phải */
+  -10px 0px 20px rgba(0, 0, 0, 0.15);  /* Shadow phía trái */
+  /* Shadow nội bộ phía trái, đậm hơn */
+}
+.page_shadown_inner_right {
+  box-shadow: inset 10px 0px 30px rgba(0, 0, 0, 0.3);
+}
+.page_shadown_inner_left {
+  box-shadow: inset -10px 0px 30px rgba(0, 0, 0, 0.3); /* Shadow bên phải */
+}
  
 }
 

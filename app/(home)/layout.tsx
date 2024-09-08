@@ -13,6 +13,8 @@ import { Testimonial } from "@/components/Testimonial"
 import SubcribeSection from "@/components/SubcribeSection"
 import { SendHorizontal } from "lucide-react"
 import { Footer } from "@/components/Footer"
+import { Provider } from 'react-redux';
+import { store } from "@/redux/store"
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
   style: ["normal", "italic"],
@@ -44,11 +46,10 @@ export default async function RootLayout({
       )}>
         <NavbarHome/>
 
-       <main className="w-full min-h-screen relative pt-[160px] overflow-hidden">
+       <main className="w-full min-h-screen relative pt-[160px]">
         {children}
        </main>
         <Footer />
-
        <Toaster />
       </body>
       </CartProvider>
