@@ -70,6 +70,9 @@ const config = {
           primaryColorVariant: "#3700B3",
         },
       },
+      transitionDuration: {
+        '1500': '1500ms', // Thêm duration tùy chỉnh 2000ms
+      },
       spacing: {
         headerHeight: '80px', // Thay đổi giá trị này để điều chỉnh độ dài header
       },

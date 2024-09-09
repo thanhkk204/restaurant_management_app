@@ -13,6 +13,10 @@ const GoogleMap = () => {
       const map = new (window as any).google.maps.Map(document.getElementById('map') as HTMLElement, {
         center: {lat: 21.026384799985255, lng:105.83220831216669}, // Vị trí mặc định là Hà nội
         zoom: 12,
+        disableDefaultUI: true,  // Tắt toàn bộ UI mặc định
+        zoomControl: false,      // Tắt nút zoom
+        mapTypeControl: false,   // Tắt lựa chọn loại bản đồ
+        streetViewControl: false
       });
 
       new (window as any).google.maps.Marker({
@@ -33,7 +37,7 @@ const GoogleMap = () => {
     }
   }, []);
 
-  return <div id="map" style={{ width: '100%', height: '700px' }}></div>;
+  return <div id="map" className='w-full h-full'></div>;
 };
 
 export default GoogleMap;

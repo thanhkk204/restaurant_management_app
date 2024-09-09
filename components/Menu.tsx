@@ -3,7 +3,7 @@ import { CategoryType } from "@/app/(admin)/dashboard/inventories/categories/pag
 import { cn } from "@/lib/utils"
 import { FilteredProductType } from "@/types/type"
 import Image from "next/image"
-import React, { forwardRef, useCallback, useEffect, useState } from "react"
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import HTMLFlipBook from "react-pageflip"
 import { v4 as uuidv4 } from 'uuid';
 type CoverProps = {
@@ -17,7 +17,7 @@ type PageProps = {
 const PageCover = React.forwardRef<HTMLDivElement, CoverProps>((props, ref) => {
   
   return (
-    <div className="page page-cover overflow-hidden page_shadow" ref={ref} data-density="hard">
+    <div className="page page-cover overflow-hidden shadow-[15px_15px_25px_rgba(0,0,0,0.55),-15px_-15px_25px_rgba(0,0,0,0.55)]" ref={ref} data-density="hard">
       <Image
        alt="book cover"
        src={'/images/book_cover.jpg'}
@@ -73,11 +73,21 @@ type MenuBookProps = {
 const MenuBook = forwardRef<HTMLDivElement, MenuBookProps>((props, ref) => {
    const {filteredProducts, dishes} = props
    const [productPerPage, setProductPerPage] = useState<number>(2)
-  
 
-// Hàm tách sản phẩm theo category
-const groupByCategory = (dishes: FilteredProductType[] | null) => {
-    if(dishes === null) return null
+  // Check if ref stick with localRef, localRef is used for HTMLFlipBook
+  const localRef = useRef<any>(null);
+  useEffect(() => {
+    if (ref && typeof ref === 'function') {
+      ref(localRef.current); // Nếu là callback ref, gọi hàm với current element
+    } else if (ref && 'current' in ref) {
+      ref.current = localRef.current; // Nếu là MutableRefObject, gán giá trị
+    }
+  }, [ref]);
+
+
+  // Hàm tách sản phẩm theo category
+  const groupByCategory = (dishes: FilteredProductType[] | null) => {
+    if (dishes === null) return null
     return dishes.reduce((acc: { [key: string]: FilteredProductType[] }, product) => {
       // Kiểm tra nếu category chưa có trong acc thì khởi tạo nó
       if (!acc[product.category_id.title]) {
@@ -89,14 +99,13 @@ const groupByCategory = (dishes: FilteredProductType[] | null) => {
     }, {});
   };
 
-  if(dishes){
-  }
   const groupedProducts = groupByCategory(dishes)
   const [page, setCurrentPage] = useState<number>(0)
   let pageIndex = 1;
+
   return (
     <>
-      <div className="w-full">
+      <div className="w-full py-8 px-8">
         {/* Quyển sách */}
        
         <HTMLFlipBook
@@ -123,11 +132,16 @@ const groupByCategory = (dishes: FilteredProductType[] | null) => {
           maxShadowOpacity={0.5}
           showCover={true}
           mobileScrollSupport={true}
-          onFlip={(e) => setCurrentPage(ref?.current.pageFlip().getCurrentPageIndex())}
+          onFlip={(e) => {
+             if(localRef && localRef.current){
+               setCurrentPage(localRef?.current.pageFlip().getCurrentPageIndex())
+             }
+            
+          }}
           onChangeOrientation={()=>{}}
           onChangeState={(e)=>{}}
           className="demo-book"
-          ref={ref}
+          ref={localRef}
         >
           <PageCover>
             <div className="absolute"></div>

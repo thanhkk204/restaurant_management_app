@@ -46,7 +46,7 @@ export default async function RootLayout({
       )}>
         <NavbarHome/>
 
-       <main className="w-full min-h-screen relative pt-[160px]">
+       <main className="w-full min-h-screen relative ">
         {children}
        </main>
         <Footer />

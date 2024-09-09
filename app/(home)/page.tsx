@@ -58,7 +58,7 @@ export default function RootPage() {
   //   });
   // };
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-hidden pt-[160px]">
      {/* <button className="fixed bottom-5 right-5 py-5 px-5 rounded-3xl bg-orange-1 z-50" onClick={e=>scrollToTop(e)}>Scroll to Top</button> */}
 
       <section className="relative ">
