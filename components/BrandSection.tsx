@@ -13,7 +13,7 @@ import { HeadingSection } from './HeadingSection'
 
 export const BrandSection = () => {
   return (
-    <section className='py-0 relative'>
+    <section className='py-0 relative' >
         <h3 className='font-serif text-2xl opacity-85 tracking-wider text-light-text dark:text-dark-text'
         >Trusted by more 70+ companies
         </h3>
@@ -23,6 +23,9 @@ export const BrandSection = () => {
               {
                   [...Array(5).keys()].map(item => (
                       <Image
+                          data-aos="flip-left"
+                          data-aos-offset="100"
+                          data-aos-once="false"
                           key={item} // Add key to each item for better performance
                           className='hover:brightness-75'
                           width={250}
@@ -50,6 +53,8 @@ export const BrandSection = () => {
              
               <div className='py-6 md:py-8'>
               <Image 
+                  data-aos="zoom-in"
+                  data-aos-offset="-100"
                   className='object-cover rounded-3xl'
                   width={650}
                   height={650}

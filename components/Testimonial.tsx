@@ -6,7 +6,7 @@ import { HeadingSection } from './HeadingSection'
 export const Testimonial = () => {
   return (
     <div className='relative w-full'>
-   <section>
+   <section id='blogSection'>
     <div className='pb-5 md:pb-8'>
        <HeadingSection title='What they say' desc='What customers say about our restaurant' />
     </div>
@@ -22,7 +22,7 @@ export const Testimonial = () => {
     </div>
 
      <div className='flex-1 px-0 md:px-5 pt-[55px] xl:py-0 grid grid-cols-1 md:grid-cols-2 gap-y-[65px] gap-x-8'>
-        <div className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
+        <div data-aos="flip-left" data-aos-offset="-520"  className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
         mx-auto transition-all duration-300 hover:scale-105 ease-in cursor-pointer'>
             <div className='absolute w-[100px] h-[100px] rounded-full top-0 left-5 translate-y-[-50%] overflow-hidden'>
                 <Image
@@ -42,7 +42,7 @@ export const Testimonial = () => {
               ))}
             </div>
 
-            <h2 className='text__heading font-serif text-2xl text-light-text dark:bg-dark-text pt-5 bg-transparent dark:bg-transparent'>
+            <h2 className='text__heading font-serif text-2xl text-light-text dark:text-dark-text pt-5 bg-transparent dark:bg-transparent'>
                User&apos; Name
             </h2>
 
@@ -50,7 +50,7 @@ export const Testimonial = () => {
               Lorem ipsum, dolor sit amet consectetur dolorum omnisorum ipsum. Incidunt.
             </p>
         </div>
-        <div className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
+        <div data-aos="flip-left" data-aos-offset="-480" className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
         mx-auto transition-all duration-300 hover:scale-105 ease-in cursor-pointer'>
             <div className='absolute w-[100px] h-[100px] rounded-full top-0 left-5 translate-y-[-50%] overflow-hidden'>
                 <Image
@@ -70,7 +70,7 @@ export const Testimonial = () => {
               ))}
             </div>
 
-            <h2 className='text__heading font-serif text-2xl text-light-text dark:bg-dark-text pt-5 bg-transparent dark:bg-transparent'>
+            <h2 className='text__heading font-serif text-2xl text-light-text dark:text-dark-text pt-5 bg-transparent dark:bg-transparent'>
                User&apos; Name
             </h2>
 
@@ -78,7 +78,7 @@ export const Testimonial = () => {
               Lorem ipsum, dolor sit amet consectetur dolorum omnisorum ipsum. Incidunt.
             </p>
         </div>
-        <div className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
+        <div data-aos="flip-left" data-aos-offset="-440"  className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
         mx-auto transition-all duration-300 hover:scale-105 ease-in cursor-pointer'>
             <div className='absolute w-[100px] h-[100px] rounded-full top-0 left-5 translate-y-[-50%] overflow-hidden'>
                 <Image
@@ -98,7 +98,7 @@ export const Testimonial = () => {
               ))}
             </div>
 
-            <h2 className='text__heading font-serif text-2xl text-light-text dark:bg-dark-text pt-5 bg-transparent dark:bg-transparent'>
+            <h2 className='text__heading font-serif text-2xl text-light-text dark:text-dark-text pt-5 bg-transparent dark:bg-transparent'>
                User&apos; Name
             </h2>
 
@@ -106,7 +106,7 @@ export const Testimonial = () => {
               Lorem ipsum, dolor sit amet consectetur dolorum omnisorum ipsum. Incidunt.
             </p>
         </div>
-        <div className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
+        <div data-aos="flip-left" data-aos-offset="-400"  className='min-w-[300px] max-w-[350px] relative px-5 py-3 rounded-2xl product_shadow dark:product_shadow_dark 
         mx-auto transition-all duration-300 hover:scale-105 ease-in cursor-pointer'>
             <div className='absolute w-[100px] h-[100px] rounded-full top-0 left-5 translate-y-[-50%] overflow-hidden'>
                 <Image
@@ -126,7 +126,7 @@ export const Testimonial = () => {
               ))}
             </div>
 
-            <h2 className='text__heading font-serif text-2xl text-light-text dark:bg-dark-text pt-5 bg-transparent dark:bg-transparent'>
+            <h2 className='text__heading font-serif text-2xl text-light-text dark:text-dark-text pt-5 bg-transparent dark:bg-transparent'>
                User&apos; Name
             </h2>
 

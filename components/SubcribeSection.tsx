@@ -8,11 +8,11 @@ const SubcribeSection = () => {
   return (
     <div className='container' >
         <div className='mx-auto max-w-[750px] flex flex-col items-center px-10 py-12 rounded-3xl bg-[url("/images/news.jpg")] bg-center bg-cover backdrop-blur-2xl shadow-2xl'>
-            <h1 className='text__heading text-dark-text text-[30px] md:text-[35px] lg:text-[45px] font-serif text-nowrap capitalize'>
+            <h1 className='text__heading text-dark-text text-[27px] md:text-[35px] lg:text-[45px] font-serif text-nowrap capitalize'>
                 Subcribe our newsletter
             </h1>
 
-            <p className='text__para text-center text-dark-text'
+            <p className='text__para leading-6 md:leading-7 text-center text-dark-text'
             >
                 Lorem ipsum dolor sit amet  tenetur nobis aut deserunt, unde quaerat quidem eos nam illo. Sint, magni tenetur?
             </p>

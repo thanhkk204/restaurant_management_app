@@ -126,6 +126,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/locations", {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
           body: JSON.stringify({ newArray: newArray }),
         })
 
@@ -152,6 +156,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/tables", {
           method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
           body: JSON.stringify({ newArray: newArray }),
         })
 
@@ -178,6 +186,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/locations/" + _id, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
         })
 
         if (!res.ok) {
@@ -216,6 +228,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/tables/" + _id, {
           method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
         })
 
         if (!res.ok) {
@@ -258,6 +274,10 @@ export default function DnDPage() {
         const res = await fetch("/api/reservations/tables/" + table_id, {
           method: "PATCH",
           body: JSON.stringify({ number_of_seats, name }),
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
         })
 
         if (!res.ok) {
@@ -297,6 +317,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/locations/" + location_id, {
           method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
           body: JSON.stringify({ locationInRestaurant }),
         })
 
@@ -340,7 +364,7 @@ export default function DnDPage() {
   )
 
   return (
-    <section>
+    <div>
       {loadingFirstOne ? (
         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
           <FadeLoader
@@ -419,7 +443,7 @@ export default function DnDPage() {
           </DndContext>
         </div>
       )}
-    </section>
+    </div>
   )
   function handleDragStart(event: DragStartEvent) {
     const { active } = event
@@ -501,6 +525,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/locations", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
           body: JSON.stringify({ numberOfLocation }),
         })
         if (!res.ok) {
@@ -536,6 +564,10 @@ export default function DnDPage() {
       try {
         const res = await fetch("/api/reservations/tables", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-store", // Disable caching
+          },
           body: JSON.stringify({ order: numberOfTable, location_id }),
         })
 

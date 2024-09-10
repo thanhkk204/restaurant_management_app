@@ -3,9 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { getVerificationTokenByEmail, getVerificationTokenByToken } from '.';
 import VerificationToken from '@/lib/models/verificationToken';
 import User from '@/lib/models/user';
+import { connectToDB } from '@/lib/mongoDB';
 
 export const generationVerificationToken = async (email: string) =>{
     try {
+      await connectToDB()
         const token = uuidv4();
         const expire = new Date().getTime() + 60 * 60 * 1000
         const existingVerificationToken = await getVerificationTokenByEmail(email)
@@ -27,6 +29,7 @@ export const generationVerificationToken = async (email: string) =>{
 
 export const checkOutVarificationToken = async (token: string)=> {
       try {
+        await connectToDB()
         const existingToken = await getVerificationTokenByToken(token)
         if(!existingToken) return {error: "There is no token in database"}
         const expired = new Date().getTime() > new Date(existingToken.expire).getTime()

@@ -9,6 +9,7 @@ var transporter = nodemailer.createTransport({
 })
 export const verificationTokenSendEmail = async (email: string, token: string) => {
   try {
+    
     await transporter.sendMail({
       from: process.env.NODEMAILER_EMAIL,
       to: email,

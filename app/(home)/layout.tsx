@@ -9,12 +9,7 @@ import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { auth, signOut } from "@/auth"
 import { SessionProvider } from "next-auth/react"
-import { Testimonial } from "@/components/Testimonial"
-import SubcribeSection from "@/components/SubcribeSection"
-import { SendHorizontal } from "lucide-react"
 import { Footer } from "@/components/Footer"
-import { Provider } from 'react-redux';
-import { store } from "@/redux/store"
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
   style: ["normal", "italic"],
@@ -23,7 +18,7 @@ const popins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "I need 800+ toeic",
+  title: "Void",
   icons: {
     icon: "/images/logo2.png",
   },
@@ -34,11 +29,10 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
   return (
     <html lang="en">
       <ThemeContextProvider>
-      <SessionProvider session={session}>
+      <SessionProvider> 
         <CartProvider>
       <body className={cn(
         "w-full bg-light-bg dark:bg-dark-bg transition-colors ease-in-out duration-300",
@@ -47,6 +41,7 @@ export default async function RootLayout({
         <NavbarHome/>
 
        <main className="w-full min-h-screen relative ">
+       
         {children}
        </main>
         <Footer />

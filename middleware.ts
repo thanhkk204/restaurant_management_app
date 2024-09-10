@@ -32,18 +32,14 @@ export default auth(async function middleware(req) {
   }
   console.log({isPublicRoute, isLoggin})
 
-  // if(isPublicRoute){
-  //    if(!isLoggin) {
-  //     return NextResponse.redirect(new URL('/login', nextUrl))
-  //    }
-  // }
+  if(isPublicRoute){
+     if(!isLoggin) {
+      return NextResponse.redirect(new URL('/login', nextUrl))
+     }
+  }
   return NextResponse.next()
 })
 export const config = {
-  unstable_allowDynamic: [
-    '/lib/models/user.ts',
-    '/node_modules/function-bind/**', // use a glob to allow anything in the function-bind 3rd party module
-  ],
     matcher: [
     // Chỉ áp dụng middleware cho các yêu cầu trang, bỏ qua các yêu cầu API
     '/((?!api|_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',

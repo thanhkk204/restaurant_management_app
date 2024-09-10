@@ -9,39 +9,39 @@ import { CircleDollarSignIcon, HandCoins, ReceiptText, UserRound } from 'lucide-
 export default function DashBoardPage() {
   return (
     <>
-     <section>
-      <div className="w-full py-5 flex justify-end items-center ">
-       <TimePicker />
+      <div>
+        <div className="w-full py-5 flex justify-end items-center ">
+          <TimePicker />
+        </div>
       </div>
-     </section>
-    <section className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-4 gap-10">
-      <BusinessCard 
-       title= "Month's Money"
-       color={colorsVariables.blue}
-       value= "$53,000"
-       icons= {<CircleDollarSignIcon/>}
-      />
-      <BusinessCard 
-       title= "Month's Revenue"
-       color={colorsVariables.green}
-       value= "$13,000"
-       icons= {<HandCoins />}
-      />
-      <BusinessCard 
-       title= "Month's receipt"
-       color={colorsVariables.orange}
-       value= "300"
-       icons= {<ReceiptText />}
-      />
-      <BusinessCard 
-       title= "Month's Client"
-       color={colorsVariables.red}
-       value= "23"
-       icons= {<UserRound />}
-      />
-    </section>
+      <div className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-4 gap-10">
+        <BusinessCard
+          title="Month's Money"
+          color={colorsVariables.blue}
+          value="$53,000"
+          icons={<CircleDollarSignIcon />}
+        />
+        <BusinessCard
+          title="Month's Revenue"
+          color={colorsVariables.green}
+          value="$13,000"
+          icons={<HandCoins />}
+        />
+        <BusinessCard
+          title="Month's receipt"
+          color={colorsVariables.orange}
+          value="300"
+          icons={<ReceiptText />}
+        />
+        <BusinessCard
+          title="Month's Client"
+          color={colorsVariables.red}
+          value="23"
+          icons={<UserRound />}
+        />
+      </div>
 
-    <ChartSection/>
+      <ChartSection />
     </>
   )
 }

@@ -3,6 +3,7 @@ import table from "@/lib/models/table"
 import { connectToDB } from "@/lib/mongoDB"
 import { NextRequest, NextResponse } from "next/server"
 
+export const dynamic = 'force-dynamic';
 // Get table available
 export const GET = async (req: NextRequest) => {
   await connectToDB()

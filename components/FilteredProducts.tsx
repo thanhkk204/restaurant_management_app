@@ -57,7 +57,7 @@ const FilteredProducts = ({categories}:Props) => {
     <>
     <AnimatePresence>
        <motion.div 
-        className='w-full min-w-[400px] rounded-2xl py-3 px-4 md:py-4 md:px-5 bg-light-bg_2 dark:bg-dark-bg_2'
+        className='w-full min-w-[380px] rounded-2xl py-3 px-4 md:py-4 md:px-5 bg-light-bg_2 dark:bg-dark-bg_2'
       >
         <div className='flex flex-col '>
           <h1 className='text-xl text-end truncate text-light-text dark:text-dark-text font-medium pb-3 md:pb-5'>

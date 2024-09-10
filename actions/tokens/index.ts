@@ -1,11 +1,13 @@
 import resetPasswordToken from "@/lib/models/resetPasswordToken"
 import verificationToken from "@/lib/models/verificationToken"
+import { connectToDB } from "@/lib/mongoDB"
 
 /**
  * for verify email
  */
 export const getVerificationTokenByEmail = async (email: string)=>{
     try {
+        await connectToDB()
         const existingToken = await verificationToken.findOne({email: email})
         if(!existingToken) return null
         return existingToken
@@ -29,6 +31,7 @@ export const getVerificationTokenByToken = async (token: string)=>{
  */
 export const getResetPasswordTokenbyToken = async (token: string)=>{
     try {
+        await connectToDB()
         const existingToken = await resetPasswordToken.findOne({token: token})
         if(!existingToken) return null
         return existingToken

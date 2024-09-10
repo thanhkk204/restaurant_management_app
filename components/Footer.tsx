@@ -24,7 +24,7 @@ export const Footer = () => {
                src={"/images/logo2.png"}
                />
                </div>
-               <p className="text__para leading-4 md:leading-7 text-wrap pb-4 md:pb-6 my-0 text-start">
+               <p className="text__para leading-6 md:leading-7 text-wrap pb-4 md:pb-6 my-0 text-start">
                 Lorem ipsum, dolor sit amet consectetur adipisicing elitercitationem neque repellendus  necessitatibus nam sit ducimus officia laborum!
                </p>
 

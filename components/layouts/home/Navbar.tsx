@@ -25,6 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import DarkModeButton from "@/components/custom_ui/DarkModeButton"
 import { FcMenu } from "react-icons/fc"
 import { Button } from "@/components/ui/button"
+import { signOut } from "next-auth/react"
 
 
 export const headerLink = [
@@ -33,26 +34,44 @@ export const headerLink = [
     display: "Home"
   },
   {
-    link: "/about",
-    display: "About"
-  },
-  {
     link: "/menu",
     display: "Menu"
   },
+]
+const scrollToAboutSection = ()=>{
+  const section = document.querySelector("#aboutSection")
+  section?.scrollIntoView({behavior: "smooth"})
+}
+const scrollToGallerySection = ()=>{
+  const section = document.querySelector("#gallerySection")
+  section?.scrollIntoView({behavior: "smooth"})
+}
+const scrollToBlogSection = ()=>{
+  const section = document.querySelector("#blogSection")
+  section?.scrollIntoView({behavior: "smooth"})
+}
+export const headListSection = [
   {
-    link: "/gallery",
-    display: "Gallery"
+    display: 'About',
+    onCLick: () => scrollToAboutSection()
   },
   {
-    link: "/blog",
-    display: "Blog"
+    display: 'Gallery',
+    onCLick: () => scrollToGallerySection()
+  },
+  {
+    display: 'Blog',
+    onCLick: () => scrollToBlogSection()
   },
 ]
 export default function NavbarHome() {
   const navRef = useRef<HTMLElement>(null)
   const [lastScrollTop, setLastScrollTop] = useState<number>(0)
   const path = usePathname()
+
+  async function SignOut() {
+    await signOut({ callbackUrl: "/login" })
+  }
 
   const handleScroll = useDebouncedCallback(
     // function
@@ -64,17 +83,15 @@ export default function NavbarHome() {
           navRef.current.classList.remove("hiddenNavbar")
         }
         setLastScrollTop(document.documentElement.scrollTop)
-      
     },
     // delay in ms
     10
   );
- 
-
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollTop])
+ 
   return (
     <header className="fixed z-50 top-0 left-0 w-full h-[80px] transition-all duration-300"
     ref={navRef}
@@ -89,13 +106,14 @@ export default function NavbarHome() {
       />
      </div>
       
+      {/* Nav bar for desktop */}
      <div className="flex-[2] hidden lg:block">
       <ul className="flex items-center justify-around">
       {
         headerLink.map((item, index)=>(
           <li 
            key={index}
-          className={
+           className={
             cn("hover:cursor-pointer px-4 py-2 text-lg text-light-text dark:text-dark-text hover:btnCustom dark:hover:btnCustom_dark transition-all duration-200 ease-in",
               path === item.link ? 'btnCustom dark:btnCustom_dark text-orange-1' : ''
             )
@@ -104,11 +122,24 @@ export default function NavbarHome() {
           </li>
         ))
       }
+      {
+        headListSection.map((item, index)=>(
+          <li 
+           key={index}
+           className={
+            cn("hover:cursor-pointer px-4 py-2 text-lg text-light-text dark:text-dark-text hover:btnCustom dark:hover:btnCustom_dark transition-all duration-200 ease-in",
+              path === item.display ? 'btnCustom dark:btnCustom_dark text-orange-1' : ''
+            )
+          }>
+            <button onClick={item.onCLick}>{item.display}</button>
+          </li>
+        ))
+      }
       </ul>
      </div>
 
      <div className="flex-[2] flex items-center justify-end md:justify-around gap-3 md:gap-5 px-5 text-light-text dark:text-dark-text">
-
+     {/* Search input */}
           <form className="hidden md:block">
             <div className="px-3 py-3 dark:px-3 dark:py-3 bg-white dark:bg-dark-bg_2 rounded-lg dark:border
            dark:border-dark-bg_2 flex items-center gap-3 btnCustom dark:btnCustom_dark cursor-pointer"
@@ -121,8 +152,8 @@ export default function NavbarHome() {
               />
             </div>
           </form>
-
         <div className="flex items-center justify-end md:justify-center gap-3 md:gap-5">
+          {/* Navbar for mobile */}
               <Sheet>
                 <SheetTrigger>
                   <div className="block lg:hidden text-light-text dark:text-dark-text px-2 py-2 dark:px-2 dark:py-2 btnCustom dark:btnCustom_dark ">
@@ -145,7 +176,24 @@ export default function NavbarHome() {
                             path === item.link ? 'btnCustom dark:btnCustom_dark  text-orange-1 dark:text-dark-error' : ''
                           )
                         }>
+                          <SheetClose asChild>
                           <Link href={item.link}>{item.display}</Link>
+                          </SheetClose>
+                        </li>
+                      ))
+                    }
+                    {
+                      headListSection.map((item, index) => (
+                        <li
+                          key={index}
+                          className={
+                            cn("w-full text-center hover:cursor-pointer text-lg text-light-text dark:text-dark-text hover:py-8 hover:btnCustom dark:hover:btnCustom_dark transition-all duration-200 ease-in py-8 dark:py-8",
+                              path === item.display ? 'btnCustom dark:btnCustom_dark  text-orange-1 dark:text-dark-error' : ''
+                            )
+                          }>
+                          <SheetClose>
+                            <button onClick={item.onCLick}>{item.display}</button>
+                          </SheetClose>
                         </li>
                       ))
                     }
@@ -178,13 +226,23 @@ export default function NavbarHome() {
               <DropdownMenuSeparator />
               <DropdownMenuItem>Profile</DropdownMenuItem>
               <DropdownMenuItem>Billing</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
-              <DropdownMenuItem>Subscription</DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={"/dashboard"}>Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Button onClick={()=>SignOut()}>SignOut</Button>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="block md:hidden hover:outline-none  focus:bg-white focus-visible:bg-white dark:focus:bg-dark-bg_2 dark:focus-visible:bg-dark-bg_2">
+                
+                <div className="w-full flex justify-end">
+                 <DarkModeButton />
+                </div>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
            <div className="hidden md:block">
-          <DarkModeButton />
+           <DarkModeButton />
 
            </div>
         </div>

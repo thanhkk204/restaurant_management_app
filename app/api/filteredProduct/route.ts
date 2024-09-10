@@ -5,6 +5,7 @@ import { connectToDB } from "@/lib/mongoDB"
 import { FilteredProductType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
+export const dynamic = 'force-dynamic';
 export const GET = async (req: NextRequest) => {
     await connectToDB()
     try {

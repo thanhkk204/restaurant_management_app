@@ -43,13 +43,13 @@ export default function UpdateDish({ params }: { params: { id: string } }) {
     }
   }
   useEffect(() => {
-   if(id){
-    fetData()
-   }
+    if (id) {
+      fetData()
+    }
   }, [id])
 
   return (
-    <section className="min-h-screen md:min-h-fit px-3 md:px-5 py-4 md:py-6">
+    <div className="min-h-screen md:min-h-fit px-3 md:px-5 py-4 md:py-6">
       <div className="w-full lg:max-w-[50%]">
         {loading && (
           <div className="w-full h-full absolute left-0 top-0 flex items-center justify-center">
@@ -61,6 +61,6 @@ export default function UpdateDish({ params }: { params: { id: string } }) {
         )}
         {dish && <DishForm dish={dish} />}
       </div>
-    </section>
+    </div>
   )
 }

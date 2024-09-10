@@ -72,7 +72,7 @@ const CompletedBill = ({ params }: { params: { reservation_id: string } }) => {
         setLoading(true)
         const res = await fetch(
           "/api/reservations/orderedFood/getAllFoodByReservationId/" +
-            reservation_id,
+          reservation_id,
           {
             method: "GET",
           }
@@ -108,7 +108,7 @@ const CompletedBill = ({ params }: { params: { reservation_id: string } }) => {
   })
 
   return (
-    <section className="w-full h-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md px-3 py-4">
+    <div className="w-full h-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md px-3 py-4">
       {loading && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <FadeLoader
@@ -303,7 +303,7 @@ const CompletedBill = ({ params }: { params: { reservation_id: string } }) => {
           </div>
         </div>
       )}
-    </section>
+    </div>
   )
 }
 export default CompletedBill

@@ -47,7 +47,7 @@ export default function CreateReservation({
     fetData()
   }, [])
   return (
-    <section className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
+    <div className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
       <div className="w-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md flex justify-start">
         <div className="w-full lg:w-1/2 px-3 py-4 md:px-6 md:py-6">
           {loading && (
@@ -66,6 +66,6 @@ export default function CreateReservation({
           )}
         </div>
       </div>
-    </section>
+    </div>
   )
 }

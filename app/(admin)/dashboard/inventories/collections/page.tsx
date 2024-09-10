@@ -101,7 +101,7 @@ export default function CollectionsPage() {
     }
   }
   return (
-    <section>
+    <div>
       {loading && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
           <FadeLoader
@@ -121,6 +121,6 @@ export default function CollectionsPage() {
           onAdd={handleAddCollection}
         />
       )}
-    </section>
+    </div>
   )
 }

@@ -1,0 +1,32 @@
+{
+    "headers": [
+      {
+        "source": "/api/(.*)", 
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store" 
+          }
+        ]
+      },
+      {
+        "source": "/checkout", 
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
+      },
+      {
+        "source": "/dashboard/reservations", 
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-store"
+          }
+        ]
+      }
+    ]
+  }
+  

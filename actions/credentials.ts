@@ -17,10 +17,10 @@ export const LoginAction = async (values: z.infer<typeof LogInSchema>) => {
     const validateFileds = LogInSchema.safeParse(values)
     if (!validateFileds.success) return { error: "Invalid field!" }
     const { email, password } = validateFileds.data
-
     const existingUser = await getUserByEmail(email)
+    if(!existingUser) return {error: "Can't find email"}
 
-    if (!existingUser.emailVerified) {
+    if (!existingUser.emailVerified) { 
       const verificationToken = await generationVerificationToken(email)
 
       if (!verificationToken)
@@ -33,11 +33,13 @@ export const LoginAction = async (values: z.infer<typeof LogInSchema>) => {
       if (!sendSuccessfull) return { error: "Can't send token to your mail" }
       return { success: "Token was sent for verification" }
     }
+
     await signIn("credentials", {
-      email,
-      password,
+      email: email,
+      password: password,
       redirect: false,
     })
+
     return { success: "Successfully" }
   } catch (error) {
     if (error instanceof AuthError) {

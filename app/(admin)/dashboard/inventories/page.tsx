@@ -162,7 +162,7 @@ export default function DishPage() {
     }
   }
   return (
-    <section>
+    <div>
       {loading && (
         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
           <FadeLoader
@@ -184,6 +184,6 @@ export default function DishPage() {
           onAdd={handleAddDish}
         />
       )}
-    </section>
+    </div>
   )
 }

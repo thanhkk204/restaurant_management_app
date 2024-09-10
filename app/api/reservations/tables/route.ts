@@ -20,7 +20,11 @@ export const POST = async (req: NextRequest) => {
     })
     return NextResponse.json(
       { newTable, message: "Succussfully!" },
-      { status: 201 }
+      { status: 201,
+        headers: {
+          "Cache-Control": "no-store", // Vô hiệu hóa cache
+        },
+      }
     )
   } catch (error) {
     console.log("Inventories_Error", error)

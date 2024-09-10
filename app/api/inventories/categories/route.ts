@@ -4,6 +4,7 @@ import dish from "@/lib/models/dish"
 import { connectToDB } from "@/lib/mongoDB"
 import { NextRequest, NextResponse } from "next/server"
 
+export const dynamic = 'force-dynamic';
 export const POST = async (req: NextRequest) => {
   await connectToDB()
   try {

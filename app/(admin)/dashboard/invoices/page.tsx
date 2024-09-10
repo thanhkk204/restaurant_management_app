@@ -25,6 +25,7 @@ export default function InvoicePage() {
         const res = await fetch("/api/reservations", {
           method: "GET",
         })
+        console.log({res})
         if (!res.ok) {
           return toast({
             variant: "destructive",
@@ -35,6 +36,7 @@ export default function InvoicePage() {
         setReservations(data.reservations)
         setLoading(false)
       } catch (error) {
+        console.log({error})
         setLoading(false)
         toast({
           variant: "destructive",
@@ -45,7 +47,7 @@ export default function InvoicePage() {
     fetData()
   }, [])
   return (
-    <section>
+    <div>
       {loading && (
         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
           <FadeLoader
@@ -62,6 +64,6 @@ export default function InvoicePage() {
           data={reservations}
         />
       )}
-    </section>
+    </div>
   )
 }

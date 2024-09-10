@@ -72,7 +72,7 @@ export default function ChartSection() {
     ])
   }, [])
   return (
-    <section className="py-10">
+    <div className="py-10">
       <div className="w-full flex gap-10 items-start">
         <div className="flex-1 h-auto dark:bg-dark-bg_2 p-5 rounded-lg ">
           {data && (
@@ -137,6 +137,6 @@ export default function ChartSection() {
           </Table>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

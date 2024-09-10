@@ -9,11 +9,11 @@ const NavigateLink = [
   },
 ]
 
-export default function layout({children}: {children: React.ReactNode}) {
+export default function layout({ children }: { children: React.ReactNode }) {
   return (
-    <section className="w-full flex flex-col py-2 md:py-5 px-5 gap-0 md:gap-10 ">
-    <SubNavigate NavigateLink={NavigateLink}/>
-    {children}
-  </section>
+    <div className="w-full flex flex-col py-2 md:py-5 px-5 gap-0 md:gap-10 ">
+      <SubNavigate NavigateLink={NavigateLink} />
+      {children}
+    </div>
   )
 }

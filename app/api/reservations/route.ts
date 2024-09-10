@@ -7,6 +7,7 @@ import { connectToDB } from "@/lib/mongoDB"
 import { AddressType, ReservationType } from "@/types/type"
 import { NextRequest, NextResponse } from "next/server"
 
+export const dynamic = 'force-dynamic';
 export const POST = async (req: NextRequest) => {
   const {
     table_id,

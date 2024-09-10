@@ -17,7 +17,7 @@ type Props = {
 
 const AuthCard = ({children, SocialCard, link, linkTitle}: Props) => {
   return (
-    <div className='min-w-[400px] max-w-[500px] px-3 py-2 md:px-5 md:py-4 rounded-md shadow-lg bg-light-bg_2 dark:bg-dark-bg_2 flex flex-col items-center'>
+    <div className='min-w-[355px] max-w-[500px] px-3 py-2 md:px-5 md:py-4 rounded-md shadow-lg bg-light-bg_2 dark:bg-dark-bg_2 flex flex-col items-center'>
       <div className='flex gap-1 items-center justify-center'>
         <Image 
         src={'/images/lock.png'}

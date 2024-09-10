@@ -16,7 +16,7 @@ import { ChevronsLeft, ChevronsRight, Phone } from 'lucide-react';
 
 export const SwiperSliderShow = () => {
   return (
-    <div className='w-full relative'>
+    <div className='w-full relative' id='gallerySection'>
     <Swiper
       effect={'coverflow'}
       grabCursor={true}

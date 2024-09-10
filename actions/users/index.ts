@@ -1,6 +1,7 @@
 "use server"
 import User from "@/lib/models/user"
 import Account from "@/lib/models/account"
+import { connectToDB } from "@/lib/mongoDB"
 export const getUserById = async(_id: string)=>{
    try {
     const existingUser = await User.findById(_id)
@@ -11,7 +12,8 @@ export const getUserById = async(_id: string)=>{
 }
 
 export const getUserByEmail = async(email: string)=>{
-   try {
+  try {
+     await connectToDB()
     const existingUser = await User.findOne({email: email})
     return existingUser
    } catch (error) {
@@ -22,6 +24,7 @@ export const getUserByEmail = async(email: string)=>{
 
 export const UpdateFieldUser = async(user: any, account: any)=>{
    try {
+    await connectToDB()
     const existingUser = await User.findOne({ email: user.email })
 
     if (existingUser) {

@@ -32,7 +32,7 @@ export default function InvoicePage() {
           })
         }
         const data = await res.json()
-        console.log({dataInShipment: data})
+        console.log({ dataInShipment: data })
         setShipments(data.shipments)
         setLoading(false)
       } catch (error) {
@@ -51,7 +51,7 @@ export default function InvoicePage() {
         method: "POST",
       })
       const data = await res.json()
-      console.log({data})
+      console.log({ data })
       if (!res.ok) {
         return toast({
           variant: "destructive",
@@ -70,7 +70,7 @@ export default function InvoicePage() {
     }
   }
   return (
-    <section>
+    <div>
       {loading && (
         <div className="w-full h-full absolute top-0 left-0 flex items-center justify-center">
           <FadeLoader
@@ -88,6 +88,6 @@ export default function InvoicePage() {
           data={shipments}
         />
       )}
-    </section>
+    </div>
   )
 }

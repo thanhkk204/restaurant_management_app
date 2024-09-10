@@ -115,8 +115,8 @@ const formSchema =  z.object({
           message: "Duration must smaller than 3"
         });
       }
-
     }
+
 
   });
 
@@ -134,7 +134,6 @@ export default function ReservationCheckoutForm({
   const [wards, setWards] = useState<WardType[]>([])
   const [tables, setTables] = useState<AvailableTableType[]>([])
   const [reservations, setReservations] = useState<ReservationType[]>([])
-  const [createdReservation, setCreatedReservation] = useState<ReservationType | null>(null)
   const { toast } = useToast()
   const router = useRouter()
   // Get values were passed in context
@@ -144,7 +143,7 @@ export default function ReservationCheckoutForm({
   // get cart in localstorage
   const {cart} = useCart()
   // 1. Define your form.
-  
+  console.log({id: session.data?.user.id})
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -157,7 +156,7 @@ export default function ReservationCheckoutForm({
       party_size: reservation ? reservation.party_size : 0,
       payment_method: reservation ? reservation.payment_method : "CASHPAYMENT",
       digital_wallet_payment: "MOMO",
-      user_id: session.data?.user.id,
+      user_id: '',
       table_id: ""
     },
   })
@@ -168,7 +167,6 @@ export default function ReservationCheckoutForm({
   const paymet_mehtod = form.watch('payment_method')
   const startTime = form.watch('startTime')
   const endTime = form.watch('endTime')
- 
 
   const isTimeOverLap = (reservations: ReservationType[])=> {
     if(!startTime || !endTime) return
@@ -273,8 +271,9 @@ export default function ReservationCheckoutForm({
 }, [table_id])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log({values})
+    console.log('thanh')
     if(!session.data?.user) return toast({variant: "destructive", title: "Please log in before make reservation"})
-      
     if(isTimeOverLap(reservations)) return toast({variant: "destructive", title: "You can't put reservation time overlap"})
     const reserUrl = "/api/checkout"
     const momoUrl = "api/onlinePayment/momo"
@@ -309,10 +308,12 @@ export default function ReservationCheckoutForm({
         })
         const momoData = await momoRes.json()
         const payUrl = momoData.data.payUrl
-        window.location.href = payUrl
+        // window.location.href = payUrl
+        form.reset()
+        window.location.href = payUrl;
       }
-      setLoading(false)
       form.reset()
+      setLoading(false)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -320,7 +321,7 @@ export default function ReservationCheckoutForm({
         variant: "destructive",
         title: "Something wrong with  checkout form!",
       })
-    }
+    } 
   }
   function handleResetForm(e: any) {
     e.preventDefault()
@@ -498,7 +499,7 @@ export default function ReservationCheckoutForm({
                         <SelectLabel className="font-extrabold">Tables</SelectLabel>
                         {tables.map((table, index) => (
                           <SelectItem key={index} value={table._id}>
-                            {`${table.name} (${table.location_id.locationInRestaurant})`}
+                            {`${table.name} (${table?.location_id?.locationInRestaurant})`}
                           </SelectItem>
                         ))}
                       </SelectGroup>
@@ -640,6 +641,7 @@ export default function ReservationCheckoutForm({
             type="submit"
             className="mr-4 font-medium text-[16px]"
             disabled={loading}
+            onClick={()=>console.log('onClick event')}
           >
             {loading ? (
               <ClipLoader
@@ -649,11 +651,8 @@ export default function ReservationCheckoutForm({
                 aria-label="Loading Spinner"
                 data-testid="loader"
               />
-            ) : reservation ? (
-              "Cập nhật"
-            ) : (
-              "Đặt bàn"
-            )}
+            )  : "Đặt bàn"
+            }
           </Button>
 
           <Button

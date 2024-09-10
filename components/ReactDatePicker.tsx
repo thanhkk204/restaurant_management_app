@@ -18,7 +18,7 @@ function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
   })
   const [maxTime, setMaxTime] = useState<Date>(()=>{
     const today = new Date()
-    return new Date(today.setHours(22,0))
+    return new Date(today.setHours(23,59))
   })
  
   const [excludedTimes, setExcludedTimes] = useState<Date[]>([])
@@ -41,8 +41,8 @@ function ReactDatePicker({value, onChange, reservations, table_id}:Props) {
          times.push(currentTime)
 
          let timeDuration = currentTime.getTime()
-
-         while(timeDuration <= reservationEndTime.getTime()){
+        // thêm 1 khoảng thời gian vào sau endTime cho đến khi inngest thực thi không bị lỗi 
+         while(timeDuration <= reservationEndTime.getTime() + timeSpace * 60 * 1000){
           times.push(new Date(timeDuration))
           timeDuration = timeDuration + timeSpace * 60 * 1000
          }

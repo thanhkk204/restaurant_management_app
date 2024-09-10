@@ -2,11 +2,13 @@
 import CartTable from '@/components/custom_ui/CartTable';
 import ReservationCheckoutForm from '@/components/custom_ui/checkout/ReservationCheckoutForm';
 import ShipmentCheckoutForm from '@/components/custom_ui/checkout/ShipmentCheckoutForm';
+import { toast } from '@/components/ui/use-toast';
 import { useCart } from '@/lib/context/CartProvider';
 import { cn } from '@/lib/utils';
 import { ReceiptText, Truck } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CheckoutForm() {
   const [showShippingForm, setShowShippingForm] = useState(false);

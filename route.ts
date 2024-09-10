@@ -4,7 +4,9 @@
  * @type {string[]}
  */
 export const publicRoutes = [
-    "/"
+    "/",
+    "/checkoutForm",
+    "/menu"
 ]
 /**
  * An Array of routes that are used for authentication purposes

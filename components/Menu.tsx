@@ -1,79 +1,28 @@
 "use client"
-import { CategoryType } from "@/app/(admin)/dashboard/inventories/categories/page"
-import { cn } from "@/lib/utils"
-import { FilteredProductType } from "@/types/type"
+import { useCart } from "@/lib/context/CartProvider"
+import { cn, formatCurrency } from "@/lib/utils"
+import { CartItem, FilteredProductType } from "@/types/type"
 import Image from "next/image"
-import React, { forwardRef, useCallback, useEffect, useRef, useState } from "react"
+import React, { forwardRef, useEffect, useRef, useState } from "react"
+import { CiCirclePlus } from "react-icons/ci"
+import { FaCartPlus } from "react-icons/fa"
 import HTMLFlipBook from "react-pageflip"
-import { v4 as uuidv4 } from 'uuid';
-type CoverProps = {
-  children: React.ReactNode
-}
-type PageProps = {
-  children: React.ReactNode
-  number: string
-  currentPage: number
-}
-const PageCover = React.forwardRef<HTMLDivElement, CoverProps>((props, ref) => {
-  
-  return (
-    <div className="page page-cover overflow-hidden shadow-[15px_15px_25px_rgba(0,0,0,0.55),-15px_-15px_25px_rgba(0,0,0,0.55)]" ref={ref} data-density="hard">
-      <Image
-       alt="book cover"
-       src={'/images/book_cover.jpg'}
-       width={1100}
-       height={970}
-       className="object-contain"
-      />
-      <div className="page-content absolute">
-        {props.children}
-      </div>
-    </div>
-  );
-});
-const Page = React.forwardRef<HTMLDivElement, PageProps>((props, ref) => {
-  const [pageIndex, setPageIndex] = useState<number>()
-  const id = uuidv4();
-  useEffect(()=>{
-   let uuid = document.getElementById(id) as HTMLDivElement
-   const parent = uuid?.parentNode as HTMLDivElement
 
-  // Lấy tất cả các phần tử con của parent
-  const children = Array.from(parent.children);
-  const index = children.indexOf(uuid);
-  setPageIndex(index)
+import PageProduct from "./PageProduct"
+import PageCover from "./ReactFlip/PageCover"
+import PageMenu from "./ReactFlip/PageMenu"
+import { ChevronsLeft, ChevronsRight } from "lucide-react"
 
-  },[])
-  return (
-    <div 
-    id={id}
-    className={cn(
-      "demoPage p-10 bg-light-bg_2 dark:bg-dark-bg_2 page_shadow overflow-scroll",
-      props.currentPage + 1 == pageIndex ? "page_shadown_inner_right" : "",
-      props.currentPage == pageIndex ? "page_shadown_inner_left" : "",
-      
-    )}  ref={ref}
-    >
-      {/* ref required */}
-      <h1>Page Header</h1>
-      <p>{props.children}</p>
-      <p>Page number: {props.number}</p>
-      <p>Current page</p>
-      <p>{props.currentPage}</p>
-      <p> Page</p>
-      <p>{pageIndex}</p>
-    </div>
-  )
-})
 
 type MenuBookProps = {
     filteredProducts: FilteredProductType[]
     dishes: FilteredProductType[] | null
 }
 const MenuBook = forwardRef<HTMLDivElement, MenuBookProps>((props, ref) => {
-   const {filteredProducts, dishes} = props
-   const [productPerPage, setProductPerPage] = useState<number>(2)
-
+  const [productPerPage, setProductPerPage] = useState<number>(4)
+  const [page, setCurrentPage] = useState<number>(0)
+  
+  const {filteredProducts, dishes} = props
   // Check if ref stick with localRef, localRef is used for HTMLFlipBook
   const localRef = useRef<any>(null);
   useEffect(() => {
@@ -100,25 +49,45 @@ const MenuBook = forwardRef<HTMLDivElement, MenuBookProps>((props, ref) => {
   };
 
   const groupedProducts = groupByCategory(dishes)
-  const [page, setCurrentPage] = useState<number>(0)
-  let pageIndex = 1;
+    // add to cart action
+    const { addItem } = useCart()
+    const handleAddToCart = (item: CartItem) => {
+      addItem(item)
+    }
+ 
+  const handlehandleNextFlip = ()=>{
+    localRef?.current.pageFlip().flipNext()
+  }
+  const handlePreviousFlip = () => {
+    if (localRef?.current) {
+      const pageFlip = localRef.current.pageFlip();
+      if (pageFlip.getOrientation() === "portrait") {
+        // Chế độ 1 trang
+        pageFlip.turnToPrevPage();
+      } else {
+        // Chế độ 2 trang
+        pageFlip.flipPrev();
+      }
+    }
+  };
+
 
   return (
     <>
-      <div className="w-full py-8 px-8">
+      <div className="w-full">
         {/* Quyển sách */}
        
         <HTMLFlipBook
           style={{}}
           // children={{}}
           startPage={0}
-          width={550}
+          width={550} 
           height={733}
           size="stretch"
-          minWidth={585}
+          minWidth={345}
           maxWidth={1033}
-          minHeight={733}
-          maxHeight={1533}
+          minHeight={633}
+          maxHeight={1033}
           drawShadow={true}
           flippingTime={600}
           usePortrait={true}
@@ -147,54 +116,136 @@ const MenuBook = forwardRef<HTMLDivElement, MenuBookProps>((props, ref) => {
             <div className="absolute"></div>
           </PageCover>
           {
-           filteredProducts && [...Array(2).keys()].map((currentPage, index)=>(
-             <Page number="All" currentPage={page}>
-              <div className="w-full h-full ">
-              {currentPage}
-              <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam temporibus libero minima in
-                 facilis nostrum eius! Illum, incidunt nostrum? Voluptas rem earum
-                 nobis fugit recusandae praesentium! Veritatis temporibus perspiciatis molestiae.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam temporibus libero minima in
-                 facilis nostrum eius! Illum, incidunt nostrum? Voluptas rem earum
-                 nobis fugit recusandae praesentium! Veritatis temporibus perspiciatis molestiae.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam temporibus libero minima in
-                 facilis nostrum eius! Illum, incidunt nostrum? Voluptas rem earum
-                 nobis fugit recusandae praesentium! Veritatis temporibus perspiciatis molestiae.
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam temporibus libero minima in
-                 facilis nostrum eius! Illum, incidunt nostrum? Voluptas rem earum
-                 nobis fugit recusandae praesentium! Veritatis temporibus perspiciatis molestiae.
-              </div>
-              </div>
-              {pageIndex + 1}
-             </Page>
-            ))
+            // Just for render 1 page All
+           filteredProducts && [...Array(1).keys()].map((currentPage, index)=>{
+             return <PageMenu category="All" currentPage={page} key={index}>
+               <PageProduct filteredProducts={filteredProducts} />
+             </PageMenu>
+              })
           }
           {
+            // Render category page reply on quantity and productPerPage state, minimum 2 page each category
             groupedProducts !== null && Object.keys(groupedProducts).map((category, indexCate) => {
               const num = Math.ceil(groupedProducts[category].length / productPerPage)
               //  minimum 2 pages
               const pageNumber = num >= 3 ? num : 2
               //  console.log({category, number})
-              return [...Array(pageNumber).keys()].map((currentPage, indexPage) => (
-                <Page number={category}  currentPage={page}>
-                  {groupedProducts[category].map((product, index) => {
+              return [...Array(pageNumber).keys()].map((pageInCategory, indexPage) => (
+                <PageMenu category={category}  currentPage={page} key={indexPage}>
+                  {/* For destopPage */}
+                  <div className="w-full hidden md:flex items-center justify-center flex-wrap  gap-5 ">
+                  {groupedProducts[category].map((dish, index) => {
                     // find where the page start and the page end
-                    return (index >= currentPage * productPerPage && index < (currentPage + 1) * productPerPage) ?
-                      (<div>
-                        <span>{index + 1}</span>
-                        <p>{product.title}</p>
-                      </div>) : <div></div>
-
+                    return (index >= pageInCategory * productPerPage && index < (pageInCategory + 1) * productPerPage) ?
+                    ( <div key={dish._id} className="w-[280px] min-w-[280px] min-h-[280px] rounded-3xl shadow-[3px_3px_5px_rgba(0,0,0,0.25),-3px_-3px_5px_rgba(0,0,0,0.25)] bg-transparent border border-black/35 overflow-hidden">
+                      <div className="w-[280px] min-w-[280px] h-[240px] overflow-hidden rounded-3xl ">
+                      <Image
+                       src={dish.image[0]}
+                       alt="dish"
+                       width={280}
+                       height={280}
+                       className="object-cover"
+                      />
+                      </div>
+                      <div className="w-[280px] px-3 md:px-4 py-2 md:py-4 flex items-center justify-between overflow-hidden">
+                       <div className="flex-[4] overflow-hidden">
+                       <h1 className="text-2xl font-serif tracking-wide truncate ">{dish.title}</h1>
+                       <h1>{formatCurrency(dish.price)}</h1>
+                       <p className="text-justify">{dish.desc}</p>
+                       </div>
+                       <div className="flex-1 flex items-center justify-center">
+                          <button 
+                           onClick={() =>
+                            handleAddToCart({
+                              dish_id: dish._id,
+                              title: dish.title,
+                              image: dish.image[0],
+                              price: dish.price,
+                              quantity: 1,
+                            })}
+                            className="w-[45px] h-[45px] bg-transparent rounded-3xl border border-black/35 flex items-center justify-center 
+                            shadow-[3px_3px_3px_rgba(0,0,0,0.25),-2px_-2px_3px_rgba(255,255,255,0.25)]"
+                            >
+                           <FaCartPlus
+                            className="w-6 h-6 transition-all ease-in-out hover:scale-110"
+                            />
+                          </button>
+                       </div>
+                      </div>
+                    </div>) : <></>
                   })}
-                </Page>
+                  </div>
+                  {/* For mobile Page */}
+                  <div className="flex md:hidden flex-col gap-5">
+                   {groupedProducts[category].map((dish, index) => {
+                    // find where the page start and the page end
+                    return (index >= pageInCategory * productPerPage && index < (pageInCategory + 1) * productPerPage) ?
+                    (<div key={dish._id} className="flex items-center justify-center gap-3">
+                      <button
+                       onClick={() =>
+                        handleAddToCart({
+                          dish_id: dish._id,
+                          title: dish.title,
+                          image: dish.image[0],
+                          price: dish.price,
+                          quantity: 1,
+                        })}
+                      >
+                        <CiCirclePlus 
+                         className="w-6 h-6 transition-all ease-in-out hover:scale-110"
+                        />
+                      </button>
+                      <p className="text-nowrap cursor-pointer hover:text-red-1">
+                        {dish.title}
+                      </p>
+                      <div className="flex-grow w-full py-1  border-b-[1.8px] border-dashed border-black">
+
+                      </div>
+                      <p className="text-nowrap">{formatCurrency(dish.price)}</p>
+                    </div>) : <></>
+                    })}
+                  </div>
+                    
+                </PageMenu>
               ))
             })
           }
+           <PageCover>
+            <div className="absolute"></div>
+          </PageCover>
         </HTMLFlipBook>
+
+        <div className="container relative flex items-center justify-center py-6 md:py-10">
+          <div className='min-w-[350px] max-w-[650px] mx-auto relative flex items-center justify-between'>
+            <div
+              onClick={() => handlePreviousFlip()}
+              className="relative w-fit "
+            >
+              <div className='w-16 h-16 dark:bg-dark-bg_2 flex items-center justify-center rounded-full shadow-main_shadow dark:shadow-button_shadow shadow-black/10 dark:shadow-blue-1 cursor-pointer active:shadow-inner'>
+                <ChevronsLeft
+                  className='text-orange-1 dark:text-dark-primaryColor w-[25px]'
+                />
+              </div>
+            </div>
+
+
+            <div
+              onClick={() => handlehandleNextFlip()}
+              className="relative w-fit ">
+              <div className='w-16 h-16 dark:bg-dark-bg_2 flex items-center justify-center rounded-full shadow-main_shadow dark:shadow-button_shadow shadow-black/10 dark:shadow-blue-1 cursor-pointer active:shadow-inner'>
+                <ChevronsRight
+                  className='text-orange-1 dark:text-dark-primaryColor w-[25px]'
+
+                />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </>
   )
 })
-
+MenuBook.displayName = "MenuBook"
 export default MenuBook

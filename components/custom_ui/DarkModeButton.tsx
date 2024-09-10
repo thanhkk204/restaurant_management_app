@@ -1,15 +1,20 @@
 "use client"
 import Image from 'next/image';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function DarkModeButton() {
-    const [theme, setTheme] = React.useState(
-        localStorage.getItem("theme") ? localStorage.getItem("theme") : "light"
-      );
+    const [theme, setTheme] = useState<string>('dark');
     
-      const element = document.documentElement; // html element
+    useEffect(() => {
+      // Chỉ truy cập localStorage sau khi component đã được mount
+      const storedTheme = localStorage.getItem("theme");
+      if (storedTheme) {
+        setTheme(storedTheme);
+      }
+    }, []);
     
-      React.useEffect(() => {
+      useEffect(() => {
+        const element = document.documentElement; // html element
         if (theme === "dark") {
           element.classList.add("dark");
           localStorage.setItem("theme", "dark");
@@ -19,7 +24,7 @@ export default function DarkModeButton() {
         }
       }, [theme]);
     return (
-        <div className="relative">
+        <div className="relative max-w-[69px]">
           <Image
             src={'/images/light-mode-button.png'}
             alt="light_button"

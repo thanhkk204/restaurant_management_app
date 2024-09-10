@@ -4,13 +4,6 @@ import { toast } from '@/components/ui/use-toast';
 import { FilteredProductType } from '@/types/type';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
-// Fetch category từ API backend
-// export const fetchCategories = createAsyncThunk('category/fetchCategories', async () => {
-//   const res = await fetch('/api/inventories/categories', { method: "GET" }); 
-//   const data = await res.json();
-//   if(!res.ok) toast({variant: 'destructive', title: "Can't get category in redux"})
-//   return data.categories;
-// });
 
 interface initType {
     searchName: string,

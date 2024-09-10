@@ -48,7 +48,7 @@ export default function CreateReservation({
 
   console.log(reservation?.table_id.number_of_seats)
   return (
-    <section className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
+    <div className="flex flex-col xl:flex-row gap-5 w-full h-full pb-[80px]">
       <div className="w-full bg-light-bg_2 dark:bg-dark-bg_2 rounded-md flex justify-start">
         {loading && (
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
@@ -68,6 +68,6 @@ export default function CreateReservation({
           )}
         </div>
       </div>
-    </section>
+    </div>
   )
 }
