@@ -41,7 +41,6 @@ export const SwiperSliderShow = () => {
       navigation={{
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
-        
       }}
       modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
       // breakpoints={{

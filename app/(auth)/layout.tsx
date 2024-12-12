@@ -17,7 +17,7 @@ const popins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Restaurant Dashboard",
+  title: "Golden Folk",
   icons: {
     icon: "/images/logo2.png",
   },

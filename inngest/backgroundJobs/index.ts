@@ -69,7 +69,7 @@ export const updateSeatedReservationsStatus = async () => {
           startTime: { $gte: now },
         });
     
-        // Cập nhật trạng thái của table dựa trên điều kiện
+        // Cập nhật trạng thái của table dựa trên điều kiện nếu có đơn đặt bàn trong tương lai sẽ chuyển thành ISBOOKED
         const newStatus = reservedReservation ? "ISBOOKED" : "AVAILABLE";
     
         await table.updateOne(

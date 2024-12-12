@@ -18,7 +18,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Trash } from "lucide-react"
 
 type InputValue = {
   number_of_seats: number,
@@ -137,7 +136,7 @@ export default function Item({
     [e.target.name]: e.target.value
    }))
   }
-  // Func update reservation
+  // Func pick up reservation for reser which didn't order table online and reselect table
   const updateReservation = async (reservation_id: string, type:string, table_id: string)=>{
         try {
           const res = await fetch('/api/reservations/selectTable/' + reservation_id,{
@@ -365,21 +364,38 @@ export default function Item({
             <div className="flex items-center justify-end py-2 gap-5">
               <DialogClose asChild>
                 <Button
-                  className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
-                text-white dark:text-white hover:scale-90 transition-all ease-in"
+                 className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
+              text-white dark:text-white hover:scale-90 transition-all ease-in"
                 >
                   Đóng
                 </Button>
               </DialogClose>
+
+              {
+                reservation_id && type == "RESELECT" ? (
+                <DialogClose asChild>
+                <Button
+                onClick={()=> updateReservation(reservation_id, type, table._id)}
+                className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
+                text-white dark:text-white hover:scale-90 transition-all ease-in"
+                >
+                  Choose table
+                </Button>
+              </DialogClose>
+                ) : (
               <DialogClose>
               <Button
                 onClick={()=>handleSelectTable(table._id)}
-                className="bg-light-error dark:bg-dark-error hover:bg-light-error dark:hover:bg-dark-error 
-              text-white dark:text-white hover:scale-90 transition-all ease-in"
+                className="bg-light-success dark:bg-dark-success hover:bg-light-success dark:hover:bg-dark-success 
+                text-white dark:text-white hover:scale-90 transition-all ease-in"
               >
                 Ok
               </Button>
               </DialogClose>
+                )
+              }
+
+              
             </div>
           </DialogContent>
         </Dialog>

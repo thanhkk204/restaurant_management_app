@@ -1,5 +1,5 @@
 "use client"
-import { Bell, Home, LucideMenu, Menu, MenuSquare, Search, Settings, ShoppingCart, Text } from "lucide-react"
+import { Menu, Search } from "lucide-react"
 import { usePathname } from "next/navigation"
 import React, { useEffect, useRef, useState } from "react"
 import CartModel from "@/components/CartModel"
@@ -25,7 +25,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import DarkModeButton from "@/components/custom_ui/DarkModeButton"
 import { FcMenu } from "react-icons/fc"
 import { Button } from "@/components/ui/button"
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 
 export const headerLink = [
@@ -91,7 +91,11 @@ export default function NavbarHome() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollTop])
- 
+  const { data: session } = useSession();
+  useEffect(()=>{
+    console.log({session})
+  }, [session])
+
   return (
     <header className="fixed z-50 top-0 left-0 w-full h-[80px] transition-all duration-300"
     ref={navRef}
@@ -213,10 +217,11 @@ export default function NavbarHome() {
               </Sheet>
           
           <CartModel />
+          
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src={session?.user.image ? session?.user.image : "https://github.com/shadcn.png"} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               

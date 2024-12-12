@@ -8,7 +8,6 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { reservation_id: string } }
 ) {
-  console.log("thanh")
   const { reservation_id } = params
   const body = await req.json()
   const { table_id, type } = body
@@ -41,11 +40,29 @@ export async function PATCH(
         { new: true }
       )
     } else if (type === "RESELECT") {
-      // update privious table tatus to AVAILABLE
-      await table.findByIdAndUpdate(oldReservation.table_id, {
-        status: "AVAILABLE",
-      })
-      await table.findByIdAndUpdate(table_id, { status: "ISSERVING" })
+      const now = new Date()
+       // update privious table tatus
+       // Tìm reservation có trạng thái "RESERVED" trong tương lai cho table này
+       const reservedReservation = await reservation.findOne({
+        // Tìm những đơn đặt bàn trong tương lai ngoại trừ đơn vừa chuyển bàn
+        _id: { $ne: reservation_id },
+        table_id: oldReservation.table_id,
+        status: "RESERVED",
+        prepay: {$gt: 0},
+        startTime: { $gte: now },
+      });
+  
+      // Cập nhật trạng thái của table dựa trên điều kiện nếu có đơn đặt bàn trong tương lai sẽ chuyển thành ISBOOKED
+      const newStatus = reservedReservation ? "ISBOOKED" : "AVAILABLE";
+  
+      await table.updateOne(
+        { _id: oldReservation.table_id },
+        { $set: { status: newStatus } }
+      );
+
+      // Update current table tatus
+      const isCurrentTableStatus = new Date(oldReservation.startTime) <= now ? "ISSERVING" : "ISBOOKED"
+      await table.findByIdAndUpdate(table_id, { $set: { status: isCurrentTableStatus } })
       //  update reservation table_id
       await reservation.findByIdAndUpdate(
         { _id: reservation_id },

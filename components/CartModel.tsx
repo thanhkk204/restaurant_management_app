@@ -68,6 +68,7 @@ const CartModel = () => {
          }
         </div>
       </SheetTrigger>
+      
       <SheetContent className="w-full sm:max-w-full md:max-w-[640px] h-screen border-none">
       <div className="bg-light-bg_2 dark:bg-dark-bg_2 text-light-text dark:text-dark-text w-full h-screen p-6">
          

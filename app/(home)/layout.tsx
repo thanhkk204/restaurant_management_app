@@ -3,13 +3,14 @@ import "../globals.css"
 import { Metadata } from "next"
 import { Poppins } from "next/font/google"
 import ThemeContextProvider from "@/lib/context/ThemeContextProvider"
-import NavbarHome from "@/components/layouts/home/Navbar"
 import { CartProvider } from "@/lib/context/CartProvider"
 import { cn } from "@/lib/utils"
 import { Toaster } from "@/components/ui/toaster"
 import { auth, signOut } from "@/auth"
 import { SessionProvider } from "next-auth/react"
 import { Footer } from "@/components/Footer"
+import NavbarHome from "@/components/layouts/home/Navbar"
+
 const popins = Poppins({
   weight: ["400", "500", "700", "800", "900"],
   style: ["normal", "italic"],
@@ -18,7 +19,7 @@ const popins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Void",
+  title: "Golden Folk",
   icons: {
     icon: "/images/logo2.png",
   },

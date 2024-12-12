@@ -19,7 +19,6 @@ export async function PATCH(
       { message: "All data are required" },
       { status: 401 }
     )
-
   await connectToDB()
   try {
     const updatedDish: any = await orderedDish.findByIdAndUpdate(

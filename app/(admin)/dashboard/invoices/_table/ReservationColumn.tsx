@@ -144,11 +144,14 @@ export const ReservationColumn = ({
       header: "",
       cell: ({row})=>{
         const table_id = row.original.table_id
+        const status = row.original.status
         return <div>
           {
-            !table_id?
+            !table_id ?
              <Button onClick={()=>handleSelectTable(row.original._id, "SELECT")}>Nhận bàn</Button>:
-             <Button onClick={()=>handleSelectTable(row.original._id , "RESELECT")}>Đổi bàn</Button>
+             (status == "RESERVED" || status === "SEATED") ?
+             <Button onClick={()=>handleSelectTable(row.original._id , "RESELECT")}>Đổi bàn</Button>:
+             <div></div>
           }
         </div>
       },

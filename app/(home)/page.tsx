@@ -48,13 +48,13 @@ export default function RootPage() {
   return (
     <div className="w-full overflow-hidden pt-[160px]">
 
-  <div className="text-white">
+  {/* <div className="text-white">
       {session ? (
         <p>Signed in as {session.user.email} {session.user.id} {status}</p>
       ) : (
         <p>Not signed in {status}</p>
       )}
-    </div>
+    </div> */}
      {/* <button className="fixed bottom-5 right-5 py-5 px-5 rounded-3xl bg-orange-1 z-50" onClick={e=>scrollToTop(e)}>Scroll to Top</button> */}
 
       <section className="relative ">
